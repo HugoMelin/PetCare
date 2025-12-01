@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Dog {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  birthdate          DateTime?
+  breed              String?
+  weightEntries      WeightEntry[]
+  dewormingSchedules DewormingSchedule[]
+  notificationLogs   NotificationLog[]
+}
+
+model WeightEntry {
+  id     Int      @id @default(autoincrement())
+  dogId  Int
+  date   DateTime
+  weight Float
+
+  dog Dog @relation(fields: [dogId], references: [id])
+}
+
+model DewormingSchedule {
+  id            Int      @id @default(autoincrement())
+  dogId         Int
+  lastDoseDate  DateTime
+  frequencyDays Int
+  nextDoseDate  DateTime
+
+  dog Dog @relation(fields: [dogId], references: [id])
+}
+
+model NotificationLog {
+  id      Int      @id @default(autoincrement())
+  type    String
+  message String
+  dogId   Int
+  sendAt  DateTime @default(now())
+
+  dog Dog @relation(fields: [dogId], references: [id])
+}
