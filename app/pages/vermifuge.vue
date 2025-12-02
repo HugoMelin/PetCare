@@ -10,7 +10,7 @@ const actualDeworming = ref(null);
 
 const form = ref({
   medication: '',
-  lastDoseDate: '',
+  lastDoseDate: new Date().toISOString().slice(0, 10),
   frequencyDays: 90,
 });
 
@@ -18,7 +18,7 @@ const updateForm = () => {
   form.value.medication = actualDeworming.value?.medication || '';
   form.value.lastDoseDate = actualDeworming.value?.lastDoseDate
     ? new Date(actualDeworming.value.lastDoseDate).toISOString().slice(0, 10)
-    : '';
+    : new Date().toISOString().slice(0, 10);
   form.value.frequencyDays = actualDeworming.value?.frequencyDays || 90;
 };
   
@@ -122,7 +122,7 @@ onMounted(async () => {
       </template>
 
       <template #content>
-        <form v-if="actualDeworming" @submit.prevent="updateSettings">
+        <form v-if="form" @submit.prevent="updateSettings">
           <div class="mb-4">
             <label class="block text-gray-700 mb-2" for="medication">Médicament</label>
             <input v-model="form.medication" id="medication" type="text" class="w-full px-3 py-2 border rounded" />
