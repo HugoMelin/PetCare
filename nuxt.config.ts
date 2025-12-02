@@ -7,6 +7,12 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-lucide-icons'
   ],
+  css: [
+    '~/assets/css/global.css',
+  ],
+  tailwindcss: {
+    viewer: true, // ouvre un viewer pour explorer les classes disponibles
+  },
   lucide: {
     namePrefix: 'Icon'
   }

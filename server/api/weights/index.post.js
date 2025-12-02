@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 
   if (!body.dogId || !body.weight) return { error: 'dogId and weight are required' };
 
-  const newWeightEntry = await addWeightEntry(body.dogId, body.weight, body.date);
+  const newWeightEntry = await addWeightEntry(body);
 
   return newWeightEntry;
 });

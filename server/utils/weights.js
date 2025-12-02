@@ -7,16 +7,18 @@ export const getAllWeights = async () => {
 export const getWeightsByDogId = async (dogId) => {
   return await prisma.weightEntry.findMany({
     where: { dogId: parseInt(dogId) },
-    orderBy: { date: 'desc' },
+    orderBy: [{ date: 'desc' }, { id: 'desc' }],
   });
 };
 
-export const addWeightEntry = async (dogId, weight, date = new Date()) => {
+export const addWeightEntry = async (payload) => {
+  const { dogId, weight, date = new Date(), comment } = payload;
   return await prisma.weightEntry.create({
     data: {
       dogId: parseInt(dogId),
       weight: parseFloat(weight),
       date: new Date(date),
+      comment: comment,
     },
   });
 };
