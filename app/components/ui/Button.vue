@@ -43,6 +43,10 @@ const sizeClasses = {
       sizeClasses[props.size],
     ]"
     :disabled="props.disabled"
+
+    :style="{
+      padding: props.variant === 'link' ? '0' : undefined
+    }"
   >
     <slot />
   </button>

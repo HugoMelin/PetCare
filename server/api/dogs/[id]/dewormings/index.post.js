@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   let result;
   if (entryId) {
-    result = await updateDewormingEntry(entryId, medication, frequencyDays, nextDoseDate);
+    result = await updateDewormingEntry(entryId, medication, frequencyDays, nextDoseDate, lastDoseDate);
   } else {
     result = await addDewormingEntry(id, medication, frequencyDays, nextDoseDate, lastDoseDate);
   }
