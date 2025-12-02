@@ -80,7 +80,7 @@ onMounted(async () => {
               inputmode="decimal"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
               placeholder="Entrez le poids"
-            />
+            >
           </div>
           <Button type="submit" variant="default">Ajouter</Button>
         </form>

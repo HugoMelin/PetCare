@@ -65,7 +65,7 @@ const submitForm = async () => {
               inputmode="decimal"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
               placeholder="Entrez le poids"
-            />
+            >
         </div>
 
         <div class="mb-4 col-span-2 sm:col-span-1">
@@ -74,7 +74,7 @@ const submitForm = async () => {
             v-model="form.date"
             type="datetime-local"
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-          />
+          >
         </div>
 
         <div class="mb-4 col-span-2">
@@ -85,7 +85,7 @@ const submitForm = async () => {
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
             rows="3"
             placeholder="Ajouter un commentaire (optionnel)"
-          ></textarea>
+          />
         </div>
 
         <div>
