@@ -91,6 +91,19 @@ const submitForm = async () => {
       </template>
     </Card>
 
-    <WeightsTable :weights="weights" />
+    <WeightsTable v-if="weights?.length" :weights="weights" />
+    <Card v-else class="space-y-3">
+      <template #title>
+        <div class="h-6 bg-gray-200 rounded animate-pulse w-1/3" />
+      </template>
+      <template #content>
+        <div class="h-6 bg-gray-200 rounded animate-pulse" />
+        <div class="h-6 bg-gray-200 rounded animate-pulse" />
+        <div class="h-6 bg-gray-200 rounded animate-pulse" />
+        <div class="h-6 bg-gray-200 rounded animate-pulse" />
+        <div class="h-6 bg-gray-200 rounded animate-pulse" />
+        <div class="h-6 bg-gray-200 rounded animate-pulse" />
+      </template>
+    </Card>
   </div>
 </template>

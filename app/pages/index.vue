@@ -6,7 +6,7 @@ import useWeights from '~/composables/useWeights';
 import useFormatDate from '~/composables/useFormatDate';
 
 const { fetchWeights, addWeight } = useWeights();
-const { formatDate } = useFormatDate();
+const { dayNumberMonth } = useFormatDate();
 
 const lastWeight = ref(null);
 
@@ -41,10 +41,19 @@ onMounted(async () => {
   
     <Card>
       <template #title>
-        Évolution du poids
+        Poids
       </template>
       <template #content>
-        <p v-if="lastWeight">Dernier poids : {{ lastWeight.weight + ' kg' }} - {{ formatDate(lastWeight.date) }}</p>
+        <div class="grid grid-cols-2">
+          <div class="col-span-1 text-left flex flex-col justify-end">
+            <p v-if="lastWeight" class="text-sm"><span class="font-bold text-3xl">{{ lastWeight.weight }}</span> kg</p>
+            <div v-else class="h-10 w-16 bg-gray-300 rounded animate-pulse" />
+          </div>
+          <div class="col-span-1 text-right flex flex-col justify-start">
+            <p v-if="lastWeight" class="capitalize">{{ dayNumberMonth(lastWeight.date) }}</p>
+            <div v-else class="h-6 w-24 bg-gray-300 rounded animate-pulse self-end" />
+          </div>
+        </div>
       </template>
     </Card>
 
