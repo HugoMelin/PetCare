@@ -73,9 +73,8 @@ const chartData = computed(() => {
         label: 'Poids (kg)',
         data,
         tension: 0.2, // courbe un peu arrondie
-        borderColor: 'rgba(59, 130, 246, 1)', // bleu
-        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        borderColor: '#269394',
+        pointBackgroundColor: '#269394',
         borderWidth: 2,
         pointRadius: 3,
         fill: true,

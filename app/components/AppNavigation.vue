@@ -72,7 +72,7 @@ const isActive = (path) => {
           class="w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors"
           :class="[
             isActive(item.to)
-              ? 'bg-[#4CA8E0]/10 text-[#4CA8E0]'
+              ? 'bg-[#269394]/10 text-primary'
               : 'text-gray-700 hover:bg-gray-100',
             !isExpanded ? 'justify-center' : ''
           ]"
