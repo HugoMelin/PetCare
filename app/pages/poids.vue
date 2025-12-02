@@ -40,6 +40,16 @@ const submitForm = async () => {
 
     <Card>
       <template #title>
+        Évolution du poids
+      </template>
+      <template #content>
+        <WeightsLineChart v-if="weights.length" :weights="weights" class="h-[150px] sm:h-[304px]" />
+        <div v-else class="h-[150px] sm:h-[304px] bg-gray-200 rounded animate-pulse mt-2" />
+      </template>
+    </Card>
+
+    <Card>
+      <template #title>
         Ajouter un poids
       </template>
       <template #content>

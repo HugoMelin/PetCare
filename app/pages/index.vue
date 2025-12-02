@@ -9,6 +9,7 @@ const { fetchWeights, addWeight } = useWeights();
 const { dayNumberMonth } = useFormatDate();
 
 const lastWeight = ref(null);
+const weights = ref([]);
 
 const form = reactive({
   weight: '',
@@ -22,6 +23,7 @@ const handleSubmit = async () => {
   // Refresh last weight
   const res = await fetchWeights(1);
   if (res && res.length > 0) {
+    weights.value = res;
     lastWeight.value = res[0];
   }
 };
@@ -29,6 +31,7 @@ const handleSubmit = async () => {
 onMounted(async () => {
   const res = await fetchWeights(1);
   if (res && res.length > 0) {
+    weights.value = res;
     lastWeight.value = res[0];
   }
   console.log('Last weight:', lastWeight.value);
@@ -44,14 +47,17 @@ onMounted(async () => {
         Poids
       </template>
       <template #content>
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-4">
           <div class="col-span-1 text-left flex flex-col justify-end">
-            <p v-if="lastWeight" class="text-sm"><span class="font-bold text-3xl">{{ lastWeight.weight }}</span> kg</p>
-            <div v-else class="h-10 w-16 bg-gray-300 rounded animate-pulse" />
+            <p v-if="lastWeight" class="text-sm"><span class="font-bold text-3xl sm:text-6xl">{{ lastWeight.weight }}</span> kg</p>
+            <div v-else class="h-10 sm:h-16 w-16 bg-gray-300 rounded animate-pulse" />
           </div>
-          <div class="col-span-1 text-right flex flex-col justify-start">
+          <div class="col-span-3 text-right flex flex-col justify-start">
             <p v-if="lastWeight" class="capitalize">{{ dayNumberMonth(lastWeight.date) }}</p>
             <div v-else class="h-6 w-24 bg-gray-300 rounded animate-pulse self-end" />
+
+            <WeightsLineChart v-if="weights.length" :weights="weights" class="h-[100px] sm:h-[256px]" />
+            <div v-else class="h-[100px] sm:h-[256px] bg-gray-200 rounded animate-pulse mt-2" />
           </div>
         </div>
       </template>
