@@ -33,7 +33,7 @@ const isActive = (path) => {
           :to="item.to"
           class="flex flex-col items-center py-3 px-2 transition-colors"
           :class="isActive(item.to)
-            ? 'text-[#4CA8E0]'
+            ? 'text-primary'
             : 'text-gray-500 hover:text-gray-700'"
         >
           <component :is="item.icon" class="w-6 h-6 mb-1" />
