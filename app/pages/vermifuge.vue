@@ -56,7 +56,7 @@ const markAsDone = async () => {
 
 const updateSettings = async () => {
   const payload = {
-    entryId: actualDeworming.value.id,
+    entryId: actualDeworming?.value?.id ?? null,
     medication: form.value.medication,
     lastDoseDate: form.value.lastDoseDate,
     frequencyDays: form.value.frequencyDays,
