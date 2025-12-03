@@ -1,0 +1,7 @@
+{
+  email contact@torefi.fr
+}
+
+petcare.localhost {
+  reverse_proxy app:3000
+}
