@@ -3,7 +3,12 @@ export default function useDewormings() {
     console.log("Fetching actual deworming:", dogId);
 
     try {
-      const res = await $fetch(`/api/dogs/${dogId}/dewormings`);
+      const res = await $fetch(`/api/dogs/${dogId}/dewormings`, {
+        cache: 'no-store',
+        headers: {
+          'cache-control': 'no-store'
+        },
+      });
       console.log("Actual deworming fetched:", res);
       return res;
     } catch (error) {
@@ -20,6 +25,10 @@ export default function useDewormings() {
     try {
       const res = await $fetch(`/api/dogs/${dogId}/dewormings`, {
         method: 'POST',
+        cache: 'no-store',
+        headers: {
+          'cache-control': 'no-store'
+        },
         body: payload,
       });
       console.log("Deworming updated:", res);
