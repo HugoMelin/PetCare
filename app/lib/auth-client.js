@@ -45,11 +45,15 @@ export async function signOut() {
     fetchOptions: {
       onSuccess: () => {
         console.log("Sign-out successful");
-        return navigateTo('/login');
+        return navigateTo('/connexion');
       },
       onError: (ctx) => {
         console.error("Sign-out error:", ctx.error);
       },
     },
   });
+}
+
+export async function fetchUserSession() {
+  return await authClient.getSession();
 }

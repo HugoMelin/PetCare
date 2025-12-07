@@ -25,6 +25,8 @@ const variantClasses = {
   ghost:
     "hover:bg-accent hover:text-accent-foreground dark:hover:opacity-50",
   link: "text-primary underline-offset-4 hover:underline",
+  socialAuth:
+    "border border-gray-300 bg-white hover:bg-gray-100",
 }
 
 const sizeClasses = {
