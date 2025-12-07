@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -13,9 +12,14 @@ model Dog {
   name               String
   birthdate          DateTime?
   breed              String?
+  createdByUserId    String
+  owner              User[]              @relation("DogOwners")
+  createdBy          User                @relation(fields: [createdByUserId], references: [id])
   dewormingSchedules DewormingSchedule[]
   notificationLogs   NotificationLog[]
   weightEntries      WeightEntry[]
+
+  @@index([createdByUserId], map: "Dog_createdByUserId_fkey")
 }
 
 model WeightEntry {
@@ -62,6 +66,8 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  dogsCreated   Dog[]
+  dogsOwned     Dog[]     @relation("DogOwners")
 
   @@unique([email])
   @@map("user")
