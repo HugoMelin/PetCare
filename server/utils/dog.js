@@ -14,7 +14,7 @@ export const getDogsOwnedByUserId = async (userId) => {
 
 export const getDogById = async (dogId) => {
   return await prisma.dog.findUnique({
-    where: { id: dogId },
+    where: { id: parseInt(dogId) },
     include: {
       weightEntries: {
         orderBy: { date: 'desc' },

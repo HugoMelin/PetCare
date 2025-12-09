@@ -13,12 +13,15 @@ import SettingsIcon from './icons/SettingsIcon.vue';
           height="40"
           class="inline-block mr-3"
         />
-        <h1 class="text-3xl text-primary">PetCare</h1>
+        <h1 class="text-xl lg:text-3xl text-primary">PetCare</h1>
       </NuxtLink>
 
-      <NuxtLink to="/parametres" class="text-gray-600 hover:text-primary">
-        <SettingsIcon class="w-6 h-6" />
-      </NuxtLink>
+      <div class="flex items-center gap-2 sm:gap-4 flex-nowrap">
+        <DogSelector />
+        <NuxtLink to="/parametres" class="text-gray-600 hover:text-primary">
+          <SettingsIcon class="w-6 h-6" />
+        </NuxtLink>
+      </div>
     </div>
   </header>
 </template>

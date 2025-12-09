@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxtjs/tailwindcss', 'nuxt-lucide-icons', '@nuxt/image', '@vite-pwa/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxtjs/tailwindcss', 'nuxt-lucide-icons', '@nuxt/image', '@vite-pwa/nuxt', '@pinia/nuxt'],
   css: [
     '~/assets/css/global.css',
   ],
@@ -11,6 +11,9 @@ export default defineNuxtConfig({
   },
   lucide: {
     namePrefix: 'Icon'
+  },
+  pinia: {
+    storesDirs: ['./stores/**'],
   },
   app: {
     head: {
