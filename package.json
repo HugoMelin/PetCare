@@ -9,20 +9,24 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "down": "docker compose down",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "seed": "npx tsx ./prisma/seed.ts"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.11.0",
     "@nuxt/image": "^2.0.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@pinia/nuxt": "^0.11.3",
     "@prisma/adapter-mariadb": "^7.0.1",
     "@prisma/client": "^7.0.1",
     "@vite-pwa/nuxt": "^1.1.0",
+    "better-auth": "^1.4.5",
     "chart.js": "^4.5.1",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
     "nuxt": "^4.2.1",
     "nuxt-lucide-icons": "^2.0.0",
+    "pinia": "^3.0.4",
     "vue": "^3.5.25",
     "vue-chartjs": "^5.3.3",
     "vue-router": "^4.6.3"

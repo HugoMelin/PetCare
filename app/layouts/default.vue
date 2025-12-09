@@ -1,3 +1,14 @@
+<script setup>
+import { fetchUserSession } from '~/lib/auth-client';
+
+onMounted(async () => {
+  const session = await fetchUserSession();
+  if (!session.data) {
+    navigateTo('/connexion');
+  }
+});
+</script>
+
 <template>
   <div class="min-h-screen bg-gray-50">
     <AppHeader />

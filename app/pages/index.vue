@@ -5,10 +5,13 @@ import Button from '~/components/ui/Button.vue';
 import useWeights from '~/composables/useWeights';
 import useFormatDate from '~/composables/useFormatDate';
 import useDewormings from '~/composables/useDewormings';
+const store = useDogStore();
 
 const { fetchWeights, addWeight } = useWeights();
 const { dayNumberMonth } = useFormatDate();
 const { fetchActualDeworming, isLate } = useDewormings();
+
+const { selectedDog } = storeToRefs(store);
 
 const lastWeight = ref(null);
 const weights = ref([]);
@@ -21,25 +24,39 @@ const form = reactive({
 const handleSubmit = async () => {
   // Here you would normally call an API to add the weight
   console.log('Adding weight:', form.weight);
-  await addWeight({ weight: form.weight });
+  await addWeight(selectedDog.value.id, { weight: form.weight });
   form.weight = '';
   // Refresh last weight
-  const res = await fetchWeights(1);
+  const res = await fetchWeights(selectedDog.value.id);
   if (res && res.length > 0) {
     weights.value = res;
     lastWeight.value = res[0];
   }
 };
 
+watch(selectedDog, async (newDog) => {
+  if (newDog) {
+    const res = await fetchWeights(newDog.id);
+    if (res ) {
+      weights.value = res;
+      lastWeight.value = res[0];
+    }
+    console.log('Last weight:', lastWeight.value);
+
+    actualDeworming.value = await fetchActualDeworming(newDog.id);
+  }
+});
+
 onMounted(async () => {
-  const res = await fetchWeights(1);
+  if (!selectedDog.value) return;
+  const res = await fetchWeights(selectedDog.value.id);
   if (res && res.length > 0) {
     weights.value = res;
     lastWeight.value = res[0];
   }
   console.log('Last weight:', lastWeight.value);
 
-  actualDeworming.value = await fetchActualDeworming(1);
+  actualDeworming.value = await fetchActualDeworming(selectedDog.value.id);
 });
 </script>
 

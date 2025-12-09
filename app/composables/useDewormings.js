@@ -20,7 +20,7 @@ export default function useDewormings() {
   async function updateDeworming(payload) {
     console.log("Updating deworming with payload:", payload);
 
-    const dogId = payload.dogId || 1;
+    const dogId = payload.dogId;
     
     try {
       const res = await $fetch(`/api/dogs/${dogId}/dewormings`, {

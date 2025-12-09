@@ -12,7 +12,7 @@ export const getWeightsByDogId = async (dogId) => {
 };
 
 export const addWeightEntry = async (payload) => {
-  const { dogId, weight, date = new Date(), comment } = payload;
+  const { dogId, weight, date = new Date().toISOString().substr(0, 16), comment } = payload;
   return await prisma.weightEntry.create({
     data: {
       dogId: parseInt(dogId),
