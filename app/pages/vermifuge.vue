@@ -5,6 +5,7 @@ import Button from '~/components/ui/Button.vue';
 import useDewormings from '~/composables/useDewormings';
 
 const { fetchActualDeworming, updateDeworming, isLate } = useDewormings();
+const { selectedDog } = storeToRefs(useDogStore());
 
 const actualDeworming = ref(null);
 
@@ -39,6 +40,7 @@ const markAsDone = async () => {
   console.log("Marqué comme fait aujourd'hui !");
 
   const payload = {
+    dogId: selectedDog.value.id,
     entryId: actualDeworming.value.id,
     medication: actualDeworming.value.medication,
     frequencyDays: actualDeworming.value.frequencyDays,
@@ -56,6 +58,7 @@ const markAsDone = async () => {
 
 const updateSettings = async () => {
   const payload = {
+    dogId: selectedDog.value.id,
     entryId: actualDeworming?.value?.id ?? null,
     medication: form.value.medication,
     lastDoseDate: form.value.lastDoseDate,
@@ -72,8 +75,16 @@ const updateSettings = async () => {
   }
 };
 
+watch(selectedDog, async (newDog) => {
+  if (newDog) {
+    actualDeworming.value = await fetchActualDeworming(newDog.id);
+    updateForm();
+  }
+});
+
 onMounted(async () => {
-  actualDeworming.value = await fetchActualDeworming(1);
+  if (!selectedDog.value) return;
+  actualDeworming.value = await fetchActualDeworming(selectedDog.value.id);
   updateForm();
 });
 </script>

@@ -44,11 +44,11 @@ const isActive = (path) => {
 
     <!-- Desktop Navigation -->
     <nav
-      class="hidden lg:block fixed left-0 top-0 bottom-0 bg-white border-r border-gray-200 pt-20 z-0 transition-all duration-300"
+      class="hidden lg:block fixed left-0 top-0 bottom-0 bg-white border-r border-gray-200 pt-[100px] z-0 transition-all duration-300"
       :class="isExpanded ? 'w-64' : 'w-20'"
     >
       <!-- Toggle Button -->
-      <div class="absolute top-24 -right-3 z-10">
+      <div class="absolute top-[6.75rem] -right-3 z-10">
         <button
           class="bg-white border border-gray-200 rounded-full p-1.5 shadow-sm hover:bg-gray-50 transition-colors"
           @click="toggleExpanded"

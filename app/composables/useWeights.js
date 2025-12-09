@@ -1,5 +1,5 @@
 export default function useWeights() {
-  async function addWeight(weightData) {
+  async function addWeight(dogId, weightData) {
     // Logic to add weight entry
     console.log("Adding weight:", weightData);
 
@@ -13,7 +13,7 @@ export default function useWeights() {
           'cache-control': 'no-store'
         },
         body: {
-          dogId: 1, // Replace with actual dogId
+          dogId,
           weight,
           date,
           comment,

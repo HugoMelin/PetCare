@@ -5,11 +5,26 @@ import Card from '~/components/ui/Card.vue';
 import useWeights from '~/composables/useWeights';
 
 const { addWeight, fetchWeights } = useWeights();
+const { selectedDog } = storeToRefs(useDogStore());
 
 const weights = ref([]);
 
+watch(selectedDog, async (newDog) => {
+  if (newDog) {
+    const res = await fetchWeights(newDog.id);
+    if (res) {
+      weights.value = res;
+    }
+  }
+});
+
 onMounted(async () => {
-  weights.value = await fetchWeights();
+  if (selectedDog.value) {
+    const res = await fetchWeights(selectedDog.value.id);
+    if (res) {
+      weights.value = res;
+    }
+  }
 });
 
 const form = ref({
@@ -19,7 +34,7 @@ const form = ref({
 });
 
 const submitForm = async () => {
-  await addWeight({
+  await addWeight(selectedDog.value.id, {
     weight: form.value.weight,
     date: form.value.date,
     comment: form.value.comment,
@@ -30,7 +45,7 @@ const submitForm = async () => {
     comment : '',
   };
 
-  weights.value = await fetchWeights();
+  weights.value = await fetchWeights(selectedDog.value.id);
 };
 </script>
 
