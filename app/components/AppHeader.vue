@@ -1,5 +1,13 @@
 <script setup>
 import SettingsIcon from './icons/SettingsIcon.vue';
+const route = useRoute();
+
+const dontShowDogSelectorOn = [
+  '/ajouter-chien', 
+  '/parametres'
+];
+
+const showDogSelector = computed(() => !dontShowDogSelectorOn.includes(route.path));
 </script>
 
 <template>
@@ -17,8 +25,8 @@ import SettingsIcon from './icons/SettingsIcon.vue';
       </NuxtLink>
 
       <div class="flex items-center gap-2 sm:gap-4 flex-nowrap">
-        <DogSelector />
-        <NuxtLink to="/parametres" class="text-gray-600 hover:text-primary">
+        <DogSelector v-if="showDogSelector" />
+        <NuxtLink to="/parametres" :class="`text-gray-600 hover:text-primary ${ route.path === '/parametres' ? 'text-primary' : '' }`">
           <SettingsIcon class="w-6 h-6" />
         </NuxtLink>
       </div>

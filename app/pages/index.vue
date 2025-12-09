@@ -37,7 +37,7 @@ const handleSubmit = async () => {
 watch(selectedDog, async (newDog) => {
   if (newDog) {
     const res = await fetchWeights(newDog.id);
-    if (res && res.length > 0) {
+    if (res ) {
       weights.value = res;
       lastWeight.value = res[0];
     }
