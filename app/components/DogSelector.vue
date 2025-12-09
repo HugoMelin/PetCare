@@ -1,21 +1,11 @@
 <script setup>
-import { fetchOneDog } from '~/composables/useDog';
 import { ChevronDown, Plus } from 'lucide-vue-next';
-
 
 const isOpen = ref(false);
 
 const dogStore = useDogStore();
 const { dogs, selectedDog } = storeToRefs(dogStore);
-const dog = ref(null);
 const dropdownRef = ref(null);
-
-watch(selectedDog, async (newDog) => {
-  if (newDog) {
-    const dogData = await fetchOneDog(newDog.id);
-    dog.value = dogData.data;
-  }
-});
 
 const handleClickOutside = (event) => {
   if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
