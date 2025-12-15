@@ -30,6 +30,7 @@ export const useDogStore = defineStore("dogStore", () => {
         throw new Error("Failed to fetch dogs");
       }
       dogs.value = await response.json();
+      console.log("Fetched dogs:", dogs.value);
 
       const savedDogId = getSelectedDogIdFromStorage();
       if (savedDogId && dogs.value.length > 0) {
@@ -50,8 +51,8 @@ export const useDogStore = defineStore("dogStore", () => {
     }
   };
 
-  onMounted(() => {
-    fetchMyDogs();
+  onMounted(async () => {
+    await fetchMyDogs();
   });
 
   const clearDogCache = () => {
@@ -62,10 +63,29 @@ export const useDogStore = defineStore("dogStore", () => {
     selectedDog.value = null;
   };
 
+  const removeDogById = (dogId) => {
+    dogs.value = dogs.value.filter((dog) => dog.id !== dogId);
+    if (selectedDog.value?.id === dogId) {
+      selectedDog.value = dogs.value.length > 0 ? dogs.value[0] : null;
+    }
+  };
+
+  const updateDogInStore = (updatedDog) => {
+    const index = dogs.value.findIndex((dog) => dog.id === updatedDog.id);
+    if (index !== -1) {
+      dogs.value.splice(index, 1, updatedDog);
+      if (selectedDog.value?.id === updatedDog.id) {
+        selectedDog.value = updatedDog;
+      }
+    }
+  };
+
   return {
     dogs,
     selectedDog,
     fetchMyDogs,
     clearDogCache,
+    removeDogById,
+    updateDogInStore,
   };
 });
