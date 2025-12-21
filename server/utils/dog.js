@@ -25,6 +25,17 @@ export const getDogById = async (dogId) => {
   });
 };
 
+export const getDogOwners = async (dogId) => {
+  const dog = await prisma.dog.findUnique({
+    where: { id: parseInt(dogId) },
+    include: {
+      owner: true,
+    },
+  });
+
+  return dog ? dog.owner : [];
+};
+
 export const createDog = async (payload) => {
   const {
     name,
@@ -95,15 +106,29 @@ export const isUserDogOwner = async (userId, dogId) => {
   return !!dog;
 };
 
-export const addDogOwners = async (dogId, newOwnerUserId) => {
-  return await prisma.dog.update({
+export const addDogOwners = async (dogId, newOwnerEmail) => {
+  const user = await prisma.user.findUnique({
+    where: { email: newOwnerEmail },
+  });
+
+  if (!user) {
+    throw new Error('Utilisateur non trouvé');
+  }
+
+  const res = await prisma.dog.update({
     where: { id: parseInt(dogId) },
     data: {
       owner: {
-        connect: { id: newOwnerUserId },
+        connect: { email: newOwnerEmail },
       },
     },
   });
+
+  if (!res) {
+    throw new Error("Échec de l'ajout du propriétaire");
+  }
+
+  return user;
 };
 
 export const removeDogOwner = async (dogId, ownerUserId) => {

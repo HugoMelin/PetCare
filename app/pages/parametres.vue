@@ -27,11 +27,20 @@ const handleEditDog = (dog) => {
     <h2 class="text-2xl font-bold mb-4">Paramètres</h2>
 
     <Card class="mb-6">
-      <template #title>
-        Vos chiens
+      <template #title-section>
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold">Mes chiens</h3>
+          <Button>
+            <NuxtLink to="/ajouter-chien" class="flex items-center gap-2">
+              <span>Ajouter un chien</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+            </NuxtLink>
+          </Button>
+        </div>
       </template>
       <template #content>
-        <p class="mb-4">Gérez les informations de vos chiens ici.</p>
         <div v-for="dog in dogs" :key="dog.id" class="mb-3">
           <DogCard 
             :dog="dog" 
@@ -40,6 +49,7 @@ const handleEditDog = (dog) => {
             @edit-dog="handleEditDog"
           />
         </div>
+        <div v-if="!dogs.length" class="h-24 w-full bg-gray-300 rounded-lg animate-pulse self-end" />
       </template>
     </Card>
 

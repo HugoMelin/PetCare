@@ -3,6 +3,8 @@ import { computed, toRefs } from 'vue';
 import { Pencil, Trash2, Save, X } from 'lucide-vue-next';
 import Button from './ui/Button.vue';
 import { deleteDog, updateDog } from '~/composables/useDog';
+import OwnerDropdown from './OwnerDropdown.vue';
+import { authClient } from '~/lib/auth-client';
 
 const dogStore = useDogStore();
 
@@ -22,6 +24,9 @@ const props = defineProps({
 });
 
 const { dog, isEditing, isCreator } = toRefs(props);
+
+const session = authClient.useSession();
+const user = computed(() => session.value?.data?.user);
 
 const form = ref({
   name: dog.value.name,
@@ -68,7 +73,8 @@ const handleUpdate = async () => {
 </script>
 
 <template>
-  <div v-if="!isEditing"
+  <div 
+    v-if="!isEditing"
     class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
     <div class="flex items-center gap-3">
       <div
@@ -129,6 +135,11 @@ const handleUpdate = async () => {
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
           placeholder="01/01/2020" 
         />
+      </div>
+
+      <div>
+        <label class="hidden sm:block text-[#269394]/0 mb-1 text-sm">Propriétaires</label>
+        <OwnerDropdown :dog-id="dog.id" :user="user" :dog-creator="dog.createdByUserId" />
       </div>
     </div>
 
