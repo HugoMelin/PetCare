@@ -1,5 +1,5 @@
 import { auth } from "~~/server/utils/auth";
-import { addDogOwners, isUserDogOwner } from "~~/server/utils/dog";
+import { getDogOwners } from "~~/server/utils/dog";
 
 export default defineEventHandler(async (event) => {
   const session = await auth.api.getSession({
@@ -14,7 +14,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const id = getRouterParam(event, 'id');
-  const body = await readBody(event);
 
   const hasAccess = await isUserDogOwner(session.user.id, id);
   if (!hasAccess) {
@@ -24,13 +23,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  try {
-    const updatedDog = await addDogOwners(id, body.newOwnerEmail);
-    return updatedDog;
-  } catch (error) {
-    throw createError({
-      statusCode: 400,
-      message: error.message,
-    });
-  }
+  const owners = await getDogOwners(id);
+
+  return owners;
 });

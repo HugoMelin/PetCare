@@ -80,10 +80,21 @@ export const useDogStore = defineStore("dogStore", () => {
     }
   };
 
+  const fetchOwners = async (dogId) => {
+    const response = await fetch(`/api/dogs/${dogId}/owners`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch owners");
+    }
+
+    const data = await response.json();
+    return data;
+  };
+
   return {
     dogs,
     selectedDog,
     fetchMyDogs,
+    fetchOwners,
     clearDogCache,
     removeDogById,
     updateDogInStore,
