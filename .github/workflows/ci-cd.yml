@@ -58,6 +58,7 @@ jobs:
             .output/
             prisma/
             generated/
+          include-hidden-files: true
           retention-days: 1
   
   deploy:
