@@ -35,8 +35,8 @@ jobs:
       - name : Install Dependencies
         run: npm install
 
-      - name: Prisma generate
-        run: npx prisma generate
+      #- name: Prisma generate
+      #  run: npx prisma generate
       
       - name: Build Nuxt
         run: npm run build
