@@ -87,7 +87,7 @@ jobs:
           set -e
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/id_rsa" \
-            deploy_bundle/ \
+            .output/ prisma/ generated/ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/incoming/
 
       - name: Switch + migrate + restart
