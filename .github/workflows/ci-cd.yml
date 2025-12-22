@@ -140,22 +140,22 @@ jobs:
           mv incoming/generated generated
           rmdir incoming || true
 
-          # echo "==> Run migrations (prisma migrate deploy)"
-          # # Service conseillé dans docker-compose: migrate
-          # if docker compose run --rm migrate; then
-          #   echo "==> Migrations OK"
-          # else
-          #   echo "!! Migration FAILED -> rollback files"
-          #   rm -rf deploy/.output prisma
-          #   if [ -d "$BACKUP_DIR/.output" ]; then
-          #     mkdir -p deploy
-          #     cp -a "$BACKUP_DIR/.output" deploy/.output
-          #   fi
-          #   if [ -d "$BACKUP_DIR/prisma" ]; then
-          #     cp -a "$BACKUP_DIR/prisma" prisma
-          #   fi
-          #   exit 1
-          # fi
+          echo "==> Run migrations (prisma migrate deploy)"
+          # Service conseillé dans docker-compose: migrate
+          if docker compose run --rm migrate; then
+            echo "==> Migrations OK"
+          else
+            echo "!! Migration FAILED -> rollback files"
+            rm -rf deploy/.output prisma
+            if [ -d "$BACKUP_DIR/.output" ]; then
+              mkdir -p deploy
+              cp -a "$BACKUP_DIR/.output" deploy/.output
+            fi
+            if [ -d "$BACKUP_DIR/prisma" ]; then
+              cp -a "$BACKUP_DIR/prisma" prisma
+            fi
+            exit 1
+          fi
 
           echo "==> Restart app"
           cd ../..
