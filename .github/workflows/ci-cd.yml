@@ -159,7 +159,7 @@ jobs:
 
           echo "==> Restart app"
           cd ../..
-          docker compose up -d --build app
+          docker compose up -d --build petcare
 
           echo "==> Done"
           SSH
