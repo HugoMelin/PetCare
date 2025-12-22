@@ -89,14 +89,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Rsync to VPS
+      - name: Package + upload bundle
         shell: bash
         run: |
           set -e
-          rsync -avz --delete \
-            -e "ssh -i ~/.ssh/id_rsa" \
-            deploy_bundle/.output/ deploy_bundle/prisma/ deploy_bundle/generated/ \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/incoming/
+          tar -czf deploy_bundle.tgz -C deploy_bundle .
+          scp -i ~/.ssh/id_rsa deploy_bundle.tgz \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/incoming.tgz
 
       - name: Switch + migrate + restart
         shell: bash
@@ -108,7 +107,7 @@ jobs:
           APP_PATH="${{ secrets.VPS_APP_PATH }}"
           cd "$APP_PATH"
 
-          mkdir -p deploy backups
+          mkdir -p deploy backups incoming
 
           TS="$(date +%Y%m%d_%H%M%S)"
           BACKUP_DIR="backups/$TS"
@@ -121,6 +120,12 @@ jobs:
           if [ -d "prisma" ]; then
             cp -a prisma "$BACKUP_DIR/prisma"
           fi
+
+          echo "==> Extract bundle"
+          rm -rf incoming
+          mkdir -p incoming
+          tar -xzf incoming.tgz -C incoming
+          rm -f incoming.tgz
 
           echo "==> Switch incoming -> deploy"
           # incoming contient .output/, prisma/, et generated/
