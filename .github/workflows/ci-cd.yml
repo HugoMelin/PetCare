@@ -43,12 +43,12 @@ jobs:
       - name: Build Nuxt
         run: npm run build
 
-      - name: Debug - list build outputs
-        run: |
-          ls -la
-          ls -la .output || true
-          ls -la prisma || true
-          ls -la generated || true
+      # - name: Debug - list build outputs
+      #   run: |
+      #     ls -la
+      #     ls -la .output || true
+      #     ls -la prisma || true
+      #     ls -la generated || true
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -94,7 +94,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          ls -la deploy_bundle
+          # ls -la deploy_bundle
           tar -czf deploy_bundle.tgz -C deploy_bundle .
           scp -i ~/.ssh/id_rsa deploy_bundle.tgz \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/incoming.tgz
@@ -140,22 +140,22 @@ jobs:
           mv incoming/generated generated
           rmdir incoming || true
 
-          echo "==> Run migrations (prisma migrate deploy)"
-          # Service conseillé dans docker-compose: migrate
-          if docker compose run --rm migrate; then
-            echo "==> Migrations OK"
-          else
-            echo "!! Migration FAILED -> rollback files"
-            rm -rf deploy/.output prisma
-            if [ -d "$BACKUP_DIR/.output" ]; then
-              mkdir -p deploy
-              cp -a "$BACKUP_DIR/.output" deploy/.output
-            fi
-            if [ -d "$BACKUP_DIR/prisma" ]; then
-              cp -a "$BACKUP_DIR/prisma" prisma
-            fi
-            exit 1
-          fi
+          # echo "==> Run migrations (prisma migrate deploy)"
+          # # Service conseillé dans docker-compose: migrate
+          # if docker compose run --rm migrate; then
+          #   echo "==> Migrations OK"
+          # else
+          #   echo "!! Migration FAILED -> rollback files"
+          #   rm -rf deploy/.output prisma
+          #   if [ -d "$BACKUP_DIR/.output" ]; then
+          #     mkdir -p deploy
+          #     cp -a "$BACKUP_DIR/.output" deploy/.output
+          #   fi
+          #   if [ -d "$BACKUP_DIR/prisma" ]; then
+          #     cp -a "$BACKUP_DIR/prisma" prisma
+          #   fi
+          #   exit 1
+          # fi
 
           echo "==> Restart app"
           cd ../..
