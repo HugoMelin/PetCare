@@ -78,6 +78,7 @@ jobs:
         with:
           name: deploy_bundle
           path: deploy_bundle
+          merge-multiple: true
 
       - name: Setup SSH
         shell: bash
