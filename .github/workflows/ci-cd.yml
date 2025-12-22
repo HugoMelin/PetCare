@@ -93,6 +93,7 @@ jobs:
         shell: bash
         run: |
           set -e
+          ls -la deploy_bundle
           tar -czf deploy_bundle.tgz -C deploy_bundle .
           scp -i ~/.ssh/id_rsa deploy_bundle.tgz \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/incoming.tgz
