@@ -70,7 +70,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: deploy_bundle
-          path: deploy_bundle
+          path: .
 
       - name: Setup SSH
         shell: bash
