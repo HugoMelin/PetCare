@@ -87,3 +87,57 @@ export const updateDog = async (dogId, dogData) => {
     };
   }
 }
+
+export const addDogOwner = async (dogId, newOwnerEmail) => {
+  try {
+    const response = await fetch(`/api/dogs/${dogId}/add-owner`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ newOwnerEmail })
+    });
+    if (!response.ok) {
+      console.log("Response not ok:", response);
+      throw createError({
+      statusCode: 400,
+      message: response.message,
+    });
+    }
+    return {
+      code: 200,
+      data: await response.json()
+    };
+  } catch (error) {
+    return {
+      code: 500,
+      data: null,
+      message: error.message
+    };
+  }
+}
+
+export const removeDogOwner = async (dogId, ownerUserId) => {
+  try {
+    const response = await fetch(`/api/dogs/${dogId}/remove-owner`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ownerUserId })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to remove dog owner');
+    }
+    return {
+      code: 200,
+      data: await response.json()
+    };
+  } catch (error) {
+    return {
+      code: 500,
+      data: null,
+      message: error.message
+    };
+  }
+}
