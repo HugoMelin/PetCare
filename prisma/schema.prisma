@@ -7,53 +7,54 @@ datasource db {
   provider = "mysql"
 }
 
-model Dog {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  birthdate          DateTime?
-  breed              String?
-  createdByUserId    String
-  owner              User[]              @relation("DogOwners")
-  createdBy          User                @relation(fields: [createdByUserId], references: [id])
-  dewormingSchedules DewormingSchedule[]
-  notificationLogs   NotificationLog[]
-  weightEntries      WeightEntry[]
+model Pet {
+  id              Int          @id @default(autoincrement())
+  name            String
+  type            String       @default("Chien")
+  birthdate       DateTime?
+  breed           String?
+  createdByUserId String
+  owner           User[]       @relation("PetOwners")
+  createdBy       User         @relation(fields: [createdByUserId], references: [id])
+  medications     Medication[]
+  weightEntries   WeightEntry[]
 
-  @@index([createdByUserId], map: "Dog_createdByUserId_fkey")
+  @@index([createdByUserId], map: "Pet_createdByUserId_fkey")
 }
 
 model WeightEntry {
   id      Int      @id @default(autoincrement())
-  dogId   Int
+  petId   Int
   date    DateTime
   weight  Float
   comment String?
-  dog     Dog      @relation(fields: [dogId], references: [id])
+  pet     Pet      @relation(fields: [petId], references: [id])
 
-  @@index([dogId], map: "WeightEntry_dogId_fkey")
+  @@index([petId], map: "WeightEntry_petId_fkey")
 }
 
-model DewormingSchedule {
+model Medication {
   id            Int      @id @default(autoincrement())
-  dogId         Int
+  petId         Int
   medication    String
   lastDoseDate  DateTime
   frequencyDays Int
   nextDoseDate  DateTime
-  dog           Dog      @relation(fields: [dogId], references: [id])
+  pet           Pet      @relation(fields: [petId], references: [id])
+  notifications MedicationNotification[]
 
-  @@index([dogId], map: "DewormingSchedule_dogId_fkey")
+  @@index([petId], map: "Medication_petId_fkey")
 }
 
-model NotificationLog {
-  id      Int      @id @default(autoincrement())
-  type    String
-  message String
-  dogId   Int
-  sendAt  DateTime @default(now())
-  dog     Dog      @relation(fields: [dogId], references: [id])
+model MedicationNotification {
+  id           Int      @id @default(autoincrement())
+  type         String
+  message      String
+  medicationId Int
+  sendAt       DateTime @default(now())
+  medication   Medication @relation(fields: [medicationId], references: [id])
 
-  @@index([dogId], map: "NotificationLog_dogId_fkey")
+  @@index([medicationId], map: "MedicationNotification_medicationId_fkey")
 }
 
 model User {
@@ -66,8 +67,8 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  dogsCreated   Dog[]
-  dogsOwned     Dog[]     @relation("DogOwners")
+  petsCreated   Pet[]
+  petsOwned     Pet[]     @relation("PetOwners")
 
   @@unique([email])
   @@map("user")

@@ -1,17 +1,16 @@
-import { getActualDewormingsByDogId } from "~~/server/utils/dewormings";
-import { getWeightsByDogId } from "~~/server/utils/weights";
+import { getAllMedicationsByPetId } from "~~/server/utils/medications";
+import { getWeightsByPetId } from "~~/server/utils/weights";
 
 export default defineEventHandler(async (event) => {
-  const { dogId } = getQuery(event);
+  const { petId } = getQuery(event);
 
-  if (!dogId) return { error: 'Dog ID is required' };
+  if (!petId) return { error: "Pet ID is required" };
 
-  const dewormings = await getActualDewormingsByDogId(dogId);
+  const dewormings = await getAllMedicationsByPetId(petId);
 
   const isDewormingLate = dewormings.nextDoseDate < new Date();
 
-  const weights = await getWeightsByDogId(dogId);
-
+  const weights = await getWeightsByPetId(petId);
 
   return {
     dewormings,

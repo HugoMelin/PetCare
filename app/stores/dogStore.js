@@ -25,7 +25,7 @@ export const useDogStore = defineStore("dogStore", () => {
 
   const fetchMyDogs = async () => {
     try {
-      const response = await fetch("/api/dogs");
+      const response = await fetch("/api/pets");
       if (!response.ok) {
         throw new Error("Failed to fetch dogs");
       }
@@ -81,7 +81,7 @@ export const useDogStore = defineStore("dogStore", () => {
   };
 
   const fetchOwners = async (dogId) => {
-    const response = await fetch(`/api/dogs/${dogId}/owners`);
+    const response = await fetch(`/api/pets/${dogId}/owners`);
     if (!response.ok) {
       throw new Error("Failed to fetch owners");
     }

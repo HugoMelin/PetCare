@@ -1,6 +1,6 @@
 export const fetchOneDog = async (dogId) => {
   try {
-    const response = await fetch(`/api/dogs/${dogId}`);
+    const response = await fetch(`/api/pets/${dogId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch dog');
     }
@@ -19,7 +19,7 @@ export const fetchOneDog = async (dogId) => {
 
 export const addDog = async (dogData) => {
   try {
-    const response = await fetch('/api/dogs', {
+    const response = await fetch('/api/pets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export const addDog = async (dogData) => {
 
 export const deleteDog = async (dogId) => {
   try {
-    const response = await fetch(`/api/dogs/${dogId}`, {
+    const response = await fetch(`/api/pets/${dogId}`, {
       method: 'DELETE'
     });
     if (!response.ok) {
@@ -65,7 +65,7 @@ export const deleteDog = async (dogId) => {
 
 export const updateDog = async (dogId, dogData) => {
   try {
-    const res = await fetch(`/api/dogs/${dogId}`, {
+    const res = await fetch(`/api/pets/${dogId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ export const updateDog = async (dogId, dogData) => {
 
 export const addDogOwner = async (dogId, newOwnerEmail) => {
   try {
-    const response = await fetch(`/api/dogs/${dogId}/add-owner`, {
+    const response = await fetch(`/api/pets/${dogId}/add-owner`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ export const addDogOwner = async (dogId, newOwnerEmail) => {
 
 export const removeDogOwner = async (dogId, ownerUserId) => {
   try {
-    const response = await fetch(`/api/dogs/${dogId}/remove-owner`, {
+    const response = await fetch(`/api/pets/${dogId}/remove-owner`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

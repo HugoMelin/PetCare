@@ -39,11 +39,12 @@ async function main() {
 
   console.log('User ID : ', userId)
 
-  const existingDog = await prisma.dog.findFirst();
-  if (!existingDog) {
-    const dog = await prisma.dog.create({
+  const existingPet = await prisma.pet.findFirst();
+  if (!existingPet) {
+    const Oslo = await prisma.pet.create({
       data: {
         name: 'Oslo',
+        type: 'Chien',
         breed: 'Berger Australien',
         birthdate: new Date('2018-11-17'),
         createdByUserId: userId,
@@ -57,9 +58,10 @@ async function main() {
             { date: new Date('2024-08-14'), weight: 26.8, comment: 'Pesée chez le vétérinaire' },
             { date: new Date('2025-02-14'), weight: 27, comment: 'Dernière pesée chez le vétérinaire' },
             { date: new Date('2025-12-05'), weight: 31.25, comment: 'Première pesée de suivis à la maison' },
+            { date: new Date('2025-12-09'), weight: 31.45}
           ],
         },
-        dewormingSchedules: {
+        medications: {
           create: [
             { lastDoseDate: new Date('2025-09-30'), medication: 'Bravecto', frequencyDays: 90, nextDoseDate: new Date('2025-12-29') },
           ],
@@ -67,7 +69,7 @@ async function main() {
       }
     })
 
-    console.log('Created dog:', dog)
+    console.log('Created pet:', Oslo)
   }
   return;
 }

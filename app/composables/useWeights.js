@@ -1,5 +1,5 @@
 export default function useWeights() {
-  async function addWeight(dogId, weightData) {
+  async function addWeight(petId, weightData) {
     // Logic to add weight entry
     console.log("Adding weight:", weightData);
 
@@ -13,7 +13,7 @@ export default function useWeights() {
           'cache-control': 'no-store'
         },
         body: {
-          dogId,
+          petId,
           weight,
           date,
           comment,
@@ -30,7 +30,7 @@ export default function useWeights() {
   async function fetchWeights(dogId = 1) {
     console.log("Fetching weights...");
     try {
-      const res = await $fetch(`/api/dogs/${dogId}/weights`, {
+      const res = await $fetch(`/api/pets/${dogId}/weights`, {
         cache: 'no-store',
         headers: {
           'cache-control': 'no-store'

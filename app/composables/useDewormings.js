@@ -3,7 +3,7 @@ export default function useDewormings() {
     console.log("Fetching actual deworming:", dogId);
 
     try {
-      const res = await $fetch(`/api/dogs/${dogId}/dewormings`, {
+      const res = await $fetch(`/api/pets/${dogId}/medications`, {
         cache: 'no-store',
         headers: {
           'cache-control': 'no-store'
@@ -23,7 +23,7 @@ export default function useDewormings() {
     const dogId = payload.dogId;
     
     try {
-      const res = await $fetch(`/api/dogs/${dogId}/dewormings`, {
+      const res = await $fetch(`/api/pets/${dogId}/medications`, {
         method: 'POST',
         cache: 'no-store',
         headers: {
