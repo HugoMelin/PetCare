@@ -43,6 +43,13 @@ jobs:
       - name: Build Nuxt
         run: npm run build
 
+      - name: Debug - list build outputs
+        run: |
+          ls -la
+          ls -la .output || true
+          ls -la prisma || true
+          ls -la generated || true
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
