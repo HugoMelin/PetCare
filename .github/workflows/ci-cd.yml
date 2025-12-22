@@ -1,0 +1,146 @@
+name: CI-CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Environment"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
+  push:
+    branches: ["main"]
+  pull_request:
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: true
+
+jobs: 
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name : Install Dependencies
+        run: npm install
+
+      - name: Prisma generate
+        run: npx prisma generate
+      
+      - name: Build Nuxt
+        run: npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy_bundle
+          path: |
+            .output/
+            prisma/
+            generated/
+          retention-days: 1
+  
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy_bundle
+          path: deploy_bundle
+
+      - name: Setup SSH
+        shell: bash
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Rsync to VPS
+        shell: bash
+        run: |
+          set -e
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_rsa" \
+            deploy_bundle/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_APP_PATH }}/incoming/
+
+      - name: Switch + migrate + restart
+        shell: bash
+        run: |
+          set -e
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<'SSH'
+          set -euo pipefail
+
+          APP_PATH="${{ secrets.VPS_APP_PATH }}"
+          cd "$APP_PATH"
+
+          mkdir -p deploy backups
+
+          TS="$(date +%Y%m%d_%H%M%S)"
+          BACKUP_DIR="backups/$TS"
+
+          echo "==> Backup current deploy (if exists)"
+          mkdir -p "$BACKUP_DIR"
+          if [ -d "deploy/.output" ]; then
+            cp -a deploy/.output "$BACKUP_DIR/.output"
+          fi
+          if [ -d "prisma" ]; then
+            cp -a prisma "$BACKUP_DIR/prisma"
+          fi
+
+          echo "==> Switch incoming -> deploy"
+          # incoming contient .output/ et prisma/
+          rm -rf deploy/.output
+          mkdir -p deploy
+          mv incoming/.output deploy/.output
+          rm -rf prisma
+          mv incoming/prisma prisma
+          rmdir incoming || true
+
+          # echo "==> Run migrations (prisma migrate deploy)"
+          # # Service conseillé dans docker-compose: migrate
+          # if docker compose run --rm migrate; then
+          #   echo "==> Migrations OK"
+          # else
+          #   echo "!! Migration FAILED -> rollback files"
+          #   rm -rf deploy/.output prisma
+          #   if [ -d "$BACKUP_DIR/.output" ]; then
+          #     mkdir -p deploy
+          #     cp -a "$BACKUP_DIR/.output" deploy/.output
+          #   fi
+          #   if [ -d "$BACKUP_DIR/prisma" ]; then
+          #     cp -a "$BACKUP_DIR/prisma" prisma
+          #   fi
+          #   exit 1
+          # fi
+
+          echo "==> Restart app"
+          cd ../..
+          docker compose up -d --build app
+
+          echo "==> Done"
+          SSH
