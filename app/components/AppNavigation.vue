@@ -6,7 +6,7 @@ const isExpanded = ref(false);
 const navItems = [
   { to: '/', label: 'Dashboard', icon: Home },
   { to: '/poids', label: 'Poids', icon: Scale },
-  { to: '/vermifuge', label: 'Vermifuge', icon: Pill },
+  { to: '/medicaments', label: 'Médicaments', icon: Pill },
 ];
 
 const route = useRoute();

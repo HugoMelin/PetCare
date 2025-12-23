@@ -1,5 +1,5 @@
 import { auth } from "~~/server/utils/auth";
-import { updateDog, isUserDogOwner } from "~~/server/utils/dog";
+import { updatePet, isUserPetOwner } from "~~/server/utils/pets";
 
 export default defineEventHandler(async (event) => {
   const session = await auth.api.getSession({
@@ -9,22 +9,22 @@ export default defineEventHandler(async (event) => {
   if (!session) {
     throw createError({
       statusCode: 401,
-      message: 'Non authentifié',
+      message: "Non authentifié",
     });
   }
 
-  const id = getRouterParam(event, 'id');
+  const id = getRouterParam(event, "id");
   const body = await readBody(event);
 
-  const hasAccess = await isUserDogOwner(session.user.id, id);
+  const hasAccess = await isUserPetOwner(session.user.id, id);
   if (!hasAccess) {
     throw createError({
       statusCode: 403,
-      message: 'Accès refusé',
+      message: "Accès refusé",
     });
   }
 
-  const updatedDog = await updateDog(id, body);
+  const updatedPet = await updatePet(id, body);
 
-  return updatedDog;
+  return updatedPet;
 });
