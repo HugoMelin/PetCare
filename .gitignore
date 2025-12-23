@@ -25,3 +25,7 @@ logs
 
 /generated/prisma
 dev.db
+
+// SSH keys
+petcare_github_ci
+petcare_github_ci.*

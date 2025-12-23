@@ -1,52 +1,54 @@
 import { prisma } from './prisma';
 
-export const getDogsByUserId = async (userId) => {
-  return await prisma.dog.findMany({
+export const getPetsByUserId = async (userId) => {
+  return await prisma.pet.findMany({
     where: { createdByUserId: userId },
   });
 };
 
-export const getDogsOwnedByUserId = async (userId) => {
-  return await prisma.dog.findMany({
+export const getPetsOwnedByUserId = async (userId) => {
+  return await prisma.pet.findMany({
     where: { owner: { some: { id: userId } } },
   });
 };
 
-export const getDogById = async (dogId) => {
-  return await prisma.dog.findUnique({
-    where: { id: parseInt(dogId) },
+export const getPetById = async (petId) => {
+  return await prisma.pet.findUnique({
+    where: { id: parseInt(petId) },
     include: {
       weightEntries: {
         orderBy: { date: 'desc' },
       },
-      dewormingSchedules: true,
+      medications: true,
       owner: true,
     },
   });
 };
 
-export const getDogOwners = async (dogId) => {
-  const dog = await prisma.dog.findUnique({
-    where: { id: parseInt(dogId) },
+export const getPetOwners = async (petId) => {
+  const pet = await prisma.pet.findUnique({
+    where: { id: parseInt(petId) },
     include: {
       owner: true,
     },
   });
 
-  return dog ? dog.owner : [];
+  return pet ? pet.owner : [];
 };
 
-export const createDog = async (payload) => {
+export const createPet = async (payload) => {
   const {
     name,
+    type,
     birthdate,
     breed,
     userId
   } = payload;
 
-  return await prisma.dog.create({
+  return await prisma.pet.create({
     data: {
       name: name,
+      type: type || undefined,
       birthdate: birthdate ? new Date(birthdate) : null,
       breed: breed || null,
       createdByUserId: userId,
@@ -57,45 +59,47 @@ export const createDog = async (payload) => {
   });
 };
 
-export const updateDog = async (dogId, payload) => {
+export const updatePet = async (petId, payload) => {
   const {
     name,
+    type,
     birthdate,
     breed,
   } = payload;
 
-  return await prisma.dog.update({
-    where: { id: parseInt(dogId) },
+  return await prisma.pet.update({
+    where: { id: parseInt(petId) },
     data: {
       name: name !== undefined ? name : undefined,
+      type: type !== undefined ? type : undefined,
       birthdate: birthdate !== undefined ?  new Date(birthdate) : undefined,
       breed: breed !== undefined ? breed : undefined,
     },
   });
 };
 
-export const deleteDog = async (dogId) => {
-  return await prisma.dog.delete({
-    where: { id: parseInt(dogId) },
+export const deletePet = async (petId) => {
+  return await prisma.pet.delete({
+    where: { id: parseInt(petId) },
   });
 };
 
-export const isUserDogCreator = async (userId, dogId) => {
-  const dog = await prisma.dog.findFirst({
+export const isUserPetCreator = async (userId, petId) => {
+  const pet = await prisma.pet.findFirst({
     where: {
-      id: parseInt(dogId),
+      id: parseInt(petId),
       createdByUserId: userId,
     },
   });
 
-  return !!dog;
+  return !!pet;
 };
 
 
-export const isUserDogOwner = async (userId, dogId) => {
-  const dog = await prisma.dog.findFirst({
+export const isUserPetOwner = async (userId, petId) => {
+  const pet = await prisma.pet.findFirst({
     where: {
-      id: parseInt(dogId),
+      id: parseInt(petId),
       OR: [
         { createdByUserId: userId },
         { owner: { some: { id: userId } } },
@@ -103,10 +107,10 @@ export const isUserDogOwner = async (userId, dogId) => {
     },
   });
 
-  return !!dog;
+  return !!pet;
 };
 
-export const addDogOwners = async (dogId, newOwnerEmail) => {
+export const addPetOwners = async (petId, newOwnerEmail) => {
   const user = await prisma.user.findUnique({
     where: { email: newOwnerEmail },
   });
@@ -115,8 +119,8 @@ export const addDogOwners = async (dogId, newOwnerEmail) => {
     throw new Error('Utilisateur non trouvé');
   }
 
-  const res = await prisma.dog.update({
-    where: { id: parseInt(dogId) },
+  const res = await prisma.pet.update({
+    where: { id: parseInt(petId) },
     data: {
       owner: {
         connect: { email: newOwnerEmail },
@@ -131,9 +135,9 @@ export const addDogOwners = async (dogId, newOwnerEmail) => {
   return user;
 };
 
-export const removeDogOwner = async (dogId, ownerUserId) => {
-  return await prisma.dog.update({
-    where: { id: parseInt(dogId) },
+export const removePetOwner = async (petId, ownerUserId) => {
+  return await prisma.pet.update({
+    where: { id: parseInt(petId) },
     data: {
       owner: {
         disconnect: { id: ownerUserId },
