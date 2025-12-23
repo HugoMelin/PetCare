@@ -43,7 +43,7 @@ watch(selectedPet, async (newPet) => {
     }
     console.log('Last weight:', lastWeight.value);
 
-    actualMedication.value = await fetchActualMedication(newPet.id);
+    actualMedication.value = (await fetchActualMedication(newPet.id))[0];
   }
 });
 
@@ -56,7 +56,7 @@ onMounted(async () => {
   }
   console.log('Last weight:', lastWeight.value);
 
-  actualMedication.value = await fetchActualMedication(selectedPet.value.id);
+  actualMedication.value = (await fetchActualMedication(selectedPet.value.id))[0];
 });
 </script>
 

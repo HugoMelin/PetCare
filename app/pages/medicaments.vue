@@ -36,6 +36,8 @@ const updateForm = () => {
   return nextMedicationDate < today;
 }); */
 
+// TODO: MOFIFIER TOUT L'AFFICHAGE POUR ACCEPTER LES MULTIPLES MEDICAMENTS
+
 const markAsDone = async () => {
   console.log("Marqué comme fait aujourd'hui !");
 
@@ -77,14 +79,14 @@ const updateSettings = async () => {
 
 watch(selectedPet, async (newPet) => {
   if (newPet) {
-    actualMedication.value = await fetchActualMedication(newPet.id);
+    actualMedication.value = (await fetchActualMedication(newPet.id))[0];
     updateForm();
   }
 });
 
 onMounted(async () => {
   if (!selectedPet.value) return;
-  actualMedication.value = await fetchActualMedication(selectedPet.value.id);
+  actualMedication.value = (await fetchActualMedication(selectedPet.value.id))[0];
   updateForm();
 });
 </script>
