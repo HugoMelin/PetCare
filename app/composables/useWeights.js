@@ -6,11 +6,11 @@ export default function useWeights() {
     const { weight, date, comment } = weightData;
 
     try {
-      const res = await $fetch('/api/weights', {
-        method: 'POST',
-        cache: 'no-store',
+      const res = await $fetch("/api/weights", {
+        method: "POST",
+        cache: "no-store",
         headers: {
-          'cache-control': 'no-store'
+          "cache-control": "no-store",
         },
         body: {
           petId,
@@ -27,13 +27,13 @@ export default function useWeights() {
     }
   }
 
-  async function fetchWeights(dogId = 1) {
+  async function fetchWeights(petId = 1) {
     console.log("Fetching weights...");
     try {
-      const res = await $fetch(`/api/pets/${dogId}/weights`, {
-        cache: 'no-store',
+      const res = await $fetch(`/api/pets/${petId}/weights`, {
+        cache: "no-store",
         headers: {
-          'cache-control': 'no-store'
+          "cache-control": "no-store",
         },
       });
       console.log("Weights fetched:", res);

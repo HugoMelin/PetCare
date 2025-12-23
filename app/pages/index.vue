@@ -4,18 +4,18 @@ import Button from '~/components/ui/Button.vue';
 
 import useWeights from '~/composables/useWeights';
 import useFormatDate from '~/composables/useFormatDate';
-import useDewormings from '~/composables/useDewormings';
-const store = useDogStore();
+import useMedications from '~/composables/useMedications';
+const store = usePetStore();
 
 const { fetchWeights, addWeight } = useWeights();
 const { dayNumberMonth } = useFormatDate();
-const { fetchActualDeworming, isLate } = useDewormings();
+const { fetchActualMedication, isLate } = useMedications();
 
-const { selectedDog } = storeToRefs(store);
+const { selectedPet } = storeToRefs(store);
 
 const lastWeight = ref(null);
 const weights = ref([]);
-const actualDeworming = ref(null);
+const actualMedication = ref(null);
 
 const form = reactive({
   weight: '',
@@ -24,39 +24,39 @@ const form = reactive({
 const handleSubmit = async () => {
   // Here you would normally call an API to add the weight
   console.log('Adding weight:', form.weight);
-  await addWeight(selectedDog.value.id, { weight: form.weight });
+  await addWeight(selectedPet.value.id, { weight: form.weight });
   form.weight = '';
   // Refresh last weight
-  const res = await fetchWeights(selectedDog.value.id);
+  const res = await fetchWeights(selectedPet.value.id);
   if (res && res.length > 0) {
     weights.value = res;
     lastWeight.value = res[0];
   }
 };
 
-watch(selectedDog, async (newDog) => {
-  if (newDog) {
-    const res = await fetchWeights(newDog.id);
-    if (res ) {
+watch(selectedPet, async (newPet) => {
+  if (newPet) {
+    const res = await fetchWeights(newPet.id);
+    if (res) {
       weights.value = res;
       lastWeight.value = res[0];
     }
     console.log('Last weight:', lastWeight.value);
 
-    actualDeworming.value = await fetchActualDeworming(newDog.id);
+    actualMedication.value = await fetchActualMedication(newPet.id);
   }
 });
 
 onMounted(async () => {
-  if (!selectedDog.value) return;
-  const res = await fetchWeights(selectedDog.value.id);
+  if (!selectedPet.value) return;
+  const res = await fetchWeights(selectedPet.value.id);
   if (res && res.length > 0) {
     weights.value = res;
     lastWeight.value = res[0];
   }
   console.log('Last weight:', lastWeight.value);
 
-  actualDeworming.value = await fetchActualDeworming(selectedDog.value.id);
+  actualMedication.value = await fetchActualMedication(selectedPet.value.id);
 });
 </script>
 
@@ -105,25 +105,23 @@ onMounted(async () => {
     <Card class="col-span-12">
       <template #title>
         <div class="flex justify-between items-center w-full">
-          <span>Vermifuge</span>
-          <span 
-            :class="[
-              'text-sm font-semibold p-1 px-3 rounded-xl',
-              isLate(actualDeworming?.nextDoseDate) ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100'
-            ]"
-          >
-            {{ isLate(actualDeworming?.nextDoseDate) ? "En retard" : "À jour" }}
+          <span>Médicaments</span>
+          <span :class="[
+            'text-sm font-semibold p-1 px-3 rounded-xl',
+            isLate(actualMedication?.nextDoseDate) ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100'
+          ]">
+            {{ isLate(actualMedication?.nextDoseDate) ? "En retard" : "À jour" }}
           </span>
         </div>
       </template>
       <template #content>
-        <p class="text-gray-500">Dernier vermifuge : {{ actualDeworming?.lastDoseDate ?
-          dayNumberMonth(actualDeworming.lastDoseDate) : 'N/C' }} ({{ actualDeworming?.medication ?? 'N/C' }})</p>
-        <p class="text-gray-500">Prochain vermifuge : {{ actualDeworming?.nextDoseDate ?
-          dayNumberMonth(actualDeworming.nextDoseDate) : 'N/C' }}</p>
+        <p class="text-gray-500">Dernier médicament : {{ actualMedication?.lastDoseDate ?
+          dayNumberMonth(actualMedication.lastDoseDate) : 'N/C' }} ({{ actualMedication?.medication ?? 'N/C' }})</p>
+        <p class="text-gray-500">Prochain médicament : {{ actualMedication?.nextDoseDate ?
+          dayNumberMonth(actualMedication.nextDoseDate) : 'N/C' }}</p>
         <Button variant="link">
-          <NuxtLink to="/vermifuge">
-            Gérer le vermifuge >
+          <NuxtLink to="/medicaments">
+            Gérer les médicaments >
           </NuxtLink>
         </Button>
       </template>

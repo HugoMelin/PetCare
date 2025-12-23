@@ -1,11 +1,11 @@
 import { createAuthClient } from "better-auth/vue";
-import { useDogStore } from "~/stores/dogStore";
+import { usePetStore } from "~/stores/petStore";
 
 export const authClient = createAuthClient({});
 
 export async function signUp(email, password, name) {
-  const dogStore = useDogStore();
-  dogStore.clearDogCache();
+  const petStore = usePetStore();
+  petStore.clearPetCache();
 
   const { data, error } = await authClient.signUp.email(
     {
@@ -29,8 +29,8 @@ export async function signUp(email, password, name) {
 }
 
 export async function signIn(email, password, rememberMe = false) {
-  const dogStore = useDogStore();
-  dogStore.clearDogCache();
+  const petStore = usePetStore();
+  petStore.clearPetCache();
 
   const { data, error } = await authClient.signIn.email(
     {
@@ -54,8 +54,8 @@ export async function signIn(email, password, rememberMe = false) {
 }
 
 export async function signOut() {
-  const dogStore = useDogStore();
-  dogStore.clearDogCache();
+  const petStore = usePetStore();
+  petStore.clearPetCache();
 
   await authClient.signOut({
     fetchOptions: {

@@ -6,15 +6,15 @@ export default defineEventHandler(async (event) => {
 
   if (!petId) return { error: "Pet ID is required" };
 
-  const dewormings = await getAllMedicationsByPetId(petId);
+  const medications = await getAllMedicationsByPetId(petId);
 
-  const isDewormingLate = dewormings.nextDoseDate < new Date();
+  const isMedicationLate = medications.nextDoseDate < new Date();
 
   const weights = await getWeightsByPetId(petId);
 
   return {
-    dewormings,
+    medications,
     weights,
-    isDewormingLate,
+    isMedicationLate,
   };
 });

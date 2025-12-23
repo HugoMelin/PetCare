@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   if (!body.name) {
     throw createError({
       statusCode: 400,
-      message: "Le nom du chien est requis",
+      message: "Le nom de l'animal est requis",
     });
   }
 
