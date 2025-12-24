@@ -9,13 +9,27 @@ const store = usePetStore();
 
 const { fetchWeights, addWeight } = useWeights();
 const { dayNumberMonth } = useFormatDate();
-const { fetchActualMedication, isLate } = useMedications();
+const { isLate } = useMedications();
 
 const { selectedPet } = storeToRefs(store);
+const { medications } = storeToRefs(useMedicationStore());
 
 const lastWeight = ref(null);
 const weights = ref([]);
-const actualMedication = ref(null);
+
+const nextMedication = computed(() => {
+  if (!medications.value || medications.value.length === 0) return null;
+
+  return medications.value.reduce((closest, medication) => {
+    if (!closest) return medication;
+    if (!medication?.nextDoseDate) return closest;
+    if (!closest?.nextDoseDate) return medication;
+
+    return new Date(medication.nextDoseDate) < new Date(closest.nextDoseDate)
+      ? medication
+      : closest;
+  }, null);
+});
 
 const form = reactive({
   weight: '',
@@ -42,8 +56,6 @@ watch(selectedPet, async (newPet) => {
       lastWeight.value = res[0];
     }
     console.log('Last weight:', lastWeight.value);
-
-    actualMedication.value = (await fetchActualMedication(newPet.id))[0];
   }
 });
 
@@ -55,8 +67,6 @@ onMounted(async () => {
     lastWeight.value = res[0];
   }
   console.log('Last weight:', lastWeight.value);
-
-  actualMedication.value = (await fetchActualMedication(selectedPet.value.id))[0];
 });
 </script>
 
@@ -105,20 +115,20 @@ onMounted(async () => {
     <Card class="col-span-12">
       <template #title>
         <div class="flex justify-between items-center w-full">
-          <span>Médicaments</span>
+          <span>Médicament</span>
           <span :class="[
             'text-sm font-semibold p-1 px-3 rounded-xl',
-            isLate(actualMedication?.nextDoseDate) ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100'
+            isLate(nextMedication?.nextDoseDate) ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100'
           ]">
-            {{ isLate(actualMedication?.nextDoseDate) ? "En retard" : "À jour" }}
+            {{ isLate(nextMedication?.nextDoseDate) ? "En retard" : "À jour" }}
           </span>
         </div>
       </template>
       <template #content>
-        <p class="text-gray-500">Dernier médicament : {{ actualMedication?.lastDoseDate ?
-          dayNumberMonth(actualMedication.lastDoseDate) : 'N/C' }} ({{ actualMedication?.medication ?? 'N/C' }})</p>
-        <p class="text-gray-500">Prochain médicament : {{ actualMedication?.nextDoseDate ?
-          dayNumberMonth(actualMedication.nextDoseDate) : 'N/C' }}</p>
+        <p class="text-gray-500">Dernier médicament : {{ nextMedication?.lastDoseDate ?
+          dayNumberMonth(nextMedication.lastDoseDate) : 'N/C' }} ({{ nextMedication?.medication ?? 'N/C' }})</p>
+        <p class="text-gray-500">Prochain médicament : {{ nextMedication?.nextDoseDate ?
+          dayNumberMonth(nextMedication.nextDoseDate) : 'N/C' }}</p>
         <Button variant="link">
           <NuxtLink to="/medicaments">
             Gérer les médicaments >
