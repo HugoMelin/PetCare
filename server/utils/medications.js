@@ -5,7 +5,7 @@ export const getAllMedicationsByPetId = async (petId) => {
     where: {
       petId: parseInt(petId),
     },
-    orderBy: { medication: 'desc' },
+    orderBy: { medication: 'asc' },
   });
 }
 
