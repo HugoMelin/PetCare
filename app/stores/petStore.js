@@ -5,6 +5,7 @@ const SELECTED_PET_KEY = "petcare_selected_pet_id";
 export const usePetStore = defineStore("petStore", () => {
   const pets = ref([]);
   const selectedPet = ref(null);
+  const petsLoaded = ref(false);
 
   const saveSelectedPetToStorage = (pet) => {
     if (import.meta.client && pet?.id) {
@@ -24,6 +25,7 @@ export const usePetStore = defineStore("petStore", () => {
   });
 
   const fetchMyPets = async () => {
+    petsLoaded.value = false;
     try {
       const response = await fetch("/api/pets");
       if (!response.ok) {
@@ -48,6 +50,8 @@ export const usePetStore = defineStore("petStore", () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      petsLoaded.value = true;
     }
   };
 
@@ -93,6 +97,7 @@ export const usePetStore = defineStore("petStore", () => {
   return {
     pets,
     selectedPet,
+    petsLoaded,
     fetchMyPets,
     fetchOwners,
     clearPetCache,
