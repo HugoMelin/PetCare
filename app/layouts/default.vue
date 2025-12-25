@@ -1,11 +1,45 @@
 <script setup>
 import { fetchUserSession } from '~/lib/auth-client';
 
+const route = useRoute();
+const { pets, petsLoaded } = storeToRefs(usePetStore());
+const authChecked = ref(false);
+const isAuthenticated = ref(false);
+
+const redirectToAddPetIfNeeded = () => {
+  if (route.path === '/parametres' || route.path === '/ajouter-animal') {
+    return;
+  }
+
+  if (!authChecked.value || !isAuthenticated.value) {
+    return;
+  }
+
+  if (!petsLoaded.value) {
+    return;
+  }
+
+  if (pets.value.length === 0) {
+    navigateTo('/ajouter-animal');
+  }
+};
+
+watch(() => [route.fullPath, pets.value.length, petsLoaded.value], () => {
+  redirectToAddPetIfNeeded();
+});
+
 onMounted(async () => {
   const session = await fetchUserSession();
-  if (!session.data) {
+
+  authChecked.value = true;
+  isAuthenticated.value = Boolean(session.data);
+
+  if (!isAuthenticated.value) {
     navigateTo('/connexion');
+    return;
   }
+
+  redirectToAddPetIfNeeded();
 });
 </script>
 
