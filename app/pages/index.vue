@@ -31,12 +31,19 @@ const nextMedication = computed(() => {
   }, null);
 });
 
+const filteredWeights = computed(() => {
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  const limit = threeMonthsAgo.getTime();
+  
+  return weights.value.filter(w => new Date(w.date).getTime() >= limit);
+});
+
 const form = reactive({
   weight: '',
 });
 
 const handleSubmit = async () => {
-  // Here you would normally call an API to add the weight
   console.log('Adding weight:', form.weight);
   await addWeight(selectedPet.value.id, { weight: form.weight });
   form.weight = '';
@@ -76,7 +83,7 @@ onMounted(async () => {
 
     <Card class="col-span-12 sm:col-span-8">
       <template #title>
-        Poids
+        Poids (3 derniers mois)
       </template>
       <template #content>
         <div class="grid grid-cols-4">
@@ -89,7 +96,7 @@ onMounted(async () => {
             <p v-if="lastWeight" class="capitalize">{{ dayNumberMonth(lastWeight.date) }}</p>
             <div v-else class="h-6 w-24 bg-gray-300 rounded animate-pulse self-end" />
 
-            <WeightsLineChart v-if="weights.length" :weights="weights" class="h-[100px] sm:h-[256px]" />
+            <WeightsLineChart v-if="filteredWeights.length" :weights="filteredWeights" class="h-[100px] sm:h-[256px]" />
             <div v-else class="h-[100px] sm:h-[256px] bg-gray-200 rounded animate-pulse mt-2" />
           </div>
         </div>
