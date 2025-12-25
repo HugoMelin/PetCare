@@ -3,9 +3,15 @@ import { fetchUserSession } from '~/lib/auth-client';
 
 const route = useRoute();
 const { pets, petsLoaded } = storeToRefs(usePetStore());
+const authChecked = ref(false);
+const isAuthenticated = ref(false);
 
 const redirectToAddPetIfNeeded = () => {
   if (route.path === '/parametres' || route.path === '/ajouter-animal') {
+    return;
+  }
+
+  if (!authChecked.value || !isAuthenticated.value) {
     return;
   }
 
@@ -25,7 +31,10 @@ watch(() => [route.fullPath, pets.value.length, petsLoaded.value], () => {
 onMounted(async () => {
   const session = await fetchUserSession();
 
-  if (!session.data) {
+  authChecked.value = true;
+  isAuthenticated.value = Boolean(session.data);
+
+  if (!isAuthenticated.value) {
     navigateTo('/connexion');
     return;
   }
