@@ -8,6 +8,39 @@ const { addWeight, fetchWeights } = useWeights();
 const { selectedPet } = storeToRefs(usePetStore());
 
 const weights = ref([]);
+const period = ref('all');
+
+const filtres = [
+  { label: '3M', value: '3m' },
+  { label: '6M', value: '6m' },
+  { label: '1A', value: '1y' },
+  { label: 'Tout', value: 'all' },
+]
+
+const filteredWeights = computed(() => {
+  const now = new Date();
+  let limitDate;
+
+  switch (period.value) {
+    case '3m':
+      limitDate = new Date();
+      limitDate.setMonth(now.getMonth() - 3);
+      break;
+    case '6m':
+      limitDate = new Date();
+      limitDate.setMonth(now.getMonth() - 6);
+      break;
+    case '1y':
+      limitDate = new Date();
+      limitDate.setFullYear(now.getFullYear() - 1);
+      break;
+    case 'all':
+    default:
+      return weights.value;
+  }
+
+  return weights.value.filter(w => new Date(w.date) >= limitDate);
+});
 
 watch(selectedPet, async (newPet) => {
   if (newPet) {
@@ -54,11 +87,19 @@ const submitForm = async () => {
     <h2 class="text-2xl font-bold mb-4">Suivis du poids</h2>
 
     <Card>
-      <template #title>
-        Évolution du poids
+      <template #title-section>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <h3 class="font-bold">Évolution du poids</h3>
+          <div class="flex items-center gap-2">
+            <button v-for="(item, idx) in filtres" :key="idx" @click="period = item.value"
+              :class="['px-3 py-1.5 rounded-lg transition-colors text-sm', period === item.value ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700']">
+              {{ item.label }}
+            </button>
+          </div>
+        </div>
       </template>
       <template #content>
-        <WeightsLineChart v-if="weights.length" :weights="weights" class="h-[150px] sm:h-[304px]" />
+        <WeightsLineChart v-if="filteredWeights.length" :weights="filteredWeights" class="h-[150px] sm:h-[304px]" />
         <div v-else class="h-[150px] sm:h-[304px] bg-gray-200 rounded animate-pulse mt-2" />
       </template>
     </Card>
