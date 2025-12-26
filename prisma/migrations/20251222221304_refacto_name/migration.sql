@@ -35,16 +35,16 @@ ALTER TABLE `WeightEntry` DROP COLUMN `dogId`,
     ADD COLUMN `petId` INTEGER NOT NULL;
 
 -- DropTable
-DROP TABLE `DewormingSchedule`;
+DROP TABLE IF EXISTS `DewormingSchedule`;
 
 -- DropTable
-DROP TABLE `Dog`;
+DROP TABLE IF EXISTS `Dog`;
 
 -- DropTable
-DROP TABLE `NotificationLog`;
+DROP TABLE IF EXISTS `NotificationLog`;
 
 -- DropTable
-DROP TABLE `_DogOwners`;
+DROP TABLE IF EXISTS `_DogOwners`;
 
 -- CreateTable
 CREATE TABLE `Pet` (
