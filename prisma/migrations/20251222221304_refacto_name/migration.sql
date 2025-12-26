@@ -10,10 +10,41 @@
 
 */
 -- DropForeignKey
-ALTER TABLE `WeightEntry` DROP FOREIGN KEY `WeightEntry_dogId_fkey`;
+SET @we_fk := (
+    SELECT CONSTRAINT_NAME
+    FROM information_schema.KEY_COLUMN_USAGE
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND COLUMN_NAME = 'dogId'
+      AND REFERENCED_TABLE_NAME IS NOT NULL
+    LIMIT 1
+);
+SET @we_fk_sql := IF(
+    @we_fk IS NULL,
+    'SELECT 1',
+    CONCAT('ALTER TABLE `WeightEntry` DROP FOREIGN KEY `', @we_fk, '`')
+);
+PREPARE we_fk_stmt FROM @we_fk_sql;
+EXECUTE we_fk_stmt;
+DEALLOCATE PREPARE we_fk_stmt;
 
 -- DropIndex
-DROP INDEX `WeightEntry_dogId_fkey` ON `WeightEntry`;
+SET @we_idx := (
+    SELECT INDEX_NAME
+    FROM information_schema.STATISTICS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND INDEX_NAME = 'WeightEntry_dogId_fkey'
+    LIMIT 1
+);
+SET @we_idx_sql := IF(
+    @we_idx IS NULL,
+    'SELECT 1',
+    'DROP INDEX `WeightEntry_dogId_fkey` ON `WeightEntry`'
+);
+PREPARE we_idx_stmt FROM @we_idx_sql;
+EXECUTE we_idx_stmt;
+DEALLOCATE PREPARE we_idx_stmt;
 
 -- AlterTable
 ALTER TABLE `WeightEntry` DROP COLUMN `dogId`,
