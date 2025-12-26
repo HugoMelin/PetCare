@@ -166,6 +166,10 @@ jobs:
           cd "../.."
           docker compose run --rm migrate
 
+          echo "==> Cleanup (keep Dockerfile, .env, deploy/, backups/)"
+          rm -rf .nuxt .output generated prisma node_modules \
+            package.json package-lock.json prisma.config.ts
+
           echo "==> Restart app"
           docker compose up -d --build petcare
 
