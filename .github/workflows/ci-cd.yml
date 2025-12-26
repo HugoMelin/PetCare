@@ -169,7 +169,7 @@ jobs:
           rm -rf .nuxt .output generated prisma node_modules \
             package.json package-lock.json prisma.config.ts
           # Keep only the 5 most recent backups
-          if [ -d backups ]; then
+          if [ -d sites/PetCare/backups ]; then
             ls -1dt sites/PetCare/backups/* 2>/dev/null | tail -n +6 | xargs -r rm -rf
           fi
 
