@@ -163,9 +163,9 @@ jobs:
           rmdir incoming || true
 
           echo "==> Run migrations (docker compose run --rm migrate)"
-          ls -la
           cd "../.."
-          docker compose run --rm migrate
+          docker compose run --rm migrate < /dev/null
+          echo "==> Migration finished, continuing..."
 
           echo "==> Cleanup (keep Dockerfile, .env, deploy/, backups/)"
           rm -rf .nuxt .output generated prisma node_modules \
