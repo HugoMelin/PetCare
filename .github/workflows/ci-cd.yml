@@ -169,6 +169,10 @@ jobs:
           echo "==> Cleanup (keep Dockerfile, .env, deploy/, backups/)"
           rm -rf .nuxt .output generated prisma node_modules \
             package.json package-lock.json prisma.config.ts
+          # Keep only the 5 most recent backups
+          if [ -d backups ]; then
+            ls -1dt backups/* 2>/dev/null | tail -n +6 | xargs -r rm -rf
+          fi
 
           echo "==> Restart app"
           docker compose up -d --build petcare
