@@ -10,22 +10,7 @@
 
 */
 -- DropForeignKey
-ALTER TABLE IF EXISTS `DewormingSchedule` DROP FOREIGN KEY `DewormingSchedule_dogId_fkey`;
-
--- DropForeignKey
-ALTER TABLE IF EXISTS `Dog` DROP FOREIGN KEY `Dog_createdByUserId_fkey`;
-
--- DropForeignKey
-ALTER TABLE IF EXISTS `NotificationLog` DROP FOREIGN KEY `NotificationLog_dogId_fkey`;
-
--- DropForeignKey
 ALTER TABLE `WeightEntry` DROP FOREIGN KEY `WeightEntry_dogId_fkey`;
-
--- DropForeignKey
-ALTER TABLE IF EXISTS `_DogOwners` DROP FOREIGN KEY `_DogOwners_A_fkey`;
-
--- DropForeignKey
-ALTER TABLE IF EXISTS `_DogOwners` DROP FOREIGN KEY `_DogOwners_B_fkey`;
 
 -- DropIndex
 DROP INDEX `WeightEntry_dogId_fkey` ON `WeightEntry`;
