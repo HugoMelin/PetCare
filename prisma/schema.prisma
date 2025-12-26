@@ -28,7 +28,7 @@ model WeightEntry {
   date    DateTime
   weight  Float
   comment String?
-  pet     Pet      @relation(fields: [petId], references: [id])
+  pet     Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
 
   @@index([petId], map: "WeightEntry_petId_fkey")
 }
@@ -40,7 +40,7 @@ model Medication {
   lastDoseDate  DateTime
   frequencyDays Int
   nextDoseDate  DateTime
-  pet           Pet      @relation(fields: [petId], references: [id])
+  pet           Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
   notifications MedicationNotification[]
 
   @@index([petId], map: "Medication_petId_fkey")
@@ -50,9 +50,9 @@ model MedicationNotification {
   id           Int      @id @default(autoincrement())
   type         String
   message      String
-  medicationId Int
+  medicationId Int?
   sendAt       DateTime @default(now())
-  medication   Medication @relation(fields: [medicationId], references: [id])
+  medication   Medication? @relation(fields: [medicationId], references: [id], onDelete: SetNull)
 
   @@index([medicationId], map: "MedicationNotification_medicationId_fkey")
 }
