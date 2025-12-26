@@ -47,8 +47,34 @@ EXECUTE we_idx_stmt;
 DEALLOCATE PREPARE we_idx_stmt;
 
 -- AlterTable
-ALTER TABLE `WeightEntry` DROP COLUMN `dogId`,
-    ADD COLUMN `petId` INTEGER NOT NULL;
+SET @we_has_dogId := (
+    SELECT COUNT(*)
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND COLUMN_NAME = 'dogId'
+);
+SET @we_has_petId := (
+    SELECT COUNT(*)
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND COLUMN_NAME = 'petId'
+);
+SET @we_alter_sql := CONCAT(
+    'ALTER TABLE `WeightEntry` ',
+    IF(@we_has_dogId > 0, 'DROP COLUMN `dogId`', ''),
+    IF(@we_has_dogId > 0 AND @we_has_petId = 0, ', ', ''),
+    IF(@we_has_petId = 0, 'ADD COLUMN `petId` INTEGER NOT NULL', '')
+);
+SET @we_alter_sql := IF(
+    @we_has_dogId = 0 AND @we_has_petId > 0,
+    'SELECT 1',
+    @we_alter_sql
+);
+PREPARE we_alter_stmt FROM @we_alter_sql;
+EXECUTE we_alter_stmt;
+DEALLOCATE PREPARE we_alter_stmt;
 
 -- DropTable
 DROP TABLE IF EXISTS `DewormingSchedule`;
