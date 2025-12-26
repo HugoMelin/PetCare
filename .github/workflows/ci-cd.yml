@@ -108,6 +108,7 @@ jobs:
           set -e
           ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<'SSH'
           set -euo pipefail
+          set -x
 
           APP_PATH="${{ secrets.VPS_APP_PATH }}"
           cd "$APP_PATH"
