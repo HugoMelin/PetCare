@@ -139,6 +139,10 @@ jobs:
           mv incoming/prisma prisma
           rm -rf generated
           mv incoming/generated generated
+          if [ -f incoming/prisma.config.ts ]; then
+            rm -f prisma.config.ts
+            mv incoming/prisma.config.ts prisma.config.ts
+          fi
           rmdir incoming || true
 
           # echo "==> Run migrations (prisma migrate deploy)"
