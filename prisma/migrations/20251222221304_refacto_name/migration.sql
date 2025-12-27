@@ -10,41 +10,83 @@
 
 */
 -- DropForeignKey
-ALTER TABLE `DewormingSchedule` DROP FOREIGN KEY `DewormingSchedule_dogId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `Dog` DROP FOREIGN KEY `Dog_createdByUserId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `NotificationLog` DROP FOREIGN KEY `NotificationLog_dogId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `WeightEntry` DROP FOREIGN KEY `WeightEntry_dogId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `_DogOwners` DROP FOREIGN KEY `_DogOwners_A_fkey`;
-
--- DropForeignKey
-ALTER TABLE `_DogOwners` DROP FOREIGN KEY `_DogOwners_B_fkey`;
+SET @we_fk := (
+    SELECT CONSTRAINT_NAME
+    FROM information_schema.KEY_COLUMN_USAGE
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND COLUMN_NAME = 'dogId'
+      AND REFERENCED_TABLE_NAME IS NOT NULL
+    LIMIT 1
+);
+SET @we_fk_sql := IF(
+    @we_fk IS NULL,
+    'SELECT 1',
+    CONCAT('ALTER TABLE `WeightEntry` DROP FOREIGN KEY `', @we_fk, '`')
+);
+PREPARE we_fk_stmt FROM @we_fk_sql;
+EXECUTE we_fk_stmt;
+DEALLOCATE PREPARE we_fk_stmt;
 
 -- DropIndex
-DROP INDEX `WeightEntry_dogId_fkey` ON `WeightEntry`;
+SET @we_idx := (
+    SELECT INDEX_NAME
+    FROM information_schema.STATISTICS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND INDEX_NAME = 'WeightEntry_dogId_fkey'
+    LIMIT 1
+);
+SET @we_idx_sql := IF(
+    @we_idx IS NULL,
+    'SELECT 1',
+    'DROP INDEX `WeightEntry_dogId_fkey` ON `WeightEntry`'
+);
+PREPARE we_idx_stmt FROM @we_idx_sql;
+EXECUTE we_idx_stmt;
+DEALLOCATE PREPARE we_idx_stmt;
 
 -- AlterTable
-ALTER TABLE `WeightEntry` DROP COLUMN `dogId`,
-    ADD COLUMN `petId` INTEGER NOT NULL;
+SET @we_has_dogId := (
+    SELECT COUNT(*)
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND COLUMN_NAME = 'dogId'
+);
+SET @we_has_petId := (
+    SELECT COUNT(*)
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'WeightEntry'
+      AND COLUMN_NAME = 'petId'
+);
+SET @we_alter_sql := CONCAT(
+    'ALTER TABLE `WeightEntry` ',
+    IF(@we_has_dogId > 0, 'DROP COLUMN `dogId`', ''),
+    IF(@we_has_dogId > 0 AND @we_has_petId = 0, ', ', ''),
+    IF(@we_has_petId = 0, 'ADD COLUMN `petId` INTEGER NOT NULL', '')
+);
+SET @we_alter_sql := IF(
+    @we_has_dogId = 0 AND @we_has_petId > 0,
+    'SELECT 1',
+    @we_alter_sql
+);
+PREPARE we_alter_stmt FROM @we_alter_sql;
+EXECUTE we_alter_stmt;
+DEALLOCATE PREPARE we_alter_stmt;
 
 -- DropTable
-DROP TABLE `DewormingSchedule`;
+DROP TABLE IF EXISTS `DewormingSchedule`;
 
 -- DropTable
-DROP TABLE `Dog`;
+DROP TABLE IF EXISTS `Dog`;
 
 -- DropTable
-DROP TABLE `NotificationLog`;
+DROP TABLE IF EXISTS `NotificationLog`;
 
 -- DropTable
-DROP TABLE `_DogOwners`;
+DROP TABLE IF EXISTS `_DogOwners`;
 
 -- CreateTable
 CREATE TABLE `Pet` (

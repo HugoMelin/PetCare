@@ -57,6 +57,9 @@ jobs:
           path: |
             .output/
             prisma/
+            prisma.config.ts
+            package.json
+            package-lock.json
             generated/
           include-hidden-files: true
           retention-days: 1
@@ -122,6 +125,18 @@ jobs:
           if [ -d "prisma" ]; then
             cp -a prisma "$BACKUP_DIR/prisma"
           fi
+          if [ -d "generated" ]; then
+            cp -a "generated" "$BACKUP_DIR/generated"
+          fi
+          if [ -f "prisma.config.ts" ]; then
+            cp -a "prisma.config.ts" "$BACKUP_DIR/prisma.config.ts"
+          fi
+          if [ -f "package.json" ]; then
+            cp -a "package.json" "$BACKUP_DIR/package.json"
+          fi
+          if [ -f "package-lock.json" ]; then
+            cp -a "package-lock.json" "$BACKUP_DIR/package-lock.json"
+          fi
 
           echo "==> Extract bundle"
           rm -rf incoming
@@ -138,27 +153,27 @@ jobs:
           mv incoming/prisma prisma
           rm -rf generated
           mv incoming/generated generated
+          rm -f prisma.config.ts
+          mv incoming/prisma.config.ts prisma.config.ts
+          rm -f package.json
+          mv incoming/package.json package.json
+          rm -f package-lock.json
+          mv incoming/package-lock.json package-lock.json
           rmdir incoming || true
 
-          # echo "==> Run migrations (prisma migrate deploy)"
-          # # Service conseillé dans docker-compose: migrate
-          # if docker compose run --rm migrate; then
-          #   echo "==> Migrations OK"
-          # else
-          #   echo "!! Migration FAILED -> rollback files"
-          #   rm -rf deploy/.output prisma
-          #   if [ -d "$BACKUP_DIR/.output" ]; then
-          #     mkdir -p deploy
-          #     cp -a "$BACKUP_DIR/.output" deploy/.output
-          #   fi
-          #   if [ -d "$BACKUP_DIR/prisma" ]; then
-          #     cp -a "$BACKUP_DIR/prisma" prisma
-          #   fi
-          #   exit 1
-          # fi
+          echo "==> Run migrations (docker compose run --rm migrate)"
+          cd "../.."
+          docker compose run --rm migrate < /dev/null
+
+          echo "==> Cleanup (keep Dockerfile, .env, deploy/, backups/)"
+          rm -rf .nuxt .output generated prisma node_modules \
+            package.json package-lock.json prisma.config.ts
+          # Keep only the 5 most recent backups
+          if [ -d sites/PetCare/backups ]; then
+            ls -1dt sites/PetCare/backups/* 2>/dev/null | tail -n +6 | xargs -r rm -rf
+          fi
 
           echo "==> Restart app"
-          cd ../..
           docker compose up -d --build petcare
 
           echo "==> Done"
