@@ -4,6 +4,7 @@ import LogOutIcon from '~/components/icons/LogOutIcon.vue';
 import Card from '~/components/ui/Card.vue';
 import { signOut, authClient } from '~/lib/auth-client';
 import PetCard from '~/components/PetCard.vue';
+import { MessageSquare } from 'lucide-vue-next';
 
 const session = authClient.useSession();
 const petStore = usePetStore();
@@ -61,10 +62,19 @@ const handleEditPet = (pet) => {
           <p class="text-gray-900">{{ user?.email || 'N/C' }}</p>
         </div>
 
-        <Button variant="destructive" size="lg" @click="signOut">
-          <LogOutIcon class="w-5 h-5 mr-2" />
-          Déconnexion
-        </Button>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <Button type="button" size="lg">
+            <NuxtLink to="/feedback" class="flex items-center justify-center gap-2">
+              <MessageSquare className="w-5 h-5" />
+              Feedback
+            </NuxtLink>
+          </Button>
+
+          <Button variant="destructive" size="lg" @click="signOut">
+            <LogOutIcon class="w-5 h-5 mr-2" />
+            Déconnexion
+          </Button>
+        </div>
       </template>
     </Card>
   </div>
