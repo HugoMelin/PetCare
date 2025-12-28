@@ -3,7 +3,9 @@ import { ArrowLeft, CheckCircle, Send } from 'lucide-vue-next';
 import Button from '~/components/ui/Button.vue';
 import Card from '~/components/ui/Card.vue';
 import { fetchUserSession } from '~/lib/auth-client';
+import useFeedback from '~/composables/useFeedback';
 
+const { sendFeedback } = useFeedback();
 
 const feedbackTypes = [
   { value: 'suggestion', label: 'Suggestion', icon: '💡' },
@@ -24,9 +26,20 @@ const form = ref({
   honeypot: '',
 });
 
-const handleSubmit = () => {
-  // TODO : Send feedback to email service
-  isSubmitted.value = true;
+const handleSubmit = async () => {
+  if (form.value.honeypot) {
+    return;
+  }
+
+  isSubmitting.value = true;
+  try {
+    await sendFeedback(form.value);
+    isSubmitted.value = true;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 
 onMounted(async () => {
