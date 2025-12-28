@@ -24,7 +24,7 @@ const variantClasses = {
     "bg-secondary text-secondary-foreground hover:opacity-80",
   ghost:
     "hover:bg-accent hover:text-accent-foreground dark:hover:opacity-50",
-  link: "text-primary underline-offset-4 hover:underline",
+  link: "text-primary underline-offset-4 hover:underline hover:bg-gray-100 rounded-lg transition-colors",
   socialAuth:
     "border border-gray-300 bg-white hover:bg-gray-100",
 }

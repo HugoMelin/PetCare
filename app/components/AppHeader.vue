@@ -4,8 +4,15 @@ const route = useRoute();
 
 const dontShowPetSelectorOn = [
   '/ajouter-animal', 
-  '/parametres'
+  '/parametres',
+  '/feedback'
 ];
+
+const isHighlightedRoute = (path) => [
+  '/ajouter-animal', 
+  '/parametres',
+  '/feedback'
+].includes(path);
 
 const showPetSelector = computed(() => !dontShowPetSelectorOn.includes(route.path));
 </script>
@@ -26,7 +33,7 @@ const showPetSelector = computed(() => !dontShowPetSelectorOn.includes(route.pat
 
       <div class="flex items-center gap-2 sm:gap-4 flex-nowrap">
         <PetSelector v-if="showPetSelector" />
-        <NuxtLink to="/parametres" :class="`text-gray-600 hover:text-primary ${ route.path === '/parametres' ? 'text-primary' : '' }`">
+        <NuxtLink to="/parametres" :class="`text-gray-600 hover:text-primary ${ isHighlightedRoute(route.path) ? 'text-primary' : '' }`">
           <SettingsIcon class="w-6 h-6" />
         </NuxtLink>
       </div>
