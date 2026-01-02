@@ -48,6 +48,9 @@ const handleEditClick = (pet) => {
 };
 
 const handleDelete = (pet) => {
+  if(!confirm(`Êtes-vous sûr de vouloir supprimer ${pet.name} ? Cette action est irréversible.`)) {
+    return;
+  }
   deletePet(pet.id)
     .then(() => {
       petStore.removePetById(pet.id);
