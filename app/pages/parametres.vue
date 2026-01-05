@@ -5,6 +5,7 @@ import Card from "~/components/ui/Card.vue";
 import { signOut, authClient } from "~/lib/auth-client";
 import PetCard from "~/components/parametres/PetCard.vue";
 import { MessageSquare } from "lucide-vue-next";
+import AboutSection from "~/components/parametres/AboutSection.vue";
 
 const session = authClient.useSession();
 const petStore = usePetStore();
@@ -92,5 +93,7 @@ const handleEditPet = (pet) => {
         </div>
       </template>
     </Card>
+
+    <AboutSection />
   </div>
 </template>
