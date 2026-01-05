@@ -37,7 +37,7 @@ export const usePetStore = defineStore("petStore", () => {
       const savedPetId = getSelectedPetIdFromStorage();
       if (savedPetId && pets.value.length > 0) {
         const savedPet = pets.value.find(
-          (pet) => String(pet.id) === savedPetId
+          (pet) => String(pet.id) === savedPetId,
         );
         if (savedPet) {
           selectedPet.value = savedPet;

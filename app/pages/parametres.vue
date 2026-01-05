@@ -1,10 +1,11 @@
 <script setup>
-import Button from '~/components/ui/Button.vue';
-import LogOutIcon from '~/components/icons/LogOutIcon.vue';
-import Card from '~/components/ui/Card.vue';
-import { signOut, authClient } from '~/lib/auth-client';
-import PetCard from '~/components/PetCard.vue';
-import { MessageSquare } from 'lucide-vue-next';
+import Button from "~/components/ui/Button.vue";
+import LogOutIcon from "~/components/icons/LogOutIcon.vue";
+import Card from "~/components/ui/Card.vue";
+import { signOut, authClient } from "~/lib/auth-client";
+import PetCard from "~/components/parametres/PetCard.vue";
+import { MessageSquare } from "lucide-vue-next";
+import AboutSection from "~/components/parametres/AboutSection.vue";
 
 const session = authClient.useSession();
 const petStore = usePetStore();
@@ -34,10 +35,17 @@ const handleEditPet = (pet) => {
           <Button>
             <NuxtLink to="/ajouter-animal" class="flex items-center gap-2">
               <span>Ajouter un animal</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
                   d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                  clip-rule="evenodd" />
+                  clip-rule="evenodd"
+                />
               </svg>
             </NuxtLink>
           </Button>
@@ -45,27 +53,35 @@ const handleEditPet = (pet) => {
       </template>
       <template #content>
         <div v-for="pet in pets" :key="pet.id" class="mb-3">
-          <PetCard :pet="pet" :is-editing="editingPetId === pet.id" :is-creator="user && user.id == pet.createdByUserId"
-            @edit-pet="handleEditPet" />
+          <PetCard
+            :pet="pet"
+            :is-editing="editingPetId === pet.id"
+            :is-creator="user && user.id == pet.createdByUserId"
+            @edit-pet="handleEditPet"
+          />
         </div>
-        <div v-if="!pets.length" class="h-24 w-full bg-gray-300 rounded-lg animate-pulse self-end" />
+        <div
+          v-if="!pets.length"
+          class="h-24 w-full bg-gray-300 rounded-lg animate-pulse self-end"
+        />
       </template>
     </Card>
 
     <Card>
-      <template #title>
-        Mon compte
-      </template>
+      <template #title> Mon compte </template>
       <template #content>
         <div class="p-4 border border-gray-200 rounded-lg mb-4">
           <p class="text-gray-600 text-sm mb-1">Email</p>
-          <p class="text-gray-900">{{ user?.email || 'N/C' }}</p>
+          <p class="text-gray-900">{{ user?.email || "N/C" }}</p>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
           <Button type="button" size="lg">
-            <NuxtLink to="/feedback" class="flex items-center justify-center gap-2">
-              <MessageSquare className="w-5 h-5" />
+            <NuxtLink
+              to="/feedback"
+              class="flex items-center justify-center gap-2"
+            >
+              <MessageSquare class-name="w-5 h-5" />
               Feedback
             </NuxtLink>
           </Button>
@@ -77,5 +93,7 @@ const handleEditPet = (pet) => {
         </div>
       </template>
     </Card>
+
+    <AboutSection />
   </div>
 </template>

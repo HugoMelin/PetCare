@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const nextDoseDate = new Date(
-    new Date(lastDoseDate).getTime() + frequencyDays * 24 * 60 * 60 * 1000
+    new Date(lastDoseDate).getTime() + frequencyDays * 24 * 60 * 60 * 1000,
   );
 
   let result;
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
       medication,
       frequencyDays,
       nextDoseDate,
-      lastDoseDate
+      lastDoseDate,
     );
   } else {
     result = await addMedicationEntry(
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
       medication,
       frequencyDays,
       nextDoseDate,
-      lastDoseDate
+      lastDoseDate,
     );
   }
 

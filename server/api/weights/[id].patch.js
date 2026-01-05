@@ -3,7 +3,7 @@ import { updateWeightEntry } from "~~/server/utils/weights";
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params;
 
-  if (!id) return { error: 'Weight entry ID is required' };
+  if (!id) return { error: "Weight entry ID is required" };
 
   const body = await readBody(event);
 

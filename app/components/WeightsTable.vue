@@ -1,8 +1,8 @@
 <script setup>
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
-import Card from '~/components/ui/Card.vue';
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import Card from "~/components/ui/Card.vue";
 
-import useFormatDate from '~/composables/useFormatDate';
+import useFormatDate from "~/composables/useFormatDate";
 
 const { formatDate } = useFormatDate();
 
@@ -36,7 +36,7 @@ watch(
     if (currentPage.value > totalPages.value) {
       currentPage.value = totalPages.value;
     }
-  }
+  },
 );
 
 const formatWeightDate = (date) => {
@@ -46,9 +46,7 @@ const formatWeightDate = (date) => {
 
 <template>
   <Card>
-    <template #title>
-      Historique des pesées
-    </template>
+    <template #title> Historique des pesées </template>
     <template #content>
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div class="flex items-center gap-2 text-sm text-gray-600">
@@ -80,12 +78,9 @@ const formatWeightDate = (date) => {
             <span class="text-gray-600">Poids</span>
             <span class="text-gray-900">{{ row.weight }} kg</span>
           </div>
-          <div 
-            v-if="row.comment"  
-            class="pt-2 border-t border-gray-100"
-          >
+          <div v-if="row.comment" class="pt-2 border-t border-gray-100">
             <p class="text-gray-600 text-sm">{{ row.comment }}</p>
-          </div>          
+          </div>
         </div>
       </div>
 
@@ -101,9 +96,13 @@ const formatWeightDate = (date) => {
           </thead>
           <tbody>
             <tr v-for="row in paginatedWeights" :key="row.id">
-              <td class="p-2 py-3 border-b col-4">{{ formatWeightDate(row.date) }}</td>
+              <td class="p-2 py-3 border-b col-4">
+                {{ formatWeightDate(row.date) }}
+              </td>
               <td class="p-2 py-3 border-b col-4">{{ row.weight }} kg</td>
-              <td class="p-2 py-3 border-b col-4">{{ row.comment ? row.comment : '-' }}</td>
+              <td class="p-2 py-3 border-b col-4">
+                {{ row.comment ? row.comment : "-" }}
+              </td>
             </tr>
           </tbody>
         </table>

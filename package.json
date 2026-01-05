@@ -10,7 +10,12 @@
     "postinstall": "nuxt prepare",
     "down": "docker compose down",
     "prisma:studio": "npx prisma studio",
-    "seed": "npx tsx ./prisma/seed.ts"
+    "seed": "npx tsx ./prisma/seed.ts",
+    "lint": "eslint --ext .js,.ts,.vue .",
+    "lint:fix": "eslint --ext .js,.ts,.vue . --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "fix": "npm run lint:fix && npm run format:fix"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.11.0",
@@ -35,6 +40,8 @@
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^24.10.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.7.4",
     "prisma": "^7.0.1"
   }
 }

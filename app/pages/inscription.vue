@@ -1,19 +1,19 @@
 <script setup>
-import Card from '~/components/ui/Card.vue';
-import GoogleIcon from '~/components/icons/GoogleIcon.vue';
-import FacebookIcon from '~/components/icons/FacebookIcon.vue';
-import AppleIcon from '~/components/icons/AppleIcon.vue';
-import MailIcon from '~/components/icons/MailIcon.vue';
-import LockIcon from '~/components/icons/LockIcon.vue';
-import EyeIcon from '~/components/icons/EyeIcon.vue';
-import EyeOffIcon from '~/components/icons/EyeOffIcon.vue';
-import UserIcon from '~/components/icons/UserIcon.vue';
-import Button from '~/components/ui/Button.vue';
+import Card from "~/components/ui/Card.vue";
+import GoogleIcon from "~/components/icons/GoogleIcon.vue";
+import FacebookIcon from "~/components/icons/FacebookIcon.vue";
+import AppleIcon from "~/components/icons/AppleIcon.vue";
+import MailIcon from "~/components/icons/MailIcon.vue";
+import LockIcon from "~/components/icons/LockIcon.vue";
+import EyeIcon from "~/components/icons/EyeIcon.vue";
+import EyeOffIcon from "~/components/icons/EyeOffIcon.vue";
+import UserIcon from "~/components/icons/UserIcon.vue";
+import Button from "~/components/ui/Button.vue";
 
-import { signUp } from '~/lib/auth-client';
+import { signUp } from "~/lib/auth-client";
 
 definePageMeta({
-  layout: 'auth',
+  layout: "auth",
 });
 
 const showPassword = ref(false);
@@ -21,10 +21,10 @@ const showConfirmPassword = ref(false);
 const error = ref(null);
 
 const formSignUp = reactive({
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
 });
 
 const handleSignUp = async () => {
@@ -47,7 +47,8 @@ const handleSignUp = async () => {
 
   const { error: signUpError } = await signUp(email, password, name);
   if (signUpError) {
-    error.value = signUpError.message || "Une erreur est survenue lors de l'inscription.";
+    error.value =
+      signUpError.message || "Une erreur est survenue lors de l'inscription.";
   } else {
     error.value = null;
   }
@@ -62,15 +63,13 @@ const handleSignUp = async () => {
     </div>
 
     <Card>
-      <template #title>
-        Créer un compte
-      </template>
+      <template #title> Créer un compte </template>
       <template #content>
         <!-- Social Buttons -->
         <div class="space-y-3 mb-6">
-          <Button 
-            variant="socialAuth" 
-            size="lg" 
+          <Button
+            variant="socialAuth"
+            size="lg"
             class="w-full"
             disabled
             @click="signUp('google')"
@@ -79,9 +78,9 @@ const handleSignUp = async () => {
             <span>S'inscrire avec Google</span>
           </Button>
 
-          <Button 
-            variant="socialAuth" 
-            size="lg" 
+          <Button
+            variant="socialAuth"
+            size="lg"
             class="w-full"
             disabled
             @click="signUp('facebook')"
@@ -90,9 +89,9 @@ const handleSignUp = async () => {
             <span>S'inscrire avec Facebook</span>
           </Button>
 
-          <Button 
-            variant="socialAuth" 
-            size="lg" 
+          <Button
+            variant="socialAuth"
+            size="lg"
             class="w-full"
             disabled
             @click="signUp('apple')"
@@ -105,7 +104,7 @@ const handleSignUp = async () => {
         <!-- Divider -->
         <div class="relative mb-6">
           <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
+            <div class="w-full border-t border-gray-300" />
           </div>
           <div class="relative flex justify-center text-sm">
             <span class="px-4 bg-white text-gray-500">ou</span>
@@ -113,14 +112,13 @@ const handleSignUp = async () => {
         </div>
 
         <!-- Sign Up Form -->
-        <form
-          @submit.prevent="handleSignUp"
-          class="space-y-4"
-        >
+        <form class="space-y-4" @submit.prevent="handleSignUp">
           <div>
             <label for="name" class="block text-gray-700 mb-2">Nom</label>
             <div class="relative">
-              <UserIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <UserIcon
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              />
               <input
                 id="name"
                 v-model="formSignUp.name"
@@ -135,7 +133,9 @@ const handleSignUp = async () => {
           <div>
             <label for="email" class="block text-gray-700 mb-2">Email</label>
             <div class="relative">
-              <MailIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <MailIcon
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              />
               <input
                 id="email"
                 v-model="formSignUp.email"
@@ -145,15 +145,22 @@ const handleSignUp = async () => {
                 placeholder="votre@email.com"
               />
             </div>
-            <p v-if="error && error === 'Invalid email'" class="mt-1 text-red-600 text-sm">
+            <p
+              v-if="error && error === 'Invalid email'"
+              class="mt-1 text-red-600 text-sm"
+            >
               Adresse email invalide.
             </p>
           </div>
 
           <div>
-            <label for="password" class="block text-gray-700 mb-2">Mot de passe</label>
+            <label for="password" class="block text-gray-700 mb-2"
+              >Mot de passe</label
+            >
             <div class="relative">
-              <LockIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <LockIcon
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              />
               <input
                 id="password"
                 v-model="formSignUp.password"
@@ -172,13 +179,22 @@ const handleSignUp = async () => {
                 <EyeOffIcon v-else class="w-5 h-5" />
               </button>
             </div>
-            <p class="text-sm text-red-600 mt-1" v-if="formSignUp.password && formSignUp.password.length < 8">Le mot de passe doit contenir au moins 8 caractères.</p>
+            <p
+              v-if="formSignUp.password && formSignUp.password.length < 8"
+              class="text-sm text-red-600 mt-1"
+            >
+              Le mot de passe doit contenir au moins 8 caractères.
+            </p>
           </div>
 
           <div>
-            <label for="confirmPassword" class="block text-gray-700 mb-2">Confirmer le mot de passe</label>
+            <label for="confirmPassword" class="block text-gray-700 mb-2"
+              >Confirmer le mot de passe</label
+            >
             <div class="relative">
-              <LockIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <LockIcon
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              />
               <input
                 id="confirmPassword"
                 v-model="formSignUp.confirmPassword"
@@ -197,7 +213,16 @@ const handleSignUp = async () => {
                 <EyeOffIcon v-else class="w-5 h-5" />
               </button>
             </div>
-            <p class="text-sm text-red-600 mt-1" v-if="formSignUp.password && formSignUp.confirmPassword && formSignUp.password !== formSignUp.confirmPassword">Les mots de passe ne correspondent pas.</p>
+            <p
+              v-if="
+                formSignUp.password &&
+                formSignUp.confirmPassword &&
+                formSignUp.password !== formSignUp.confirmPassword
+              "
+              class="text-sm text-red-600 mt-1"
+            >
+              Les mots de passe ne correspondent pas.
+            </p>
           </div>
 
           <div class="flex items-center justify-between">
@@ -208,31 +233,35 @@ const handleSignUp = async () => {
                 class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary accent-primary"
               />
               <p class="text-sm text-gray-600">
-                J'accepte les 
-                <RouterLink to="/conditions-utilisation" class="text-primary">conditions d'utilisation</RouterLink> 
-                et la 
-                <RouterLink to="/politique-confidentialite" class="text-primary">politique de confidentialité</RouterLink>
+                J'accepte les
+                <RouterLink to="/conditions-utilisation" class="text-primary"
+                  >conditions d'utilisation</RouterLink
+                >
+                et la
+                <RouterLink to="/politique-confidentialite" class="text-primary"
+                  >politique de confidentialité</RouterLink
+                >
               </p>
             </label>
           </div>
 
-          <Button 
-            type="submit" 
-            variant="default" 
-            size="lg" 
-            class="w-full"
-          >
+          <Button type="submit" variant="default" size="lg" class="w-full">
             Créer un compte
           </Button>
-          
-          <p v-if="error && error === 'User already exists. Use another email.'" class="mt-4 text-red-600 text-sm">
+
+          <p
+            v-if="error && error === 'User already exists. Use another email.'"
+            class="mt-4 text-red-600 text-sm"
+          >
             L'utilisateur existe déjà. Veuillez utiliser un autre email.
           </p>
-          <p 
-            v-if="error 
-              && error !== 'Invalid email' 
-              && error !== 'Les mots de passe ne correspondent pas.'
-              && error !== 'User already exists. Use another email.'" 
+          <p
+            v-if="
+              error &&
+              error !== 'Invalid email' &&
+              error !== 'Les mots de passe ne correspondent pas.' &&
+              error !== 'User already exists. Use another email.'
+            "
             class="mt-4 text-red-600 text-sm"
           >
             {{ error }}
@@ -243,7 +272,9 @@ const handleSignUp = async () => {
           <p class="text-gray-600">
             Déjà un compte ?
             <RouterLink to="/connexion">
-              <span class="text-primary hover:text-primary/90">Se connecter</span>
+              <span class="text-primary hover:text-primary/90"
+                >Se connecter</span
+              >
             </RouterLink>
           </p>
         </div>

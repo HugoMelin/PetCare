@@ -22,7 +22,7 @@ export async function signUp(email, password, name) {
       onError: (ctx) => {
         console.error("Sign-up error:", ctx.error);
       },
-    }
+    },
   );
 
   return { data, error };
@@ -47,7 +47,7 @@ export async function signIn(email, password, rememberMe = false) {
       onError: (ctx) => {
         console.error("Sign-in error:", ctx.error);
       },
-    }
+    },
   );
 
   return { data, error };
