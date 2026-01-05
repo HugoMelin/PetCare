@@ -1,5 +1,5 @@
 <script setup>
-import { Line } from 'vue-chartjs'
+import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,7 +8,7 @@ import {
   LineElement,
   Tooltip,
   Legend,
-} from 'chart.js'
+} from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -17,7 +17,7 @@ ChartJS.register(
   LineElement,
   Tooltip,
   Legend,
-)
+);
 
 const props = defineProps({
   weights: {
@@ -28,60 +28,60 @@ const props = defineProps({
     type: Number,
     default: 256,
   },
-})
+});
 
 const chartData = computed(() => {
   if (!props.weights || !props.weights.length) {
     return {
       labels: [],
       datasets: [],
-    }
+    };
   }
 
-  const byDay = new Map()
+  const byDay = new Map();
 
   for (const w of props.weights) {
-    const dayKey = w.date.slice(0, 10) // '2025-12-02'
-    const current = byDay.get(dayKey)
+    const dayKey = w.date.slice(0, 10); // '2025-12-02'
+    const current = byDay.get(dayKey);
 
     if (!current) {
-      byDay.set(dayKey, w)
+      byDay.set(dayKey, w);
     } else {
       if (new Date(w.date) > new Date(current.date)) {
-        byDay.set(dayKey, w)
+        byDay.set(dayKey, w);
       }
     }
   }
 
   const sortedEntries = Array.from(byDay.entries()).sort(
     (a, b) => new Date(a[0]) - new Date(b[0]),
-  )
+  );
 
   const labels = sortedEntries.map(([day]) =>
-    new Date(day).toLocaleDateString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
+    new Date(day).toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
     }),
-  )
+  );
 
-  const data = sortedEntries.map(([, w]) => w.weight)
+  const data = sortedEntries.map(([, w]) => w.weight);
 
   return {
     labels,
     datasets: [
       {
-        label: 'Poids (kg)',
+        label: "Poids (kg)",
         data,
         tension: 0.2, // courbe un peu arrondie
-        borderColor: '#269394',
-        pointBackgroundColor: '#269394',
+        borderColor: "#269394",
+        pointBackgroundColor: "#269394",
         borderWidth: 2,
         pointRadius: 3,
         fill: true,
       },
     ],
-  }
-})
+  };
+});
 
 const chartOptions = {
   responsive: true,
@@ -89,7 +89,7 @@ const chartOptions = {
   plugins: {
     legend: {
       display: false,
-    }
+    },
   },
   scales: {
     x: {
@@ -102,7 +102,7 @@ const chartOptions = {
       beginAtZero: false,
     },
   },
-}
+};
 </script>
 
 <template>

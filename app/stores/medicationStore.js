@@ -33,7 +33,7 @@ export const useMedicationStore = defineStore("medicationStore", () => {
       }
       // Remove the deleted medication from the local state
       medications.value = medications.value.filter(
-        (med) => med.id !== medicationId
+        (med) => med.id !== medicationId,
       );
     } catch (error) {
       console.error(error);
@@ -62,7 +62,7 @@ export const useMedicationStore = defineStore("medicationStore", () => {
       }
       const updatedMedication = await response.json();
       const index = medications.value.findIndex(
-        (med) => med.id === updatedMedication.id
+        (med) => med.id === updatedMedication.id,
       );
       if (index !== -1) {
         medications.value[index] = updatedMedication;
@@ -82,7 +82,7 @@ export const useMedicationStore = defineStore("medicationStore", () => {
         medications.value = [];
       }
     },
-    { immediate: true }
+    { immediate: true },
   );
 
   return {
