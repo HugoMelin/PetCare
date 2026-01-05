@@ -1,45 +1,45 @@
 <script setup>
-import Button from '~/components/ui/Button.vue';
-import Card from '~/components/ui/Card.vue';
+import Button from "~/components/ui/Button.vue";
+import Card from "~/components/ui/Card.vue";
 
-import useWeights from '~/composables/useWeights';
+import useWeights from "~/composables/useWeights";
 
 const { addWeight, fetchWeights } = useWeights();
 const { selectedPet } = storeToRefs(usePetStore());
 
 const weights = ref([]);
-const period = ref('all');
+const period = ref("all");
 
 const filtres = [
-  { label: '3M', value: '3m' },
-  { label: '6M', value: '6m' },
-  { label: '1A', value: '1y' },
-  { label: 'Tout', value: 'all' },
-]
+  { label: "3M", value: "3m" },
+  { label: "6M", value: "6m" },
+  { label: "1A", value: "1y" },
+  { label: "Tout", value: "all" },
+];
 
 const filteredWeights = computed(() => {
   const now = new Date();
   let limitDate;
 
   switch (period.value) {
-    case '3m':
+    case "3m":
       limitDate = new Date();
       limitDate.setMonth(now.getMonth() - 3);
       break;
-    case '6m':
+    case "6m":
       limitDate = new Date();
       limitDate.setMonth(now.getMonth() - 6);
       break;
-    case '1y':
+    case "1y":
       limitDate = new Date();
       limitDate.setFullYear(now.getFullYear() - 1);
       break;
-    case 'all':
+    case "all":
     default:
       return weights.value;
   }
 
-  return weights.value.filter(w => new Date(w.date) >= limitDate);
+  return weights.value.filter((w) => new Date(w.date) >= limitDate);
 });
 
 watch(selectedPet, async (newPet) => {
@@ -61,9 +61,9 @@ onMounted(async () => {
 });
 
 const form = ref({
-  weight: '',
+  weight: "",
   date: new Date().toISOString().substr(0, 16),
-  comment: '',
+  comment: "",
 });
 
 const submitForm = async () => {
@@ -73,9 +73,9 @@ const submitForm = async () => {
     comment: form.value.comment,
   });
   form.value = {
-    weight: '',
+    weight: "",
     date: new Date().toISOString().substr(0, 16),
-    comment: '',
+    comment: "",
   };
 
   weights.value = await fetchWeights(selectedPet.value.id);
@@ -88,45 +88,92 @@ const submitForm = async () => {
 
     <Card>
       <template #title-section>
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4"
+        >
           <h3 class="font-bold">Évolution du poids</h3>
           <div class="flex items-center gap-2">
-            <button v-for="(item, idx) in filtres" :key="idx" @click="period = item.value"
-              :class="['px-3 py-1.5 rounded-lg transition-colors text-sm', period === item.value ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700']">
+            <button
+              v-for="(item, idx) in filtres"
+              :key="idx"
+              :class="[
+                'px-3 py-1.5 rounded-lg transition-colors text-sm',
+                period === item.value
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-200 text-gray-700',
+              ]"
+              @click="period = item.value"
+            >
               {{ item.label }}
             </button>
           </div>
         </div>
       </template>
       <template #content>
-        <WeightsLineChart v-if="filteredWeights.length" :weights="filteredWeights" class="h-[150px] sm:h-[304px]" />
-        <div v-else class="h-[150px] sm:h-[304px] bg-gray-200 rounded animate-pulse mt-2" />
+        <WeightsLineChart
+          v-if="filteredWeights.length"
+          :weights="filteredWeights"
+          class="h-[150px] sm:h-[304px]"
+        />
+        <div
+          v-else
+          class="h-[150px] sm:h-[304px] bg-gray-200 rounded animate-pulse mt-2"
+        />
       </template>
     </Card>
 
     <Card>
-      <template #title>
-        Ajouter un poids
-      </template>
+      <template #title> Ajouter un poids </template>
       <template #content>
-        <form action="" class="grid grid-cols-2 gap-4" @submit.prevent="submitForm">
+        <form
+          action=""
+          class="grid grid-cols-2 gap-4"
+          @submit.prevent="submitForm"
+        >
           <div class="mb-4 col-span-2 sm:col-span-1">
-            <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">Poids (kg)</label>
-            <input id="weight" v-model.number="form.weight" type="number" step="0.01" min="0" inputmode="decimal"
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="Entrez le poids">
+            <label
+              for="weight"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Poids (kg)</label
+            >
+            <input
+              id="weight"
+              v-model.number="form.weight"
+              type="number"
+              step="0.01"
+              min="0"
+              inputmode="decimal"
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              placeholder="Entrez le poids"
+            />
           </div>
 
           <div class="mb-4 col-span-2 sm:col-span-1">
-            <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-            <input v-model="form.date" type="datetime-local"
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            <label
+              for="date"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Date</label
+            >
+            <input
+              v-model="form.date"
+              type="datetime-local"
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            />
           </div>
 
           <div class="mb-4 col-span-2">
-            <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Commentaire</label>
-            <textarea id="comment" v-model="form.comment"
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" rows="3"
-              placeholder="Ajouter un commentaire (optionnel)" />
+            <label
+              for="comment"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Commentaire</label
+            >
+            <textarea
+              id="comment"
+              v-model="form.comment"
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              rows="3"
+              placeholder="Ajouter un commentaire (optionnel)"
+            />
           </div>
 
           <div>

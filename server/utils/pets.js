@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { prisma } from "./prisma";
 
 export const getPetsByUserId = async (userId) => {
   return await prisma.pet.findMany({
@@ -17,7 +17,7 @@ export const getPetById = async (petId) => {
     where: { id: parseInt(petId) },
     include: {
       weightEntries: {
-        orderBy: { date: 'desc' },
+        orderBy: { date: "desc" },
       },
       medications: true,
       owner: true,
@@ -37,13 +37,7 @@ export const getPetOwners = async (petId) => {
 };
 
 export const createPet = async (payload) => {
-  const {
-    name,
-    type,
-    birthdate,
-    breed,
-    userId
-  } = payload;
+  const { name, type, birthdate, breed, userId } = payload;
 
   return await prisma.pet.create({
     data: {
@@ -54,25 +48,20 @@ export const createPet = async (payload) => {
       createdByUserId: userId,
       owner: {
         connect: { id: userId },
-      }
+      },
     },
   });
 };
 
 export const updatePet = async (petId, payload) => {
-  const {
-    name,
-    type,
-    birthdate,
-    breed,
-  } = payload;
+  const { name, type, birthdate, breed } = payload;
 
   return await prisma.pet.update({
     where: { id: parseInt(petId) },
     data: {
       name: name !== undefined ? name : undefined,
       type: type !== undefined ? type : undefined,
-      birthdate: birthdate !== undefined ?  new Date(birthdate) : undefined,
+      birthdate: birthdate !== undefined ? new Date(birthdate) : undefined,
       breed: breed !== undefined ? breed : undefined,
     },
   });
@@ -95,15 +84,11 @@ export const isUserPetCreator = async (userId, petId) => {
   return !!pet;
 };
 
-
 export const isUserPetOwner = async (userId, petId) => {
   const pet = await prisma.pet.findFirst({
     where: {
       id: parseInt(petId),
-      OR: [
-        { createdByUserId: userId },
-        { owner: { some: { id: userId } } },
-      ],
+      OR: [{ createdByUserId: userId }, { owner: { some: { id: userId } } }],
     },
   });
 
@@ -116,7 +101,7 @@ export const addPetOwners = async (petId, newOwnerEmail) => {
   });
 
   if (!user) {
-    throw new Error('Utilisateur non trouvé');
+    throw new Error("Utilisateur non trouvé");
   }
 
   const res = await prisma.pet.update({
