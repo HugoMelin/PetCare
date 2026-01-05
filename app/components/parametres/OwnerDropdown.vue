@@ -1,7 +1,7 @@
 <script setup>
 import { ChevronDown, UserMinus, UserPlus, X } from "lucide-vue-next";
 import { removePetOwner, addPetOwner } from "~/composables/usePet";
-import Button from "./ui/Button.vue";
+import Button from "~/components/ui/Button.vue";
 
 const props = defineProps({
   petId: {

@@ -1,7 +1,7 @@
 <script setup>
 import { computed, toRefs } from "vue";
 import { Pencil, Trash2, Save, X } from "lucide-vue-next";
-import Button from "./ui/Button.vue";
+import Button from "~/components/ui/Button.vue";
 import { deletePet, updatePet } from "~/composables/usePet";
 import OwnerDropdown from "./OwnerDropdown.vue";
 import { authClient } from "~/lib/auth-client";

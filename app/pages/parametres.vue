@@ -3,7 +3,7 @@ import Button from "~/components/ui/Button.vue";
 import LogOutIcon from "~/components/icons/LogOutIcon.vue";
 import Card from "~/components/ui/Card.vue";
 import { signOut, authClient } from "~/lib/auth-client";
-import PetCard from "~/components/PetCard.vue";
+import PetCard from "~/components/parametres/PetCard.vue";
 import { MessageSquare } from "lucide-vue-next";
 
 const session = authClient.useSession();
