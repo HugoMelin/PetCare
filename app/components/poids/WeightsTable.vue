@@ -107,8 +107,8 @@ const formatWeightDate = (date) => {
             </tr>
           </thead>
           <tbody>
-            <tr 
-              v-for="row in paginatedWeights" 
+            <tr
+              v-for="row in paginatedWeights"
               :key="row.id"
               class="cursor-pointer"
               :class="rowHover === row.id ? 'bg-gray-100' : ''"
@@ -123,9 +123,7 @@ const formatWeightDate = (date) => {
               <td class="p-2 py-3 border-b col-3">
                 {{ row.comment ? row.comment : "-" }}
               </td>
-              <td class="p-2 py-3 border-b col-3">
-                >
-              </td>
+              <td class="p-2 py-3 border-b col-3">></td>
             </tr>
           </tbody>
         </table>

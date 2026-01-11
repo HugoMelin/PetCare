@@ -46,7 +46,10 @@ const form = reactive({
 
 const handleSubmit = async () => {
   console.log("Adding weight:", form.weight);
-  await addWeight(selectedPet.value.id, { weight: form.weight, date: formatForDatetimeLocal(new Date) });
+  await addWeight(selectedPet.value.id, {
+    weight: form.weight,
+    date: formatForDatetimeLocal(new Date()),
+  });
   form.weight = "";
   // Refresh last weight
   const res = await fetchWeights(selectedPet.value.id);

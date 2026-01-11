@@ -1,7 +1,7 @@
-export const useWeightStore = defineStore ("weightStore", () => {
+export const useWeightStore = defineStore("weightStore", () => {
   const petStore = usePetStore();
   const { selectedPet } = storeToRefs(petStore);
-  
+
   const weights = ref([]);
   const selectedWeight = ref(null);
   const error = ref(null);
@@ -33,12 +33,15 @@ export const useWeightStore = defineStore ("weightStore", () => {
       return;
     }
     try {
-      const res = await $fetch(`/api/pets/${selectedPet.value.id}/weights/${weightId}`, {
-        cache: "no-store",
-        headers: {
-          "cache-control": "no-store",
+      const res = await $fetch(
+        `/api/pets/${selectedPet.value.id}/weights/${weightId}`,
+        {
+          cache: "no-store",
+          headers: {
+            "cache-control": "no-store",
+          },
         },
-      });
+      );
       if (res.error) {
         throw new Error(res.error);
       }
@@ -67,7 +70,7 @@ export const useWeightStore = defineStore ("weightStore", () => {
   };
 
   const updateWeight = async (weightId, payload) => {
-    if ( !weightId) {
+    if (!weightId) {
       console.log("No selected pet or weight ID provided for update.");
       return;
     }
@@ -75,7 +78,7 @@ export const useWeightStore = defineStore ("weightStore", () => {
     /* if ( !payload.weight || !payload.date) {
       return { error : "Les champs 'Poids' et 'Date' doivent être fourni pour la mise à jour."};
     } */
-   console.log("Updating weight with payload:", payload);
+    console.log("Updating weight with payload:", payload);
 
     try {
       const res = await $fetch(`/api/weights/${weightId}`, {
@@ -90,14 +93,18 @@ export const useWeightStore = defineStore ("weightStore", () => {
       console.error("Error updating weight:", err);
       throw err;
     }
-  }
+  };
 
-  watch(selectedPet, async (newPet) => {
-    if (newPet) {
-      await fetchWeights();
-      return;
-    }
-  }, { immediate: true });
+  watch(
+    selectedPet,
+    async (newPet) => {
+      if (newPet) {
+        await fetchWeights();
+        return;
+      }
+    },
+    { immediate: true },
+  );
 
   return {
     weights,
