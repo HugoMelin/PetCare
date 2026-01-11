@@ -1,14 +1,21 @@
 <script setup>
 import Button from "~/components/ui/Button.vue";
 import Card from "~/components/ui/Card.vue";
-
+import WeightsTable from "~/components/poids/WeightsTable.vue";
 import useWeights from "~/composables/useWeights";
+import useFormatDate from "~/composables/useFormatDate";
+
+const { formatForDatetimeLocal } = useFormatDate();
 
 const { addWeight, fetchWeights } = useWeights();
 const { selectedPet } = storeToRefs(usePetStore());
 
-const weights = ref([]);
+const weightStore = useWeightStore();
+const { weights } = storeToRefs(weightStore);
+
 const period = ref("all");
+const selectedWeight = ref(null);
+const isEditingWeight = ref(null);
 
 const filtres = [
   { label: "3M", value: "3m" },
@@ -42,39 +49,21 @@ const filteredWeights = computed(() => {
   return weights.value.filter((w) => new Date(w.date) >= limitDate);
 });
 
-watch(selectedPet, async (newPet) => {
-  if (newPet) {
-    const res = await fetchWeights(newPet.id);
-    if (res) {
-      weights.value = res;
-    }
-  }
-});
-
-onMounted(async () => {
-  if (selectedPet.value) {
-    const res = await fetchWeights(selectedPet.value.id);
-    if (res) {
-      weights.value = res;
-    }
-  }
-});
-
 const form = ref({
   weight: "",
-  date: new Date().toISOString().substr(0, 16),
+  date: formatForDatetimeLocal(new Date()),
   comment: "",
 });
 
 const submitForm = async () => {
   await addWeight(selectedPet.value.id, {
     weight: form.value.weight,
-    date: form.value.date,
+    date: new Date(form.value.date).toISOString(),
     comment: form.value.comment,
   });
   form.value = {
     weight: "",
-    date: new Date().toISOString().substr(0, 16),
+    date: formatForDatetimeLocal(new Date()),
     comment: "",
   };
 
@@ -83,7 +72,7 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <div>
+  <div v-if="!isEditingWeight && !selectedWeight">
     <h2 class="text-2xl font-bold mb-4">Suivis du poids</h2>
 
     <Card>

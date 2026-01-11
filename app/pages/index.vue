@@ -13,9 +13,10 @@ const { isLate } = useMedications();
 
 const { selectedPet } = storeToRefs(store);
 const { medications } = storeToRefs(useMedicationStore());
+const weightStore = useWeightStore();
+const { weights } = storeToRefs(weightStore);
 
 const lastWeight = ref(null);
-const weights = ref([]);
 
 const nextMedication = computed(() => {
   if (!medications.value || medications.value.length === 0) return null;
@@ -45,7 +46,10 @@ const form = reactive({
 
 const handleSubmit = async () => {
   console.log("Adding weight:", form.weight);
-  await addWeight(selectedPet.value.id, { weight: form.weight });
+  await addWeight(selectedPet.value.id, {
+    weight: form.weight,
+    date: new Date().toISOString(),
+  });
   form.weight = "";
   // Refresh last weight
   const res = await fetchWeights(selectedPet.value.id);

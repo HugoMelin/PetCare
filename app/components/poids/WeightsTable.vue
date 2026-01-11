@@ -1,6 +1,7 @@
 <script setup>
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 import Card from "~/components/ui/Card.vue";
+import { useWeightStore } from "~/stores/weightStore";
 
 import useFormatDate from "~/composables/useFormatDate";
 
@@ -16,6 +17,10 @@ const { weights } = defineProps({
 const pageSizeOptions = [5, 10, 15, 20];
 const pageSize = ref(5);
 const currentPage = ref(1);
+const rowHover = ref(null);
+
+const weightStore = useWeightStore();
+const { selectedWeight } = storeToRefs(weightStore);
 
 const totalPages = computed(() => {
   return Math.max(1, Math.ceil(weights.length / pageSize.value));
@@ -25,6 +30,11 @@ const paginatedWeights = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
   return weights.slice(startIndex, startIndex + pageSize.value);
 });
+
+const handleWeightSelect = (weight) => {
+  selectedWeight.value = weight;
+  navigateTo(`/poids/${weight.id}/edit`);
+};
 
 watch(pageSize, () => {
   currentPage.value = 1;
@@ -69,6 +79,7 @@ const formatWeightDate = (date) => {
           v-for="row in paginatedWeights"
           :key="row.id"
           class="border border-gray-200 rounded-lg p-4 space-y-2"
+          @click="handleWeightSelect(row)"
         >
           <div class="flex justify-between items-start">
             <span class="text-gray-600">Date</span>
@@ -92,17 +103,27 @@ const formatWeightDate = (date) => {
               <th class="text-left p-2 border-b">Date</th>
               <th class="text-left p-2 border-b">Poids</th>
               <th class="text-left p-2 border-b">Commentaire</th>
+              <th class="text-left p-2 border-b"></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row in paginatedWeights" :key="row.id">
-              <td class="p-2 py-3 border-b col-4">
+            <tr
+              v-for="row in paginatedWeights"
+              :key="row.id"
+              class="cursor-pointer"
+              :class="rowHover === row.id ? 'bg-gray-100' : ''"
+              @mouseenter="rowHover = row.id"
+              @mouseleave="rowHover = null"
+              @click="handleWeightSelect(row)"
+            >
+              <td class="p-2 py-3 border-b col-3">
                 {{ formatWeightDate(row.date) }}
               </td>
-              <td class="p-2 py-3 border-b col-4">{{ row.weight }} kg</td>
-              <td class="p-2 py-3 border-b col-4">
+              <td class="p-2 py-3 border-b col-3">{{ row.weight }} kg</td>
+              <td class="p-2 py-3 border-b col-3">
                 {{ row.comment ? row.comment : "-" }}
               </td>
+              <td class="p-2 py-3 border-b col-3">></td>
             </tr>
           </tbody>
         </table>
