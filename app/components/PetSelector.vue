@@ -68,6 +68,7 @@ onUnmounted(() => {
           @click="
             selectedPet = petItem;
             isOpen = false;
+            navigateTo('/');
           "
         >
           <div class="flex flex-col">
