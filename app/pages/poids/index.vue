@@ -51,7 +51,7 @@ const filteredWeights = computed(() => {
 
 const form = ref({
   weight: "",
-  date: formatForDatetimeLocal(new Date),
+  date: formatForDatetimeLocal(new Date()),
   comment: "",
 });
 
@@ -63,7 +63,7 @@ const submitForm = async () => {
   });
   form.value = {
     weight: "",
-    date: formatForDatetimeLocal(new Date),
+    date: formatForDatetimeLocal(new Date()),
     comment: "",
   };
 
