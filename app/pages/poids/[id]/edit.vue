@@ -28,16 +28,10 @@ const handleDelete = async () => {
   }
 };
 
-const handleReset = () => {
-  form.value.weight = selectedWeight.value.weight;
-  form.value.date = formatForDatetimeLocal(selectedWeight.value.date);
-  form.value.comment = selectedWeight.value.comment;
-};
-
 const handleSubmit = async () => {
   const res = await updateWeight(selectedWeight.value.id, {
     weight: parseFloat(form.value.weight),
-    date: form.value.date,
+    date: new Date(form.value.date).toISOString(),
     comment: form.value.comment.trim(),
   });
   if (res.error) {
@@ -144,7 +138,7 @@ watch(
                 variant="outline"
                 size="lg"
                 class="flex-1 sm:flex-initial"
-                @click="handleReset"
+                @click="navigateTo('/poids')"
                 >Annuler</Button
               >
             </div>

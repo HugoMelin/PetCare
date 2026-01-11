@@ -58,7 +58,7 @@ const form = ref({
 const submitForm = async () => {
   await addWeight(selectedPet.value.id, {
     weight: form.value.weight,
-    date: form.value.date,
+    date: new Date(form.value.date).toISOString(),
     comment: form.value.comment,
   });
   form.value = {
