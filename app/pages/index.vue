@@ -8,7 +8,7 @@ import useMedications from "~/composables/useMedications";
 const store = usePetStore();
 
 const { fetchWeights, addWeight } = useWeights();
-const { dayNumberMonth, formatForDatetimeLocal } = useFormatDate();
+const { dayNumberMonth } = useFormatDate();
 const { isLate } = useMedications();
 
 const { selectedPet } = storeToRefs(store);
@@ -48,7 +48,7 @@ const handleSubmit = async () => {
   console.log("Adding weight:", form.weight);
   await addWeight(selectedPet.value.id, {
     weight: form.weight,
-    date: formatForDatetimeLocal(new Date()),
+    date: new Date().toISOString(),
   });
   form.weight = "";
   // Refresh last weight
