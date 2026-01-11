@@ -11,6 +11,15 @@ export const getWeightsByPetId = async (petId) => {
   });
 };
 
+export const getWeightsByPetIdAndId = async (petId, id) => {
+  return await prisma.weightEntry.findFirst({
+    where: {
+      petId: parseInt(petId),
+      id: parseInt(id),
+    },
+  });
+};
+
 export const addWeightEntry = async (payload) => {
   const {
     petId,
