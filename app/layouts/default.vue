@@ -3,7 +3,6 @@ import { fetchUserSession } from "~/lib/auth-client";
 
 const route = useRoute();
 const { pets, petsLoaded } = storeToRefs(usePetStore());
-const authChecked = ref(false);
 const isAuthenticated = ref(false);
 
 const redirectToAddPetIfNeeded = () => {
@@ -11,7 +10,7 @@ const redirectToAddPetIfNeeded = () => {
     return;
   }
 
-  if (!authChecked.value || !isAuthenticated.value) {
+  if (!isAuthenticated.value) {
     return;
   }
 
@@ -33,21 +32,21 @@ watch(
 
 onMounted(async () => {
   const session = await fetchUserSession();
-
-  authChecked.value = true;
-  isAuthenticated.value = Boolean(session.data);
-
-  if (!isAuthenticated.value) {
+  const ok = session && session.data;
+  
+  if (!ok) {
     navigateTo("/connexion");
     return;
   }
+  
+  isAuthenticated.value = ok;
 
   redirectToAddPetIfNeeded();
 });
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div v-if="isAuthenticated" class="min-h-screen bg-gray-50">
     <AppHeader />
     <main
       class="max-w-6xl mx-auto px-4 sm:px-6 lg:ml-20 lg:px-8 py-6 pb-24 lg:pb-6 xl:mx-auto"
@@ -56,4 +55,5 @@ onMounted(async () => {
     </main>
     <AppNavigation />
   </div>
+  <div v-else class="min-h-screen bg-gray-50" />
 </template>
