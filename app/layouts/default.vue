@@ -33,12 +33,12 @@ watch(
 onMounted(async () => {
   const session = await fetchUserSession();
   const ok = session && session.data;
-  
+
   if (!ok) {
     navigateTo("/connexion");
     return;
   }
-  
+
   isAuthenticated.value = ok;
 
   redirectToAddPetIfNeeded();
