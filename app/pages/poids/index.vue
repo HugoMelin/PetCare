@@ -106,7 +106,7 @@ const submitForm = async () => {
             </button>
             <button
               v-if="!isDesktopFullscreen"
-              class="hidden sm:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
+              class="hidden lg:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
               aria-label="Plein écran"
               @click="isDesktopFullscreen = true"
             >
@@ -114,7 +114,7 @@ const submitForm = async () => {
             </button>
             <button
               v-else
-              class="hidden sm:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
+              class="hidden lg:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
               aria-label="Fermer"
               @click="isDesktopFullscreen = false"
             >
