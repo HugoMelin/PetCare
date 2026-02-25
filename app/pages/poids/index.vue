@@ -75,7 +75,9 @@ const submitForm = async () => {
   <div v-if="!isEditingWeight && !selectedWeight">
     <h2 class="text-2xl font-bold mb-4">Suivis du poids</h2>
 
-    <Card>
+    <Card
+      class="landscape:fixed landscape:inset-0 landscape:z-50 landscape:bg-white landscape:p-4 landscape:h-full"
+    >
       <template #title-section>
         <div
           class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4"
