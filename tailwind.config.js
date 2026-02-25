@@ -11,6 +11,10 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      screens: {
+        portrait: { raw: "(orientation: portrait)" },
+        landscape: { raw: "(orientation: landscape)" },
+      },
       colors: {
         /* palette principale mappée sur tes variables CSS */
         background: "var(--background)",
