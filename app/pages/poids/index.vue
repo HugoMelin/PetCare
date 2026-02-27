@@ -4,6 +4,7 @@ import Card from "~/components/ui/Card.vue";
 import WeightsTable from "~/components/poids/WeightsTable.vue";
 import useWeights from "~/composables/useWeights";
 import useFormatDate from "~/composables/useFormatDate";
+import { Maximize2, X } from "lucide-vue-next";
 
 const { formatForDatetimeLocal } = useFormatDate();
 
@@ -16,6 +17,7 @@ const { weights } = storeToRefs(weightStore);
 const period = ref("all");
 const selectedWeight = ref(null);
 const isEditingWeight = ref(null);
+const isDesktopFullscreen = ref(false);
 
 const filtres = [
   { label: "3M", value: "3m" },
@@ -69,13 +71,30 @@ const submitForm = async () => {
 
   weights.value = await fetchWeights(selectedPet.value.id);
 };
+
+const handleKeydown = (e) => {
+  if (e.key === "Escape" && isDesktopFullscreen.value) {
+    isDesktopFullscreen.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeydown);
+});
 </script>
 
 <template>
   <div v-if="!isEditingWeight && !selectedWeight">
     <h2 class="text-2xl font-bold mb-4">Suivis du poids</h2>
 
-    <Card>
+    <Card
+      :class="[
+        '[@media(orientation:landscape)_and_(max-width:767px)]:fixed [@media(orientation:landscape)_and_(max-width:767px)]:inset-0 [@media(orientation:landscape)_and_(max-width:767px)]:z-50 [@media(orientation:landscape)_and_(max-width:767px)]:bg-white [@media(orientation:landscape)_and_(max-width:767px)]:p-4 [@media(orientation:landscape)_and_(max-width:767px)]:h-full',
+        isDesktopFullscreen
+          ? 'sm:fixed sm:inset-0 sm:z-50 sm:bg-white sm:p-6 sm:flex sm:flex-col sm:justify-center sm:px-[250px] sm:h-full'
+          : '',
+      ]"
+    >
       <template #title-section>
         <div
           class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4"
@@ -94,6 +113,22 @@ const submitForm = async () => {
               @click="period = item.value"
             >
               {{ item.label }}
+            </button>
+            <button
+              v-if="!isDesktopFullscreen"
+              class="hidden lg:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
+              aria-label="Plein écran"
+              @click="isDesktopFullscreen = true"
+            >
+              <Maximize2 class="w-4 h-4" />
+            </button>
+            <button
+              v-else
+              class="hidden lg:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
+              aria-label="Fermer"
+              @click="isDesktopFullscreen = false"
+            >
+              <X class="w-4 h-4" />
             </button>
           </div>
         </div>
