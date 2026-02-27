@@ -71,6 +71,16 @@ const submitForm = async () => {
 
   weights.value = await fetchWeights(selectedPet.value.id);
 };
+
+const handleKeydown = (e) => {
+  if (e.key === "Escape" && isDesktopFullscreen.value) {
+    isDesktopFullscreen.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeydown);
+});
 </script>
 
 <template>
@@ -81,7 +91,7 @@ const submitForm = async () => {
       :class="[
         '[@media(orientation:landscape)_and_(max-width:767px)]:fixed [@media(orientation:landscape)_and_(max-width:767px)]:inset-0 [@media(orientation:landscape)_and_(max-width:767px)]:z-50 [@media(orientation:landscape)_and_(max-width:767px)]:bg-white [@media(orientation:landscape)_and_(max-width:767px)]:p-4 [@media(orientation:landscape)_and_(max-width:767px)]:h-full',
         isDesktopFullscreen
-          ? 'sm:fixed sm:inset-0 sm:z-50 sm:bg-white sm:p-6 sm:flex sm:flex-col sm:justify-center sm:px-[250px]'
+          ? 'sm:fixed sm:inset-0 sm:z-50 sm:bg-white sm:p-6 sm:flex sm:flex-col sm:justify-center sm:px-[250px] sm:h-full'
           : '',
       ]"
     >
