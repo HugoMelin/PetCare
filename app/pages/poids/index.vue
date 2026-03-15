@@ -91,7 +91,7 @@ onMounted(() => {
       :class="[
         '[@media(orientation:landscape)_and_(max-width:767px)]:fixed [@media(orientation:landscape)_and_(max-width:767px)]:inset-0 [@media(orientation:landscape)_and_(max-width:767px)]:z-50 [@media(orientation:landscape)_and_(max-width:767px)]:bg-white [@media(orientation:landscape)_and_(max-width:767px)]:p-4 [@media(orientation:landscape)_and_(max-width:767px)]:h-full',
         isDesktopFullscreen
-          ? 'sm:fixed sm:inset-0 sm:z-50 sm:bg-white sm:p-6 sm:flex sm:flex-col sm:justify-center sm:px-[250px] sm:h-full'
+          ? 'fixed inset-0 z-50 bg-white p-6 flex flex-col justify-center lg:px-[250px] h-full'
           : '',
       ]"
     >
@@ -124,7 +124,7 @@ onMounted(() => {
             </button>
             <button
               v-else
-              class="hidden lg:inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
+              class="inline-flex h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700"
               aria-label="Fermer"
               @click="isDesktopFullscreen = false"
             >
@@ -143,6 +143,15 @@ onMounted(() => {
           v-else
           class="h-[150px] sm:h-[304px] bg-gray-200 rounded animate-pulse mt-2"
         />
+        <button
+          v-if="!isDesktopFullscreen"
+          class="inline-flex lg:hidden h-[34px] items-center px-3 py-1.5 rounded-lg transition-colors text-sm bg-gray-200 text-gray-700 w-full justify-center mt-4"
+          aria-label="Plein écran"
+          @click="isDesktopFullscreen = true"
+        >
+          <Maximize2 class="w-4 h-4 mr-2" />
+          Explorer en plein écran
+        </button>
       </template>
     </Card>
 
