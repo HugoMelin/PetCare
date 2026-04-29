@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import Card from "../ui/Card.vue";
+
+const props = defineProps({
+  version: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -7,7 +14,7 @@ import Card from "../ui/Card.vue";
     <template #title>À propos</template>
 
     <template #content>
-      <p class="mb-4">Version <strong>0.0.0</strong></p>
+      <p class="mb-4">Version <strong>{{ props.version }}</strong></p>
       <p class="mb-0">
         PetCare est une application dédiée à la gestion et au suivi de la santé
         de vos animaux de compagnie.

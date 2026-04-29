@@ -1,7 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { readFileSync } from "node:fs";
+
+const packageJson = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf-8"),
+);
+
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      appVersion: packageJson.version,
+    },
+  },
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",

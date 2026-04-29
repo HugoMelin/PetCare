@@ -12,6 +12,10 @@ const petStore = usePetStore();
 const { pets } = storeToRefs(petStore);
 const editingPetId = ref(null);
 
+const {
+  public: { appVersion: version },
+} = useRuntimeConfig();
+
 const user = computed(() => session.value?.data?.user);
 
 const handleEditPet = (pet) => {
@@ -94,6 +98,6 @@ const handleEditPet = (pet) => {
       </template>
     </Card>
 
-    <AboutSection />
+    <AboutSection :version="version" />
   </div>
 </template>
