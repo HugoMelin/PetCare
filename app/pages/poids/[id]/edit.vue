@@ -31,7 +31,7 @@ const handleSubmit = async () => {
   const res = await updateWeight(selectedWeight.value.id, {
     weight: parseFloat(form.value.weight),
     date: new Date(form.value.date).toISOString(),
-    comment: form.value.comment.trim(),
+    comment: (form.value.comment ?? "").trim(),
   });
   if (res.error) {
     submitError.value = res.error;
@@ -57,7 +57,7 @@ watch(
     if (weight) {
       form.value.weight = weight.weight;
       form.value.date = formatForDatetimeLocal(weight.date);
-      form.value.comment = weight.comment;
+      form.value.comment = weight.comment ?? "";
     }
   },
   { immediate: true },
