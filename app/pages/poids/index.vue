@@ -4,7 +4,6 @@ import Card from "~/components/ui/Card.vue";
 import WeightsTable from "~/components/poids/WeightsTable.vue";
 import useWeights from "~/composables/useWeights";
 import useFormatDate from "~/composables/useFormatDate";
-import { Maximize2, X } from "lucide-vue-next";
 
 const { formatForDatetimeLocal } = useFormatDate();
 
@@ -120,7 +119,7 @@ onMounted(() => {
               aria-label="Plein écran"
               @click="isDesktopFullscreen = true"
             >
-              <Maximize2 class="w-4 h-4" />
+              <IconMaximize2 class="w-4 h-4" />
             </button>
             <button
               v-else
@@ -128,7 +127,7 @@ onMounted(() => {
               aria-label="Fermer"
               @click="isDesktopFullscreen = false"
             >
-              <X class="w-4 h-4" />
+              <IconX class="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -149,7 +148,7 @@ onMounted(() => {
           aria-label="Plein écran"
           @click="isDesktopFullscreen = true"
         >
-          <Maximize2 class="w-4 h-4 mr-2" />
+          <IconMaximize2 class="w-4 h-4 mr-2" />
           Explorer en plein écran
         </button>
       </template>

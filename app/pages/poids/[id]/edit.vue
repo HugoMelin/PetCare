@@ -1,6 +1,5 @@
 <script setup>
 import Button from "~/components/ui/Button.vue";
-import { ArrowLeft, Trash2 } from "lucide-vue-next";
 import Card from "~/components/ui/Card.vue";
 import Input from "~/components/ui/Form/Input.vue";
 import Label from "~/components/ui/Form/Label.vue";
@@ -73,7 +72,7 @@ watch(
           to="/poids"
           class="flex items-center justify-center gap-2 p-2"
         >
-          <ArrowLeft class="w-5 h-5 text-gray-600" />
+          <IconArrowLeft class="w-5 h-5 text-gray-600" />
         </NuxtLink>
       </Button>
       <h2 class="text-2xl font-bold">Modifier le poids</h2>
@@ -160,7 +159,7 @@ watch(
             class="flex gap-2 w-full sm:w-auto"
             @click="handleDelete"
           >
-            <Trash2 class="w-5 h-5" />
+            <IconTrash2 class="w-5 h-5" />
             Supprimer
           </Button>
         </template>

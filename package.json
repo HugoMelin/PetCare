@@ -30,7 +30,7 @@
     "chart.js": "^4.5.1",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
-    "nodemailer": "^7.0.12",
+    "nodemailer": "^8.0.7",
     "nuxt": "^4.2.1",
     "nuxt-lucide-icons": "^2.0.0",
     "pinia": "^3.0.4",
@@ -46,5 +46,8 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.7.4",
     "prisma": "^7.8.0"
+  },
+  "overrides": {
+    "@hono/node-server": "^1.19.13"
   }
 }

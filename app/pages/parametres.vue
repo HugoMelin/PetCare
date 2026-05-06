@@ -4,7 +4,6 @@ import LogOutIcon from "~/components/icons/LogOutIcon.vue";
 import Card from "~/components/ui/Card.vue";
 import { signOut, authClient } from "~/lib/auth-client";
 import PetCard from "~/components/parametres/PetCard.vue";
-import { MessageSquare } from "lucide-vue-next";
 import AboutSection from "~/components/parametres/AboutSection.vue";
 
 const session = authClient.useSession();
@@ -85,7 +84,7 @@ const handleEditPet = (pet) => {
               to="/feedback"
               class="flex items-center justify-center gap-2"
             >
-              <MessageSquare class-name="w-5 h-5" />
+              <IconMessageSquare class="w-5 h-5" />
               Feedback
             </NuxtLink>
           </Button>

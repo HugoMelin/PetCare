@@ -5,7 +5,7 @@ import {
   Pill,
   PanelLeftOpen,
   PanelLeftClose,
-} from "lucide-vue-next";
+} from "@lucide/vue";
 
 const isExpanded = ref(false);
 
