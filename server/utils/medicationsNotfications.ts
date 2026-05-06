@@ -33,6 +33,9 @@ export const getAllMedicationsNotifications = async () => {
     },
     include: {
       owner: {
+        where: {
+          wantsRemindersMails: true,
+        },
         select: {
           id: true,
           name: true,
@@ -45,3 +48,27 @@ export const getAllMedicationsNotifications = async () => {
     },
   });
 };
+
+export const getUserMedicationNotifications = async (userId: string) => {
+  return await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      wantsRemindersMails: true,
+    }
+  });
+}
+
+export const updateUserReminderStatus = async (userId: string, status: boolean) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return await prisma.user.update({
+    where: { id: userId },
+    data: { wantsRemindersMails: status },
+  });
+}
