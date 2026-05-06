@@ -84,13 +84,15 @@ const handleEditPet = (pet) => {
 
         <div class="p-4 border border-gray-200 rounded-lg mb-4">
           <input
-            type="checkbox"
             id="reminders"
-            class="mr-2"
             v-model="settings.wantsRemindersMails"
+            type="checkbox"
+            class="mr-2"
             @change="updateReminderStatus(settings.wantsRemindersMails)"
           />
-          <label for="reminders" class="text-gray-900">Activer les rappels de médicaments par mails</label>
+          <label for="reminders" class="text-gray-900"
+            >Activer les rappels de médicaments par mails</label
+          >
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">

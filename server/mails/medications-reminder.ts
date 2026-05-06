@@ -51,7 +51,9 @@ export function medicationsReminderEmail({
   medications,
   medicationsUrl,
 }: MedicationsReminderEmailParams) {
-  const medicationList = Array.isArray(medications) ? medications : [medications];
+  const medicationList = Array.isArray(medications)
+    ? medications
+    : [medications];
 
   const medicationsHtml = medicationList
     .map((medication) => {

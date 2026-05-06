@@ -54,11 +54,38 @@ export const getUserMedicationNotifications = async (userId: string) => {
     where: { id: userId },
     select: {
       wantsRemindersMails: true,
-    }
+    },
   });
-}
+};
 
-export const updateUserReminderStatus = async (userId: string, status: boolean) => {
+export const createMedicationNotificationLogs = async (
+  medications: Array<{ id: number; medication: string; nextDoseDate: Date }>,
+  recipientEmail: string,
+  petName: string,
+  status: "sent" | "failed" = "sent",
+  errorMessage?: string,
+) => {
+  if (medications.length === 0) {
+    return { count: 0 };
+  }
+
+  const isFailure = status === "failed";
+
+  return await prisma.medicationNotification.createMany({
+    data: medications.map((medication) => ({
+      type: isFailure ? "EMAIL_REMINDER_FAILED" : "EMAIL_REMINDER_SENT",
+      message: isFailure
+        ? `Echec d'envoi du rappel a ${recipientEmail} pour ${petName} - ${medication.medication} (${medication.nextDoseDate.toISOString()}) : ${errorMessage || "Erreur inconnue"}`
+        : `Email de rappel envoye a ${recipientEmail} pour ${petName} - ${medication.medication} (${medication.nextDoseDate.toISOString()})`,
+      medicationId: medication.id,
+    })),
+  });
+};
+
+export const updateUserReminderStatus = async (
+  userId: string,
+  status: boolean,
+) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });
@@ -71,4 +98,4 @@ export const updateUserReminderStatus = async (userId: string, status: boolean) 
     where: { id: userId },
     data: { wantsRemindersMails: status },
   });
-}
+};

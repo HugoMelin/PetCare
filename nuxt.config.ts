@@ -37,14 +37,14 @@ export default defineNuxtConfig({
      * Prefix for all the imported component.
      * @default "Ui"
      */
-    prefix: '',
+    prefix: "",
     /**
      * Directory that the component lives in.
      * Will respect the Nuxt aliases.
      * @link https://nuxt.com/docs/api/nuxt-config#alias
      * @default "@/components/ui"
      */
-    componentDir: '@/components/ui'
+    componentDir: "@/components/ui",
   },
   app: {
     head: {

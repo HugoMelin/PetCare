@@ -1,11 +1,5 @@
 <script setup>
-import {
-  Home,
-  Scale,
-  Pill,
-  PanelLeftOpen,
-  PanelLeftClose,
-} from "@lucide/vue";
+import { Home, Scale, Pill, PanelLeftOpen, PanelLeftClose } from "@lucide/vue";
 
 const isExpanded = ref(false);
 
