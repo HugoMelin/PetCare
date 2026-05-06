@@ -1,6 +1,6 @@
 <script setup>
-import Button from "~/components/ui/Button.vue";
-import Card from "~/components/ui/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
+import Card from "~/components/ui/card/Card.vue";
 const { pets, selectedPet } = storeToRefs(usePetStore());
 
 const form = ref({

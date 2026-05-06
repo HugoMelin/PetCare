@@ -1,7 +1,7 @@
 <script setup>
-import Button from "~/components/ui/Button.vue";
+import Button from "~/components/ui/button/Button.vue";
 import LogOutIcon from "~/components/icons/LogOutIcon.vue";
-import Card from "~/components/ui/Card.vue";
+import Card from "~/components/ui/card/Card.vue";
 import { signOut, authClient } from "~/lib/auth-client";
 import PetCard from "~/components/parametres/PetCard.vue";
 import AboutSection from "~/components/parametres/AboutSection.vue";

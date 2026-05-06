@@ -1,6 +1,6 @@
 <script setup>
 import { removePetOwner, addPetOwner } from "~/composables/usePet";
-import Button from "~/components/ui/Button.vue";
+import Button from "~/components/ui/button/Button.vue";
 
 const props = defineProps({
   petId: {

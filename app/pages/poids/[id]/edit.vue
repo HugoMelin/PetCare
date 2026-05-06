@@ -1,6 +1,6 @@
 <script setup>
-import Button from "~/components/ui/Button.vue";
-import Card from "~/components/ui/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
+import Card from "~/components/ui/card/Card.vue";
 import Input from "~/components/ui/Form/Input.vue";
 import Label from "~/components/ui/Form/Label.vue";
 import useFormatDate from "~/composables/useFormatDate";

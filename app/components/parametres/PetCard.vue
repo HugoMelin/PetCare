@@ -1,6 +1,6 @@
 <script setup>
 import { computed, toRefs } from "vue";
-import Button from "~/components/ui/Button.vue";
+import Button from "~/components/ui/button/Button.vue";
 import { deletePet, updatePet } from "~/composables/usePet";
 import OwnerDropdown from "./OwnerDropdown.vue";
 import { authClient } from "~/lib/auth-client";

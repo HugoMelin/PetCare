@@ -1,6 +1,6 @@
 <script setup>
-import Card from "~/components/ui/Card.vue";
-import Button from "~/components/ui/Button.vue";
+import Card from "~/components/ui/card/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
 
 import useMedications from "~/composables/useMedications";
 

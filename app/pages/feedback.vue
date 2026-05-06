@@ -1,6 +1,6 @@
 <script setup>
-import Button from "~/components/ui/Button.vue";
-import Card from "~/components/ui/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
+import Card from "~/components/ui/card/Card.vue";
 import { fetchUserSession } from "~/lib/auth-client";
 import useFeedback from "~/composables/useFeedback";
 

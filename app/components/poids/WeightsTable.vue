@@ -1,5 +1,5 @@
 <script setup>
-import Card from "~/components/ui/Card.vue";
+import Card from "~/components/ui/card/Card.vue";
 import { useWeightStore } from "~/stores/weightStore";
 
 import useFormatDate from "~/composables/useFormatDate";
