@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Pet {
-  id              Int          @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   name            String
-  type            String       @default("Chien")
+  type            String        @default("Chien")
   birthdate       DateTime?
   breed           String?
   createdByUserId String
-  owner           User[]       @relation("PetOwners")
-  createdBy       User         @relation(fields: [createdByUserId], references: [id])
+  owner           User[]        @relation("PetOwners")
+  createdBy       User          @relation(fields: [createdByUserId], references: [id])
   medications     Medication[]
   weightEntries   WeightEntry[]
 
@@ -34,41 +34,42 @@ model WeightEntry {
 }
 
 model Medication {
-  id            Int      @id @default(autoincrement())
+  id            Int                      @id @default(autoincrement())
   petId         Int
   medication    String
   lastDoseDate  DateTime
   frequencyDays Int
   nextDoseDate  DateTime
-  pet           Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  pet           Pet                      @relation(fields: [petId], references: [id], onDelete: Cascade)
   notifications MedicationNotification[]
 
   @@index([petId], map: "Medication_petId_fkey")
 }
 
 model MedicationNotification {
-  id           Int      @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   type         String
   message      String
   medicationId Int?
-  sendAt       DateTime @default(now())
+  sendAt       DateTime    @default(now())
   medication   Medication? @relation(fields: [medicationId], references: [id], onDelete: SetNull)
 
   @@index([medicationId], map: "MedicationNotification_medicationId_fkey")
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  petsCreated   Pet[]
-  petsOwned     Pet[]     @relation("PetOwners")
+  id                  String    @id
+  name                String
+  email               String
+  emailVerified       Boolean   @default(false)
+  image               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  wantsRemindersMails Boolean   @default(true)
+  sessions            Session[]
+  accounts            Account[]
+  petsCreated         Pet[]
+  petsOwned           Pet[]     @relation("PetOwners")
 
   @@unique([email])
   @@map("user")
