@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { authClient } from "~/lib/auth-client";
+import { toast } from "vue-sonner";
 
 type Settings = Ref<{
   wantsRemindersMails?: boolean;
@@ -37,8 +38,10 @@ export const useSettingStore = defineStore("setting", () => {
         body: { status },
       });
       settings.value.wantsRemindersMails = status;
+      toast.success("Statut des rappels mis à jour avec succès.");
     } catch (error) {
       console.error("Error updating reminder status:", error);
+      toast.error("Erreur lors de la mise à jour du statut des rappels");
     }
   };
 

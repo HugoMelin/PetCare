@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@vite-pwa/nuxt",
     "@pinia/nuxt",
+    "shadcn-nuxt",
   ],
   css: ["~/assets/css/global.css"],
   tailwindcss: {
@@ -30,6 +31,20 @@ export default defineNuxtConfig({
   },
   pinia: {
     storesDirs: ["./stores/**"],
+  },
+  shadcn: {
+    /**
+     * Prefix for all the imported component.
+     * @default "Ui"
+     */
+    prefix: '',
+    /**
+     * Directory that the component lives in.
+     * Will respect the Nuxt aliases.
+     * @link https://nuxt.com/docs/api/nuxt-config#alias
+     * @default "@/components/ui"
+     */
+    componentDir: '@/components/ui'
   },
   app: {
     head: {
