@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: "Unauthorized" });
   }
 
-  const data = [];
+  const data = [{date: new Date().toISOString()}];
   const result = await getAllMedicationsNotifications();
   const medicationsUrl = `${process.env.CLIENT_URL}/medicaments`;
   const pets = result.map((pet) => pet);
