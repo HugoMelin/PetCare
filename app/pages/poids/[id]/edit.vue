@@ -1,7 +1,6 @@
 <script setup>
-import Button from "~/components/ui/Button.vue";
-import { ArrowLeft, Trash2 } from "lucide-vue-next";
-import Card from "~/components/ui/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
+import Card from "~/components/ui/card/Card.vue";
 import Input from "~/components/ui/Form/Input.vue";
 import Label from "~/components/ui/Form/Label.vue";
 import useFormatDate from "~/composables/useFormatDate";
@@ -32,7 +31,7 @@ const handleSubmit = async () => {
   const res = await updateWeight(selectedWeight.value.id, {
     weight: parseFloat(form.value.weight),
     date: new Date(form.value.date).toISOString(),
-    comment: form.value.comment.trim(),
+    comment: (form.value.comment ?? "").trim(),
   });
   if (res.error) {
     submitError.value = res.error;
@@ -58,7 +57,7 @@ watch(
     if (weight) {
       form.value.weight = weight.weight;
       form.value.date = formatForDatetimeLocal(weight.date);
-      form.value.comment = weight.comment;
+      form.value.comment = weight.comment ?? "";
     }
   },
   { immediate: true },
@@ -73,7 +72,7 @@ watch(
           to="/poids"
           class="flex items-center justify-center gap-2 p-2"
         >
-          <ArrowLeft class="w-5 h-5 text-gray-600" />
+          <IconArrowLeft class="w-5 h-5 text-gray-600" />
         </NuxtLink>
       </Button>
       <h2 class="text-2xl font-bold">Modifier le poids</h2>
@@ -160,7 +159,7 @@ watch(
             class="flex gap-2 w-full sm:w-auto"
             @click="handleDelete"
           >
-            <Trash2 class="w-5 h-5" />
+            <IconTrash2 class="w-5 h-5" />
             Supprimer
           </Button>
         </template>

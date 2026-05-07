@@ -1,7 +1,6 @@
 <script setup>
-import Card from "~/components/ui/Card.vue";
-import Button from "~/components/ui/Button.vue";
-import { Plus, X, Save, ChevronUp, Pencil, Trash2 } from "lucide-vue-next";
+import Card from "~/components/ui/card/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
 
 import useMedications from "~/composables/useMedications";
 
@@ -107,7 +106,7 @@ const handleNewMedication = async () => {
       <h2 class="text-2xl font-bold">Médicaments</h2>
 
       <Button size="lg" @click="isAddingNew = true">
-        <Plus class="w-4 h-4" />
+        <IconPlus class="w-4 h-4" />
         <span class="hidden sm:inline ml-2">Ajouter un médicament</span>
       </Button>
     </div>
@@ -162,7 +161,7 @@ const handleNewMedication = async () => {
               size="lg"
               class="flex items-center gap-2 w-2/4 lg:w-auto"
             >
-              <Save class="w-4 h-4" />
+              <IconSave class="w-4 h-4" />
               Ajouter
             </Button>
             <Button
@@ -171,7 +170,7 @@ const handleNewMedication = async () => {
               class="flex items-center gap-2 w-2/4 lg:w-auto"
               @click="isAddingNew = false"
             >
-              <X class="w-4 h-4" />
+              <IconX class="w-4 h-4" />
               Annuler
             </Button>
           </div>
@@ -209,7 +208,7 @@ const handleNewMedication = async () => {
                 }}
               </p>
             </div>
-            <ChevronUp
+            <IconChevronUp
               class="w-5 h-5 text-gray-500 transition-transform"
               :class="{ 'rotate-180': expandedMedication !== medication.id }"
             />
@@ -279,7 +278,7 @@ const handleNewMedication = async () => {
                   size="lg"
                   class="flex items-center gap-2 w-2/4 lg:w-auto"
                 >
-                  <Save class="w-4 h-4" />
+                  <IconSave class="w-4 h-4" />
                   Enregistrer
                 </Button>
                 <Button
@@ -289,7 +288,7 @@ const handleNewMedication = async () => {
                   class="flex items-center gap-2 w-2/4 lg:w-auto"
                   @click="editingId = null"
                 >
-                  <X class="w-4 h-4" />
+                  <IconX class="w-4 h-4" />
                   Annuler
                 </Button>
               </div>
@@ -339,7 +338,7 @@ const handleNewMedication = async () => {
                   class="flex items-center gap-2 w-full sm:w-auto"
                   @click="editingId = medication.id"
                 >
-                  <Pencil class="w-4 h-4" />
+                  <IconPencil class="w-4 h-4" />
                   Modifier
                 </Button>
                 <Button
@@ -347,7 +346,7 @@ const handleNewMedication = async () => {
                   class="flex items-center gap-2 w-auto"
                   @click="handleDelete(medication.id)"
                 >
-                  <Trash2 class="w-4 h-4" />
+                  <IconTrash2 class="w-4 h-4" />
                   <span class="hidden sm:inline">Supprimer</span>
                 </Button>
               </div>
@@ -366,7 +365,7 @@ const handleNewMedication = async () => {
             class="mt-4 flex items-center gap-2 w-full sm:w-auto"
             @click="isAddingNew = true"
           >
-            <Plus class="w-4 h-4" />
+            <IconPlus class="w-4 h-4" />
             <span>Ajouter un médicament</span>
           </Button>
         </template>

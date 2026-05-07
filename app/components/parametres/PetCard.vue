@@ -1,7 +1,6 @@
 <script setup>
 import { computed, toRefs } from "vue";
-import { Pencil, Trash2, Save, X } from "lucide-vue-next";
-import Button from "~/components/ui/Button.vue";
+import Button from "~/components/ui/button/Button.vue";
 import { deletePet, updatePet } from "~/composables/usePet";
 import OwnerDropdown from "./OwnerDropdown.vue";
 import { authClient } from "~/lib/auth-client";
@@ -104,7 +103,7 @@ const handleUpdate = async () => {
         class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
         @click="handleEditClick(pet)"
       >
-        <Pencil class="w-4 h-4 hover:text-primary" />
+        <IconPencil class="w-4 h-4 hover:text-primary" />
       </button>
       <button
         title="Supprimer"
@@ -112,7 +111,7 @@ const handleUpdate = async () => {
         :disabled="!isCreator"
         @click="handleDelete(pet)"
       >
-        <Trash2 class="w-4 h-4" />
+        <IconTrash2 class="w-4 h-4" />
       </button>
     </div>
   </div>
@@ -167,7 +166,7 @@ const handleUpdate = async () => {
 
     <div class="flex gap-2">
       <Button class="gap-1 flex-1" size="lg" type="submit">
-        <Save class="w-4 h-4" />
+        <IconSave class="w-4 h-4" />
         Sauvegarder
       </Button>
       <Button
@@ -176,7 +175,7 @@ const handleUpdate = async () => {
         size="lg"
         @click="$emit('edit-pet', null)"
       >
-        <X class="w-4 h-4" />
+        <IconX class="w-4 h-4" />
         Annuler
       </Button>
     </div>

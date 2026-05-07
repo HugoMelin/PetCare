@@ -1,16 +1,23 @@
 <script setup>
-import Button from "~/components/ui/Button.vue";
+import Button from "~/components/ui/button/Button.vue";
 import LogOutIcon from "~/components/icons/LogOutIcon.vue";
-import Card from "~/components/ui/Card.vue";
+import Card from "~/components/ui/card/Card.vue";
 import { signOut, authClient } from "~/lib/auth-client";
 import PetCard from "~/components/parametres/PetCard.vue";
-import { MessageSquare } from "lucide-vue-next";
 import AboutSection from "~/components/parametres/AboutSection.vue";
+import { useSettingStore } from "~/stores/settingStore";
 
 const session = authClient.useSession();
+const settingStore = useSettingStore();
+const { updateReminderStatus } = settingStore;
+const { settings } = storeToRefs(settingStore);
 const petStore = usePetStore();
 const { pets } = storeToRefs(petStore);
 const editingPetId = ref(null);
+
+const {
+  public: { appVersion: version },
+} = useRuntimeConfig();
 
 const user = computed(() => session.value?.data?.user);
 
@@ -75,13 +82,26 @@ const handleEditPet = (pet) => {
           <p class="text-gray-900">{{ user?.email || "N/C" }}</p>
         </div>
 
+        <div class="p-4 border border-gray-200 rounded-lg mb-4">
+          <input
+            id="reminders"
+            v-model="settings.wantsRemindersMails"
+            type="checkbox"
+            class="mr-2"
+            @change="updateReminderStatus(settings.wantsRemindersMails)"
+          />
+          <label for="reminders" class="text-gray-900"
+            >Activer les rappels de médicaments par mails</label
+          >
+        </div>
+
         <div class="flex flex-col sm:flex-row gap-3">
           <Button type="button" size="lg">
             <NuxtLink
               to="/feedback"
               class="flex items-center justify-center gap-2"
             >
-              <MessageSquare class-name="w-5 h-5" />
+              <IconMessageSquare class="w-5 h-5" />
               Feedback
             </NuxtLink>
           </Button>
@@ -94,6 +114,6 @@ const handleEditPet = (pet) => {
       </template>
     </Card>
 
-    <AboutSection />
+    <AboutSection :version="version" />
   </div>
 </template>

@@ -1,11 +1,5 @@
 <script setup>
-import {
-  Home,
-  Scale,
-  Pill,
-  PanelLeftOpen,
-  PanelLeftClose,
-} from "lucide-vue-next";
+import { Home, Scale, Pill, PanelLeftOpen, PanelLeftClose } from "@lucide/vue";
 
 const isExpanded = ref(false);
 

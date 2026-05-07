@@ -1,7 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { readFileSync } from "node:fs";
+
+const packageJson = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf-8"),
+);
+
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      appVersion: packageJson.version,
+    },
+  },
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",
@@ -9,6 +20,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@vite-pwa/nuxt",
     "@pinia/nuxt",
+    "shadcn-nuxt",
   ],
   css: ["~/assets/css/global.css"],
   tailwindcss: {
@@ -19,6 +31,20 @@ export default defineNuxtConfig({
   },
   pinia: {
     storesDirs: ["./stores/**"],
+  },
+  shadcn: {
+    /**
+     * Prefix for all the imported component.
+     * @default "Ui"
+     */
+    prefix: "",
+    /**
+     * Directory that the component lives in.
+     * Will respect the Nuxt aliases.
+     * @link https://nuxt.com/docs/api/nuxt-config#alias
+     * @default "@/components/ui"
+     */
+    componentDir: "@/components/ui",
   },
   app: {
     head: {

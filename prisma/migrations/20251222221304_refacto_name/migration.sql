@@ -80,13 +80,13 @@ DEALLOCATE PREPARE we_alter_stmt;
 DROP TABLE IF EXISTS `DewormingSchedule`;
 
 -- DropTable
-DROP TABLE IF EXISTS `Dog`;
-
--- DropTable
 DROP TABLE IF EXISTS `NotificationLog`;
 
 -- DropTable
 DROP TABLE IF EXISTS `_DogOwners`;
+
+-- DropTable
+DROP TABLE IF EXISTS `Dog`;
 
 -- CreateTable
 CREATE TABLE `Pet` (

@@ -1,6 +1,5 @@
 <script setup>
-import { ChevronLeft, ChevronRight } from "lucide-vue-next";
-import Card from "~/components/ui/Card.vue";
+import Card from "~/components/ui/card/Card.vue";
 import { useWeightStore } from "~/stores/weightStore";
 
 import useFormatDate from "~/composables/useFormatDate";
@@ -141,7 +140,7 @@ const formatWeightDate = (date) => {
             :disabled="currentPage === 1"
             @click="currentPage -= 1"
           >
-            <ChevronLeft class="w-5 h-5" />
+            <IconChevronLeft class="w-5 h-5" />
           </button>
           <button
             type="button"
@@ -149,7 +148,7 @@ const formatWeightDate = (date) => {
             :disabled="currentPage === totalPages"
             @click="currentPage += 1"
           >
-            <ChevronRight class="w-5 h-5" />
+            <IconChevronRight class="w-5 h-5" />
           </button>
         </div>
       </div>

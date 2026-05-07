@@ -88,7 +88,7 @@ async function main() {
 
     console.log("Created pet:", Oslo);
   }
-  return;
+  return true;
 }
 
 main()
