@@ -1,7 +1,6 @@
 <script setup>
-import { ArrowLeft, CheckCircle, Send } from "lucide-vue-next";
-import Button from "~/components/ui/Button.vue";
-import Card from "~/components/ui/Card.vue";
+import Button from "~/components/ui/button/Button.vue";
+import Card from "~/components/ui/card/Card.vue";
 import { fetchUserSession } from "~/lib/auth-client";
 import useFeedback from "~/composables/useFeedback";
 
@@ -57,7 +56,7 @@ onMounted(async () => {
           to="/parametres"
           class="flex items-center justify-center gap-2 p-2"
         >
-          <ArrowLeft class="w-5 h-5 text-gray-600" />
+          <IconArrowLeft class="w-5 h-5 text-gray-600" />
         </NuxtLink>
       </Button>
       <h2 class="text-2xl font-bold">Feedback</h2>
@@ -69,7 +68,7 @@ onMounted(async () => {
           <div
             class="w-16 h-16 rounded-full bg-[#44C4A1]/10 flex items-center justify-center mb-4"
           >
-            <CheckCircle class="w-8 h-8 text-[#44C4A1]" />
+            <IconCheckCircle class="w-8 h-8 text-[#44C4A1]" />
           </div>
           <h2 class="text-[#44C4A1] mb-2 text-2xl font-bol">
             Merci pour votre retour !
@@ -177,7 +176,7 @@ onMounted(async () => {
           >
             <template v-if="isSubmitting">Envoi...</template>
             <template v-else>
-              <Send class="w-5 h-5 pr-2" />
+              <IconSend class="w-5 h-5 pr-2" />
               Envoyer le feedback
             </template>
           </Button>

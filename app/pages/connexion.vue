@@ -1,5 +1,5 @@
 <script setup>
-import Card from "~/components/ui/Card.vue";
+import Card from "~/components/ui/card/Card.vue";
 import GoogleIcon from "~/components/icons/GoogleIcon.vue";
 import FacebookIcon from "~/components/icons/FacebookIcon.vue";
 import AppleIcon from "~/components/icons/AppleIcon.vue";
@@ -7,7 +7,7 @@ import MailIcon from "~/components/icons/MailIcon.vue";
 import LockIcon from "~/components/icons/LockIcon.vue";
 import EyeIcon from "~/components/icons/EyeIcon.vue";
 import EyeOffIcon from "~/components/icons/EyeOffIcon.vue";
-import Button from "~/components/ui/Button.vue";
+import Button from "~/components/ui/button/Button.vue";
 
 import { signIn } from "~/lib/auth-client";
 
