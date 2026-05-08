@@ -43,7 +43,7 @@ const medicationStatus = (medication: ReminderMedication) => {
   };
 };
 
-const settingsUrl = `${process.env.CLIENT_URL}/account/notifications`;
+const settingsUrl = `${process.env.CLIENT_URL}/parametres`;
 
 export function medicationsReminderEmail({
   clientName,
