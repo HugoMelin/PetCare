@@ -5,16 +5,18 @@ import Button from "~/components/ui/button/Button.vue";
 import Spinner from "~/components/ui/spinner/Spinner.vue";
 import { toast } from "vue-sonner";
 
-import { sendPasswordResetEmail } from "~/lib/auth-client";
+import { sendPasswordResetEmail, fetchUserSession } from "~/lib/auth-client";
 
 definePageMeta({
   layout: "auth",
+  allowAuthenticated: true,
 });
 
 const loading = ref(false);
 
 const email = ref("");
 const handleSubmit = async () => {
+  if (loading.value) return;
   try {
     loading.value = true;
     const { error } = await sendPasswordResetEmail(email.value);
@@ -29,6 +31,13 @@ const handleSubmit = async () => {
     loading.value = false;
   }
 };
+
+const isAuthenticated = ref(false);
+
+onMounted(async () => {
+  const session = await fetchUserSession();
+  isAuthenticated.value = !!(session && session.data);
+});
 </script>
 
 <template>
@@ -41,7 +50,7 @@ const handleSubmit = async () => {
     <Card>
       <template #title>
         <div class="flex items-center gap-2">
-          <RouterLink to="/connexion">
+          <RouterLink :to="isAuthenticated ? '/' : '/connexion'">
             <ChevronLeft class="w-4 h-4" />
           </RouterLink>
           Mot de passe oublié

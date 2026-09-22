@@ -84,3 +84,11 @@ export async function sendPasswordResetEmail(
   });
   return { data, error };
 }
+
+export async function resetPassword(token, newPassword) {
+  const { data, error } = await authClient.resetPassword({
+    token,
+    newPassword,
+  });
+  return { data, error };
+}
