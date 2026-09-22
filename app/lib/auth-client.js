@@ -73,3 +73,14 @@ export async function signOut() {
 export async function fetchUserSession() {
   return await authClient.getSession();
 }
+
+export async function sendPasswordResetEmail(
+  email, 
+  redirectTo = null
+) {
+  const { data, error } = await authClient.requestPasswordReset({
+    email,
+    redirectTo: redirectTo || `${window.location.origin}/reinitialiser-mot-de-passe`,
+  });
+  return { data, error };
+}

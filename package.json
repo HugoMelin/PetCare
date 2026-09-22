@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "docker compose up -d db adminer && nuxt dev",
+    "dev": "docker compose up -d db adminer mailhog && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
