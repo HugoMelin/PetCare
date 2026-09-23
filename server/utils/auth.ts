@@ -82,7 +82,7 @@ export const auth = betterAuth({
     after: createAuthMiddleware(async (ctx) => {
       const result = ctx.context.returned;
       if (!result || result instanceof APIError) return;
-      
+
       if (ctx.path === "/change-password") {
         const user = ctx.context.session?.user;
         if (!user) return;
@@ -118,7 +118,10 @@ async function notifyPasswordChanged(user: { email: string; name: string }) {
     );
 
     if (error) {
-      console.error("Échec de l’envoi de l’alerte de sécurité :", error.message);
+      console.error(
+        "Échec de l’envoi de l’alerte de sécurité :",
+        error.message,
+      );
     }
   } catch {
     console.error("Erreur lors de l’envoi de l’alerte de sécurité.");
