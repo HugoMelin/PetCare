@@ -1,7 +1,7 @@
 {
   "name": "petCare-nuxt",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -23,8 +23,8 @@
     "@nuxt/image": "^2.0.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@pinia/nuxt": "^0.11.3",
-    "@prisma/adapter-mariadb": "^7.0.1",
-    "@prisma/client": "^7.8.0",
+    "@prisma/adapter-mariadb": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "@vite-pwa/nuxt": "^1.1.0",
     "@vueuse/core": "^14.3.0",
     "better-auth": "^1.4.5",
@@ -32,9 +32,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
-    "eslint": "^9.39.1",
     "lucide-vue-next": "^1.0.0",
-    "nodemailer": "^8.0.7",
+    "nodemailer": "^10.0.10",
     "nuxt": "^4.2.1",
     "nuxt-lucide-icons": "^2.0.0",
     "pinia": "^3.0.4",
@@ -51,11 +50,20 @@
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^24.10.1",
     "baseline-browser-mapping": "^2.10.8",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.7.4",
     "prisma": "^7.8.0"
   },
   "overrides": {
-    "@hono/node-server": "^1.19.13"
+    "@hono/node-server": "^1.19.13",
+    "mariadb": "^3.4.6"
+  },
+  "allowScripts": {
+    "prisma@7.10.0": true,
+    "@prisma/engines@7.10.0": true,
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true,
+    "fsevents@2.3.3": true
   }
 }

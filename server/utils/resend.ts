@@ -1,11 +1,9 @@
 import { Resend } from "resend";
 import nodemailer from "nodemailer";
 
-const useSmtp= process.env.MAIL_TRANSPORT === "smtp";
+const useSmtp = process.env.MAIL_TRANSPORT === "smtp";
 
-const resend = useSmtp 
-  ? null
-  : new Resend(process.env.RESEND_API_KEY);
+const resend = useSmtp ? null : new Resend(process.env.RESEND_API_KEY);
 
 const smtpTransport = useSmtp
   ? nodemailer.createTransport({

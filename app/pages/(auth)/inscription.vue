@@ -4,20 +4,16 @@ import GoogleIcon from "~/components/icons/GoogleIcon.vue";
 import FacebookIcon from "~/components/icons/FacebookIcon.vue";
 import AppleIcon from "~/components/icons/AppleIcon.vue";
 import MailIcon from "~/components/icons/MailIcon.vue";
-import LockIcon from "~/components/icons/LockIcon.vue";
-import EyeIcon from "~/components/icons/EyeIcon.vue";
-import EyeOffIcon from "~/components/icons/EyeOffIcon.vue";
 import UserIcon from "~/components/icons/UserIcon.vue";
 import Button from "~/components/ui/button/Button.vue";
 
 import { signUp } from "~/lib/auth-client";
+import { PasswordInput } from "~/components/ui/Form";
 
 definePageMeta({
   layout: "auth",
 });
 
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
 const error = ref(null);
 
 const formSignUp = reactive({
@@ -157,28 +153,7 @@ const handleSignUp = async () => {
             <label for="password" class="block text-gray-700 mb-2"
               >Mot de passe</label
             >
-            <div class="relative">
-              <LockIcon
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              />
-              <input
-                id="password"
-                v-model="formSignUp.password"
-                :type="showPassword ? 'text' : 'password'"
-                required
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
-                placeholder="••••••••"
-                minlength="8"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                @click="showPassword = !showPassword"
-              >
-                <EyeIcon v-if="!showPassword" class="w-5 h-5" />
-                <EyeOffIcon v-else class="w-5 h-5" />
-              </button>
-            </div>
+            <PasswordInput id="password" v-model="formSignUp.password" />
             <p
               v-if="formSignUp.password && formSignUp.password.length < 8"
               class="text-sm text-red-600 mt-1"
@@ -191,28 +166,10 @@ const handleSignUp = async () => {
             <label for="confirmPassword" class="block text-gray-700 mb-2"
               >Confirmer le mot de passe</label
             >
-            <div class="relative">
-              <LockIcon
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              />
-              <input
-                id="confirmPassword"
-                v-model="formSignUp.confirmPassword"
-                :type="showConfirmPassword ? 'text' : 'password'"
-                required
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
-                placeholder="••••••••"
-                minlength="8"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                @click="showConfirmPassword = !showConfirmPassword"
-              >
-                <EyeIcon v-if="!showConfirmPassword" class="w-5 h-5" />
-                <EyeOffIcon v-else class="w-5 h-5" />
-              </button>
-            </div>
+            <PasswordInput
+              id="confirmPassword"
+              v-model="formSignUp.confirmPassword"
+            />
             <p
               v-if="
                 formSignUp.password &&

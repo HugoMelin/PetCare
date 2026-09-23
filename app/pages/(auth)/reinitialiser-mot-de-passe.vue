@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 import { Card } from "~/components/ui/card";
 import { resetPassword } from "~/lib/auth-client";
-import EyeIcon from "~/components/icons/EyeIcon.vue";
-import EyeOffIcon from "~/components/icons/EyeOffIcon.vue";
-import LockIcon from "~/components/icons/LockIcon.vue";
 import { Spinner } from "~/components/ui/spinner";
 import { toast } from "vue-sonner";
+import { PasswordInput } from "~/components/ui/Form";
 
 const route = useRoute();
 
@@ -17,7 +15,7 @@ definePageMeta({
 
 const token = computed(() =>
   typeof route.query.token === "string" ? route.query.token : "",
-)
+);
 const tokenRejected = ref(false);
 
 const invalidLink = computed(
@@ -33,7 +31,6 @@ const form = reactive({
   password: "",
   confirmPassword: "",
 });
-const showPassword = ref(false);
 const error = ref<string | null>(null);
 
 const handleResetPassword = async () => {
@@ -77,12 +74,14 @@ const handleResetPassword = async () => {
 
     await navigateTo("/connexion", { replace: true });
   } catch (err) {
-    toast.error("Une erreur est survenue lors de la réinitialisation du mot de passe.");
+    toast.error(
+      "Une erreur est survenue lors de la réinitialisation du mot de passe.",
+    );
     console.error("Error resetting password:", err);
   } finally {
     loading.value = false;
   }
-}
+};
 </script>
 
 <template>
@@ -96,8 +95,8 @@ const handleResetPassword = async () => {
       <template #title> Lien invalide </template>
       <template #content>
         <p class="text-gray-600">
-          Ce lien a expiré ou a déjà été utilisé.
-          Demandez un nouveau lien pour réinitialiser votre mot de passe.
+          Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien pour
+          réinitialiser votre mot de passe.
         </p>
         <NuxtLink
           to="/mot-de-passe-oublie"
@@ -115,65 +114,32 @@ const handleResetPassword = async () => {
             <label for="password" class="block text-gray-700 mb-2"
               >Mot de passe</label
             >
-            <div class="relative">
-              <LockIcon
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              />
-              <input
-                id="password"
-                v-model="form.password"
-                :type="showPassword ? 'text' : 'password'"
-                required
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                @click="showPassword = !showPassword"
-              >
-                <EyeIcon v-if="!showPassword" class="w-5 h-5" />
-                <EyeOffIcon v-else class="w-5 h-5" />
-              </button>
-            </div>
+            <PasswordInput id="password" v-model="form.password" />
           </div>
 
           <div>
             <label for="confirmPassword" class="block text-gray-700 mb-2"
               >Confirmer le mot de passe</label
             >
-            <div class="relative">
-              <LockIcon
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              />
-              <input
-                id="confirmPassword"
-                v-model="form.confirmPassword"
-                :type="showPassword ? 'text' : 'password'"
-                required
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                @click="showPassword = !showPassword"
-              >
-                <EyeIcon v-if="!showPassword" class="w-5 h-5" />
-                <EyeOffIcon v-else class="w-5 h-5" />
-              </button>
-            </div>
+            <PasswordInput
+              id="confirmPassword"
+              v-model="form.confirmPassword"
+            />
           </div>
           <div v-if="error" class="text-red-500 mb-4">{{ error }}</div>
 
-          <Button type="submit" variant="default" size="lg" class="w-full" :disabled="loading">
+          <Button
+            type="submit"
+            variant="default"
+            size="lg"
+            class="w-full"
+            :disabled="loading"
+          >
             <template v-if="loading">
               <Spinner class="mr-2" />
               Envoi en cours...
             </template>
-            <template v-else>
-              Réinitialiser le mot de passe
-            </template>
+            <template v-else> Réinitialiser le mot de passe </template>
           </Button>
         </form>
       </template>

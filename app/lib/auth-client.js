@@ -74,13 +74,11 @@ export async function fetchUserSession() {
   return await authClient.getSession();
 }
 
-export async function sendPasswordResetEmail(
-  email, 
-  redirectTo = null
-) {
+export async function sendPasswordResetEmail(email, redirectTo = null) {
   const { data, error } = await authClient.requestPasswordReset({
     email,
-    redirectTo: redirectTo || `${window.location.origin}/reinitialiser-mot-de-passe`,
+    redirectTo:
+      redirectTo || `${window.location.origin}/reinitialiser-mot-de-passe`,
   });
   return { data, error };
 }
@@ -89,6 +87,23 @@ export async function resetPassword(token, newPassword) {
   const { data, error } = await authClient.resetPassword({
     token,
     newPassword,
+  });
+  return { data, error };
+}
+
+export async function updateEmail(newEmail) {
+  const { data, error } = await authClient.changeEmail({
+    newEmail,
+    callbackURL: `${window.location.origin}/parametres`,
+  });
+  return { data, error };
+}
+
+export async function updatePassword(oldPassword, newPassword) {
+  const { data, error } = await authClient.changePassword({
+    newPassword,
+    currentPassword: oldPassword,
+    revokeOtherSessions: true,
   });
   return { data, error };
 }

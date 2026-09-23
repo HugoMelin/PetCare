@@ -43,7 +43,7 @@ const sizeClasses = {
     ]"
     :disabled="props.disabled"
     :style="{
-      padding: props.variant === 'link' ? '0' : undefined,
+      padding: props.variant === 'link' ? '4px' : undefined,
     }"
   >
     <slot />
