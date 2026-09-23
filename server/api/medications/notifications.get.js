@@ -22,12 +22,12 @@ const assertEmailSent = (emailResult) => {
 
 export default defineEventHandler(async (event) => {
   const secret = getHeader(event, "x-cron-secret");
-  
+
   if (secret !== process.env.CRON_SECRET) {
     throw createError({ statusCode: 401, message: "Unauthorized" });
   }
 
-  const data = [{date: new Date().toISOString()}];
+  const data = [{ date: new Date().toISOString() }];
   const result = await getAllMedicationsNotifications();
   const medicationsUrl = `${process.env.CLIENT_URL}/medicaments`;
   const pets = result.map((pet) => pet);

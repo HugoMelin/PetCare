@@ -156,7 +156,7 @@ const handleSignIn = async () => {
               />
               <span class="text-sm text-gray-600">Se souvenir de moi</span>
             </label>
-            <RouterLink 
+            <RouterLink
               to="/mot-de-passe-oublie"
               type="button"
               class="text-sm text-primary hover:text-primary-dark"

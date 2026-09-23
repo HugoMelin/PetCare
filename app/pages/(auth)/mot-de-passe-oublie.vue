@@ -23,9 +23,13 @@ const handleSubmit = async () => {
     if (error) {
       throw new Error(`Failed to send password reset email: ${error.message}`);
     }
-    toast.success("Si un compte existe pour cette adresse e-mail, un lien de réinitialisation y a été envoyé.");
+    toast.success(
+      "Si un compte existe pour cette adresse e-mail, un lien de réinitialisation y a été envoyé.",
+    );
   } catch (error) {
-    toast.error("Une erreur est survenue lors de l'envoi de l'e-mail de réinitialisation du mot de passe.");
+    toast.error(
+      "Une erreur est survenue lors de l'envoi de l'e-mail de réinitialisation du mot de passe.",
+    );
     console.error(error);
   } finally {
     loading.value = false;
@@ -72,14 +76,18 @@ onMounted(async () => {
               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
-          <Button type="submit" variant="default" size="lg" class="w-full" :disabled="loading">
+          <Button
+            type="submit"
+            variant="default"
+            size="lg"
+            class="w-full"
+            :disabled="loading"
+          >
             <template v-if="loading">
               <Spinner class="mr-2" />
               Envoi en cours...
             </template>
-            <template v-else>
-              Envoyer le lien de réinitialisation
-            </template>
+            <template v-else> Envoyer le lien de réinitialisation </template>
           </Button>
         </form>
       </template>

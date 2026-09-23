@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 import { Card } from "~/components/ui/card";
 import { resetPassword } from "~/lib/auth-client";
 import EyeIcon from "~/components/icons/EyeIcon.vue";
@@ -17,7 +17,7 @@ definePageMeta({
 
 const token = computed(() =>
   typeof route.query.token === "string" ? route.query.token : "",
-)
+);
 const tokenRejected = ref(false);
 
 const invalidLink = computed(
@@ -77,12 +77,14 @@ const handleResetPassword = async () => {
 
     await navigateTo("/connexion", { replace: true });
   } catch (err) {
-    toast.error("Une erreur est survenue lors de la réinitialisation du mot de passe.");
+    toast.error(
+      "Une erreur est survenue lors de la réinitialisation du mot de passe.",
+    );
     console.error("Error resetting password:", err);
   } finally {
     loading.value = false;
   }
-}
+};
 </script>
 
 <template>
@@ -96,8 +98,8 @@ const handleResetPassword = async () => {
       <template #title> Lien invalide </template>
       <template #content>
         <p class="text-gray-600">
-          Ce lien a expiré ou a déjà été utilisé.
-          Demandez un nouveau lien pour réinitialiser votre mot de passe.
+          Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien pour
+          réinitialiser votre mot de passe.
         </p>
         <NuxtLink
           to="/mot-de-passe-oublie"
@@ -166,14 +168,18 @@ const handleResetPassword = async () => {
           </div>
           <div v-if="error" class="text-red-500 mb-4">{{ error }}</div>
 
-          <Button type="submit" variant="default" size="lg" class="w-full" :disabled="loading">
+          <Button
+            type="submit"
+            variant="default"
+            size="lg"
+            class="w-full"
+            :disabled="loading"
+          >
             <template v-if="loading">
               <Spinner class="mr-2" />
               Envoi en cours...
             </template>
-            <template v-else>
-              Réinitialiser le mot de passe
-            </template>
+            <template v-else> Réinitialiser le mot de passe </template>
           </Button>
         </form>
       </template>

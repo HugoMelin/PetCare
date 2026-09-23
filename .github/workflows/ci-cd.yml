@@ -25,15 +25,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
 
       - name: Install Dependencies
         run: npm install
+
+      - name: Check ESLint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format
 
       - name: Prisma generate
         run: npx prisma generate
@@ -51,7 +57,7 @@ jobs:
       #     ls -la generated || true
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: deploy_bundle
           path: |
@@ -75,10 +81,10 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: deploy_bundle
           path: deploy_bundle
