@@ -90,3 +90,20 @@ export async function resetPassword(token, newPassword) {
   });
   return { data, error };
 }
+
+export async function updateEmail(newEmail) {
+  const { data, error } = await authClient.changeEmail({
+    newEmail,
+    callbackURL: `${window.location.origin}/parametres`,
+  });
+  return { data, error };
+}
+
+export async function updatePassword(oldPassword, newPassword) {
+  const { data, error } = await authClient.changePassword({
+    newPassword,
+    currentPassword: oldPassword,
+    revokeOtherSessions: true,
+  });
+  return { data, error };
+}
