@@ -156,12 +156,13 @@ const handleSignIn = async () => {
               />
               <span class="text-sm text-gray-600">Se souvenir de moi</span>
             </label>
-            <button
+            <RouterLink 
+              to="/mot-de-passe-oublie"
               type="button"
               class="text-sm text-primary hover:text-primary-dark"
             >
               Mot de passe oublié ?
-            </button>
+            </RouterLink>
           </div>
 
           <Button type="submit" variant="default" size="lg" class="w-full">

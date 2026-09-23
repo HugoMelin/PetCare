@@ -1,9 +1,15 @@
 <script setup>
 import { fetchUserSession } from "~/lib/auth-client";
 
+const route = useRoute();
 const authChecked = ref(false);
 
 onMounted(async () => {
+  if (route.meta.allowAuthenticated) {
+    authChecked.value = true;
+    return;
+  }
+
   const session = await fetchUserSession();
   const ok = session && session.data;
 
