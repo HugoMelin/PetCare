@@ -107,3 +107,11 @@ export async function updatePassword(oldPassword, newPassword) {
   });
   return { data, error };
 }
+
+export async function sendEmailVerification(email) {
+  const { data, error } = await authClient.sendVerificationEmail({
+    email,
+    callbackURL: `${window.location.origin}/parametres`,
+  });
+  return { data, error };
+}
