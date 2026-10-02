@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue"
-import { cn } from "@/lib/utils"
-import  { type BannerVariants, bannerVariantClasses } from "."
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { type BannerVariants, bannerVariantClasses } from ".";
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"],
-  icon?: Component,
+  class?: HTMLAttributes["class"];
+  icon?: Component;
   variant: {
-    type: typeof BannerVariants,
-    default: BannerVariants.default,
-  }
-}>()
-
+    type: typeof BannerVariants;
+    default: BannerVariants.default;
+  };
+}>();
 </script>
 
 <template>
-  <div 
+  <div
     data-slot="banner"
     :class="
       cn(
@@ -28,7 +27,9 @@ const props = defineProps<{
     <template v-if="props.icon">
       <component :is="props.icon" class="size-5 mt-1 lg:mt-0" />
     </template>
-    <div class="w-full flex flex-col lg:flex-row lg:justify-between lg:items-center">
+    <div
+      class="w-full flex flex-col lg:flex-row lg:justify-between lg:items-center"
+    >
       <slot />
       <slot name="action" />
     </div>

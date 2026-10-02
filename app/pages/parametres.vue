@@ -233,7 +233,12 @@ const handleSendEmailVerification = async () => {
         </dev>
       </template>
       <template #content>
-        <Banner v-if="user && !user.emailVerified" class="mb-6" variant="warning" :icon="Info">
+        <Banner
+          v-if="user && !user.emailVerified"
+          class="mb-6"
+          variant="warning"
+          :icon="Info"
+        >
           <p>Votre adresse mail n'est pas encore validée.</p>
 
           <template #action>
@@ -241,9 +246,7 @@ const handleSendEmailVerification = async () => {
               variant="link"
               size="sm"
               class="w-fit ml-auto"
-              @click="
-                handleSendEmailVerification();
-              "
+              @click="handleSendEmailVerification()"
             >
               <span>Valider mon adresse mail</span>
             </Button>
