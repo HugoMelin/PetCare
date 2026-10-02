@@ -7,6 +7,7 @@ import {
   authClient,
   updateEmail,
   updatePassword,
+  sendEmailVerification,
 } from "~/lib/auth-client";
 import PetCard from "~/components/parametres/PetCard.vue";
 import AboutSection from "~/components/parametres/AboutSection.vue";
@@ -14,6 +15,8 @@ import { useSettingStore } from "~/stores/settingStore";
 import { Input, Label, PasswordInput } from "~/components/ui/Form";
 import { toast } from "vue-sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { Banner } from "~/components/ui/banner";
+import { Info } from "lucide-vue-next";
 
 const session = authClient.useSession();
 const route = useRoute();
@@ -148,6 +151,23 @@ const handleChangePassword = async () => {
     loading.value.password = false;
   }
 };
+
+const handleSendEmailVerification = async () => {
+  try {
+    const { error } = await sendEmailVerification(user.value.email);
+    if (error) {
+      throw new Error(error.message);
+    } else {
+      toast.success(
+        "Un email de confirmation a été envoyé. Veuillez vérifier votre boîte de réception.",
+      );
+    }
+  } catch (error) {
+    toast.error(
+      `Erreur lors de l'envoi de l'email de confirmation: ${error.message}`,
+    );
+  }
+};
 </script>
 
 <template>
@@ -213,6 +233,23 @@ const handleChangePassword = async () => {
         </dev>
       </template>
       <template #content>
+        <Banner v-if="user && !user.emailVerified" class="mb-6" variant="warning" :icon="Info">
+          <p>Votre adresse mail n'est pas encore validée.</p>
+
+          <template #action>
+            <Button
+              variant="link"
+              size="sm"
+              class="w-fit ml-auto"
+              @click="
+                handleSendEmailVerification();
+              "
+            >
+              <span>Valider mon adresse mail</span>
+            </Button>
+          </template>
+        </Banner>
+
         <div v-if="editingProfile" class="space-y-4 mb-4">
           <div class="p-4 border border-gray-200 rounded-lg">
             <form
