@@ -16,13 +16,17 @@ export const getPetsByUserId = async (userId) => {
  * @param {DbClient} db - Prisma client instance
  * @returns {Promise<import("../../generated/prisma/client").Prisma.PetGetPayload<{ include: { owner: true } }>[] >}
  */
-export const getPetsOwnedByUserId = async (userId, populate = [], db = prisma) => {
+export const getPetsOwnedByUserId = async (
+  userId,
+  populate = [],
+  db = prisma,
+) => {
   return await db.pet.findMany({
     where: { owner: { some: { id: userId } } },
     include: {
       owner: populate.includes("owner"),
-      weightEntries: populate.includes("weightEntries")
-    }
+      weightEntries: populate.includes("weightEntries"),
+    },
   });
 };
 
@@ -145,7 +149,11 @@ export const removePetOwner = async (petId, ownerUserId, db = prisma) => {
   });
 };
 
-export const switchPetCreator = async (petId, newCreatorUserId, db = prisma) => {
+export const switchPetCreator = async (
+  petId,
+  newCreatorUserId,
+  db = prisma,
+) => {
   return await db.pet.update({
     where: { id: parseInt(petId) },
     data: {

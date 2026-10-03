@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const id = getRouterParam(event, "id");
-  
+
   if (!id) {
     throw createError({
       statusCode: 400,
@@ -49,9 +49,10 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     throw createError({
       statusCode: 500,
-      message: error instanceof Error
-        ? error.message
-        : "Erreur de suppression : " + String(error),
+      message:
+        error instanceof Error
+          ? error.message
+          : "Erreur de suppression : " + String(error),
     });
   }
 });
