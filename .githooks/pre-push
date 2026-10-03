@@ -1,0 +1,8 @@
+set -e
+
+echo "Vérification du formatage et du lint..."
+
+if ! (npm run format && npm run lint); then
+  echo "Push bloqué. Lance npm run fix, corrige les erreurs restantes et commit les corrections."
+  exit 1
+fi
