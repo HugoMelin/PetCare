@@ -6,6 +6,7 @@ import { resetPasswordEmail } from "../mails/reset-password";
 import { verificationEmail } from "../mails/verification-email";
 import { passwordChangedEmail } from "../mails/password-changed";
 import { createAuthMiddleware, APIError } from "better-auth/api";
+import { petsCleaner } from "./users";
 
 const resetPasswordExpiresInSeconds = 60 * 60;
 
@@ -55,6 +56,12 @@ export const auth = betterAuth({
     changeEmail: {
       enabled: true,
       updateEmailWithoutVerification: false,
+    },
+    deleteUser: {
+      enabled: true,
+      beforeDelete: async (user) => {
+        await petsCleaner(user.id);
+      },
     },
   },
   emailVerification: {

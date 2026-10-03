@@ -1,5 +1,4 @@
 import type { Prisma, PrismaClient } from "../../generated/prisma/client";
-import { auth } from "~~/server/utils/auth";
 import { prisma } from "./prisma";
 import { getPetsOwnedByUserId, removePetOwner, switchPetCreator } from "./pets";
 
@@ -9,29 +8,9 @@ type PetWithOwners = {
   owner: { id: string }[];
 };
 
-export const verifyUserPassword = async (
-  headers: Headers,
-  password: string | undefined,
-) => {
-  if (typeof password !== "string" || password.length === 0) {
-    throw createError({
-      statusCode: 400,
-      message: "Mot de passe requis",
-    });
-  }
-
-  return await auth.api.verifyPassword({
-    body: {
-      password: password,
-    },
-    headers,
-  });
-};
-
-export const deleteUserService = async (userId: string) => {
+export const petsCleaner = async (userId: string) => {
   let step = "recherche de l’utilisateur";
-  let petId: number | undefined;
-  console.info("[deleteUserService] Début", { userId });
+  console.info("[petsCleaner] Début", { userId });
   try {
     const response = await prisma.$transaction(
       async (tx: Prisma.TransactionClient) => {
@@ -43,12 +22,12 @@ export const deleteUserService = async (userId: string) => {
         if (!user) {
           throw new Error("User not found");
         }
-        console.info("[deleteUserService] Utilisateur trouvé", { userId });
+        console.info("[petsCleaner] Utilisateur trouvé", { userId });
 
         // Get pets owned by the user
         step = "chargement des animaux et propriétaires";
         const pets = await getPetsOwnedByUserId(userId, ["owner"], tx);
-        console.info("[deleteUserService] Animaux chargés", {
+        console.info("[petsCleaner] Animaux chargés", {
           userId,
           count: pets.length,
         });
@@ -59,25 +38,22 @@ export const deleteUserService = async (userId: string) => {
         }
 
         // Delete pet where no owner exists
-        petId = undefined;
         step = "suppression des animaux sans propriétaire";
         const deletedPets = await deletePetsWithoutOwner(userId, tx);
-        console.info("[deleteUserService] Animaux supprimés", {
+        console.info("[petsCleaner] Animaux supprimés", {
           userId,
           count: deletedPets.count,
         });
 
-        step = "suppression de l’utilisateur";
-        return await deleteUser(userId, tx);
+        return true;
       },
     );
-    console.info("[deleteUserService] Suppression terminée", { userId });
+    console.info("[petsCleaner] Nettoyage des animaux terminé", { userId });
     return response;
   } catch (error) {
-    console.error("[deleteUserService] Échec", { userId, step, petId }, error);
+    console.error("[petsCleaner] Échec", { userId, step }, error);
     const reason = error instanceof Error ? error.message : String(error);
-    const petContext = petId !== undefined ? ` (animal ${petId})` : "";
-    throw new Error(`Échec lors de ${step}${petContext} : ${reason}`, {
+    throw new Error(`Échec lors de ${step} : ${reason}`, {
       cause: error,
     });
   }
@@ -101,7 +77,7 @@ const removeUserFromPets = async (
 
     step = "retrait du propriétaire";
     await removePetOwner(pet.id, userId, db);
-    console.info("[deleteUserService] Propriétaire retiré de l’animal", {
+    console.info("[petsCleaner] Propriétaire retiré de l’animal", {
       userId,
       petId: pet.id,
     });
@@ -124,15 +100,4 @@ const deletePetsWithoutOwner = async (
       },
     },
   });
-};
-
-const deleteUser = async (
-  userId: string,
-  db: Prisma.TransactionClient | PrismaClient = prisma,
-) => {
-  const response = await db.user.delete({
-    where: { id: userId },
-  });
-
-  return response;
 };
