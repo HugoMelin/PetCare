@@ -1,14 +1,28 @@
 import { prisma } from "./prisma";
 
+/**
+ * @typedef {import("../../generated/prisma/client").Prisma.TransactionClient} DbClient
+ */
+
 export const getPetsByUserId = async (userId) => {
   return await prisma.pet.findMany({
     where: { createdByUserId: userId },
   });
 };
 
-export const getPetsOwnedByUserId = async (userId) => {
-  return await prisma.pet.findMany({
+/**
+ * @param {string} userId
+ * @param {Array<string>} populate - Array of fields to populate
+ * @param {DbClient} db - Prisma client instance
+ * @returns {Promise<import("../../generated/prisma/client").Prisma.PetGetPayload<{ include: { owner: true } }>[] >}
+ */
+export const getPetsOwnedByUserId = async (userId, populate = [], db = prisma) => {
+  return await db.pet.findMany({
     where: { owner: { some: { id: userId } } },
+    include: {
+      owner: populate.includes("owner"),
+      weightEntries: populate.includes("weightEntries")
+    }
   });
 };
 
@@ -120,13 +134,22 @@ export const addPetOwners = async (petId, newOwnerEmail) => {
   return user;
 };
 
-export const removePetOwner = async (petId, ownerUserId) => {
-  return await prisma.pet.update({
+export const removePetOwner = async (petId, ownerUserId, db = prisma) => {
+  return await db.pet.update({
     where: { id: parseInt(petId) },
     data: {
       owner: {
         disconnect: { id: ownerUserId },
       },
+    },
+  });
+};
+
+export const switchPetCreator = async (petId, newCreatorUserId, db = prisma) => {
+  return await db.pet.update({
+    where: { id: parseInt(petId) },
+    data: {
+      createdByUserId: newCreatorUserId,
     },
   });
 };

@@ -21,11 +21,18 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   const hasAccess = await isUserPetOwner(session.user.id, id);
-  const isCreatorUser = await isUserPetCreator(body.ownerUserId, id);
-  if (!hasAccess && !isCreatorUser) {
+  if (!hasAccess) {
     throw createError({
       statusCode: 403,
       message: "Accès refusé",
+    });
+  }
+
+  const isCreatorUser = await isUserPetCreator(body.ownerUserId, id);
+  if (isCreatorUser) {
+    throw createError({
+      statusCode: 403,
+      message: "Le propriétaire principal ne peut pas être retiré",
     });
   }
 
