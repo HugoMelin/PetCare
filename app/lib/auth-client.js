@@ -115,3 +115,10 @@ export async function sendEmailVerification(email) {
   });
   return { data, error };
 }
+
+export async function deleteAccount(password) {
+  const { data, error} = await authClient.deleteUser({
+    password,
+  });
+  return { data, error };
+}

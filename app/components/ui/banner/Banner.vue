@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import type { Component, HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 import { type BannerVariants, bannerVariantClasses } from ".";
 
-const props = defineProps<{
-  class?: HTMLAttributes["class"];
-  icon?: Component;
-  variant: {
-    type: typeof BannerVariants;
-    default: BannerVariants.default;
-  };
-}>();
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes["class"];
+    icon?: Component;
+    variant?: `${BannerVariants}`;
+  }>(),
+  { class: undefined, icon: undefined, variant: "default" },
+);
 </script>
 
 <template>
