@@ -117,7 +117,7 @@ export async function sendEmailVerification(email) {
 }
 
 export async function deleteAccount(password) {
-  const { data, error} = await authClient.deleteUser({
+  const { data, error } = await authClient.deleteUser({
     password,
   });
   return { data, error };

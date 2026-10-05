@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/button";
-import { 
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
- } from "~/components/ui/dialog";
+} from "~/components/ui/dialog";
 import { Label, PasswordInput } from "~/components/ui/Form";
 import { deleteAccount } from "~/lib/auth-client";
 import { toast } from "vue-sonner";
@@ -38,7 +38,6 @@ const handleDeleteAccount = async () => {
   } finally {
     loading.value = false;
   }
-
 };
 
 const resetPassword = () => {
@@ -49,19 +48,17 @@ const resetPassword = () => {
 <template>
   <Dialog @update:open="resetPassword">
     <DialogTrigger as-child>
-      <Button variant="destructive" size="lg">
-        Supprimer mon compte
-      </Button>
+      <Button variant="destructive" size="lg"> Supprimer mon compte </Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Supprimer mon compte</DialogTitle>
         <DialogDescription>
-          Êtes-vous sûr de vouloir supprimer votre compte ? Votre compte et les animaux
-          dont vous êtes le seul propriétaire seront définitivement supprimés. Les animaux
-          partagés seront conservés et resteront accessibles aux autres propriétaires.
-          Si nécessaire, leur créateur sera transféré à un autre propriétaire.
-          Cette action est irréversible.
+          Êtes-vous sûr de vouloir supprimer votre compte ? Votre compte et les
+          animaux dont vous êtes le seul propriétaire seront définitivement
+          supprimés. Les animaux partagés seront conservés et resteront
+          accessibles aux autres propriétaires. Si nécessaire, leur créateur
+          sera transféré à un autre propriétaire. Cette action est irréversible.
         </DialogDescription>
       </DialogHeader>
       <form action="" class="space-y-4" @submit.prevent="handleDeleteAccount">
@@ -76,9 +73,7 @@ const resetPassword = () => {
 
         <DialogFooter class="flex lg:flex-row gap-2 mt-4">
           <DialogClose as-child>
-            <Button type="button" variant="outline">
-              Annuler
-            </Button>
+            <Button type="button" variant="outline"> Annuler </Button>
           </DialogClose>
           <Button type="submit" variant="destructive" :disabled="loading">
             <Spinner v-if="loading" class="w-4 h-4 mr-2" />
