@@ -6,6 +6,7 @@ import { resetPasswordEmail } from "../mails/reset-password";
 import { verificationEmail } from "../mails/verification-email";
 import { passwordChangedEmail } from "../mails/password-changed";
 import { createAuthMiddleware, APIError } from "better-auth/api";
+import { petsCleaner } from "./users";
 
 const resetPasswordExpiresInSeconds = 60 * 60;
 
@@ -56,6 +57,12 @@ export const auth = betterAuth({
       enabled: true,
       updateEmailWithoutVerification: false,
     },
+    deleteUser: {
+      enabled: true,
+      beforeDelete: async (user) => {
+        await petsCleaner(user.id);
+      },
+    },
   },
   emailVerification: {
     expiresIn: 60 * 60,
@@ -88,6 +95,24 @@ export const auth = betterAuth({
         if (!user) return;
 
         await notifyPasswordChanged(user);
+      }
+    }),
+    before: createAuthMiddleware(async (ctx) => {
+      // Interdire la suppression par lien/token sans mot de passe.
+      if (ctx.path === "/delete-user/callback") {
+        throw new APIError("FORBIDDEN", {
+          message: "La suppression nécessite votre mot de passe.",
+        });
+      }
+
+      if (ctx.path !== "/delete-user") return;
+
+      const password = ctx.body?.password;
+
+      if (typeof password !== "string" || password.length === 0) {
+        throw new APIError("BAD_REQUEST", {
+          message: "Le mot de passe est obligatoire.",
+        });
       }
     }),
   },
