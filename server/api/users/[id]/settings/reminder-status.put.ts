@@ -1,17 +1,9 @@
-import { auth } from "~~/server/utils/auth";
+import { requireAuth } from "~~/server/utils/auth";
 import { updateUserReminderStatus } from "~~/server/utils/medicationsNotfications";
 
 export default defineEventHandler(async (event) => {
-  const session = await auth.api.getSession({
-    headers: event.headers,
-  });
-
-  if (!session) {
-    throw createError({
-      statusCode: 401,
-      message: "Utilisateur non authentifié",
-    });
-  }
+  await requireAuth(event);
+  const session = event.context.session;
 
   const id = getRouterParam(event, "id");
   const { status } = await readBody(event);

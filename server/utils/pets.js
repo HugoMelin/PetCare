@@ -161,3 +161,16 @@ export const switchPetCreator = async (
     },
   });
 };
+
+export const requirePetOwner = async (userId, petId) => {
+  const id = Number(petId);
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    throw createError({
+      statusCode: 400,
+      message: "Identifiant animal invalide",
+    });
+  }
+  if (!(await isUserPetOwner(userId, id))) {
+    throw createError({ statusCode: 403, message: "Accès refusé" });
+  }
+};

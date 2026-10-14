@@ -1,4 +1,4 @@
-import { auth } from "~~/server/utils/auth";
+import { requireAuth } from "~~/server/utils/auth";
 import {
   removePetOwner,
   isUserPetOwner,
@@ -6,16 +6,8 @@ import {
 } from "~~/server/utils/pets";
 
 export default defineEventHandler(async (event) => {
-  const session = await auth.api.getSession({
-    headers: event.headers,
-  });
-
-  if (!session) {
-    throw createError({
-      statusCode: 401,
-      message: "Non authentifié",
-    });
-  }
+  await requireAuth(event);
+  const session = event.context.session;
 
   const id = getRouterParam(event, "id");
   const body = await readBody(event);
