@@ -1,14 +1,9 @@
 import { createPet } from "../../utils/pets";
-import { auth } from "../../utils/auth";
+import { requireAuth } from "../../utils/auth";
 
 export default defineEventHandler(async (event) => {
-  const session = await auth.api.getSession({
-    headers: event.headers,
-  });
-
-  if (!session?.user) {
-    throw createError({ statusCode: 401, message: "Non authentifié" });
-  }
+  await requireAuth(event);
+  const session = event.context.session;
 
   const body = await readBody(event);
 
