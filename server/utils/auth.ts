@@ -165,7 +165,7 @@ export const requireAuth = async (event: H3Event) => {
   }
 
   const bypassEnabled =
-    process.env.NODE_ENV === "development" &&
+    process.env.APP_ENV === "development" &&
     process.env.NUXT_DISABLE_REQUIRE_AUTH === "true";
 
   if (bypassEnabled) {
