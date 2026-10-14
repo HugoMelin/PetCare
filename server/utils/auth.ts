@@ -7,6 +7,7 @@ import { verificationEmail } from "../mails/verification-email";
 import { passwordChangedEmail } from "../mails/password-changed";
 import { createAuthMiddleware, APIError } from "better-auth/api";
 import { petsCleaner } from "./users";
+import type { H3Event } from "h3";
 
 const resetPasswordExpiresInSeconds = 60 * 60;
 
@@ -152,3 +153,63 @@ async function notifyPasswordChanged(user: { email: string; name: string }) {
     console.error("Erreur lors de l’envoi de l’alerte de sécurité.");
   }
 }
+
+export const requireAuth = async (event: H3Event) => {
+  const session = await auth.api.getSession({
+    headers: event.headers,
+  });
+
+  if (session?.user) {
+    event.context.session = session;
+    return session;
+  }
+
+  const bypassEnabled =
+    process.env.APP_ENV === "development" &&
+    process.env.NUXT_DISABLE_REQUIRE_AUTH === "true";
+
+  if (bypassEnabled) {
+    const userId = process.env.DEV_AUTH_USER_ID;
+
+    if (!userId) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "DEV_AUTH_USER_ID is required for local auth bypass",
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Local auth bypass user not found",
+      });
+    }
+
+    const now = new Date();
+
+    event.context.session = {
+      user,
+      session: {
+        id: "local-dev-session",
+        token: "local-dev-token",
+        userId: user.id,
+        createdAt: now,
+        updatedAt: now,
+        expiresAt: new Date(now.getTime() + 60 * 60 * 1000),
+        ipAddress: null,
+        userAgent: null,
+      },
+    };
+
+    return event.context.session;
+  }
+
+  throw createError({
+    statusCode: 401,
+    statusMessage: "Unauthorized",
+  });
+};

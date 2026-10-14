@@ -1,7 +1,13 @@
 import { prisma } from "./prisma";
 
-export const getAllWeights = async () => {
-  return await prisma.weightEntry.findMany();
+export const getAllWeights = async (userId) => {
+  return await prisma.weightEntry.findMany({
+    where: {
+      pet: {
+        OR: [{ createdByUserId: userId }, { owner: { some: { id: userId } } }],
+      },
+    },
+  });
 };
 
 export const getWeightsByPetId = async (petId) => {
