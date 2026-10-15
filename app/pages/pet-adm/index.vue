@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import type { AdminDashboardStats } from "~~/shared/types/admin-dashboard";
 import { Users, PawPrint, Pill, Scale, RefreshCw } from "@lucide/vue";
 import Card from "~/components/ui/card/Card.vue";
 import AdminDistributionChart from "~/components/admin/AdminDistributionChart.vue";
 
 definePageMeta({ middleware: ["check-admin"], layout: "admin" });
 useHead({ title: "Tableau de bord admin · PetCare" });
-const { data, status, error, refresh } = await useFetch("/api/admin/dashboard");
+const { data, status, error, refresh } = await useFetch<AdminDashboardStats>(
+  "/api/admin/dashboard",
+);
 const number = (value: number) => value.toLocaleString("fr-FR");
 const cards = computed(() =>
   data.value

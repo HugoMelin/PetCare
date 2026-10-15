@@ -8,7 +8,6 @@ import { verificationEmail } from "../mails/verification-email";
 import { passwordChangedEmail } from "../mails/password-changed";
 import { createAuthMiddleware, APIError } from "better-auth/api";
 import { petsCleaner } from "./users";
-import type { H3Event } from "h3";
 
 const resetPasswordExpiresInSeconds = 60 * 60;
 
@@ -156,7 +155,10 @@ async function notifyPasswordChanged(user: { email: string; name: string }) {
   }
 }
 
-export const requireAuth = async (event: H3Event) => {
+export const requireAuth = async (event: {
+  headers: Headers;
+  context: Record<string, unknown>;
+}) => {
   const session = await auth.api.getSession({
     headers: event.headers,
   });
@@ -193,7 +195,7 @@ export const requireAuth = async (event: H3Event) => {
 
     const now = new Date();
 
-    event.context.session = {
+    const localSession = {
       user,
       session: {
         id: "local-dev-session",
@@ -207,7 +209,8 @@ export const requireAuth = async (event: H3Event) => {
       },
     };
 
-    return event.context.session;
+    event.context.session = localSession;
+    return localSession;
   }
 
   throw createError({
