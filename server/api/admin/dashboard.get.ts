@@ -1,13 +1,11 @@
 import type { AdminDashboardStats } from "~~/shared/types/admin-dashboard";
-import { requireAuth } from "../../utils/auth";
+import { requireAuth, requireAdmin } from "../../utils/auth";
 import { prisma } from "../../utils/prisma";
 
 export default defineEventHandler(
   async (event): Promise<AdminDashboardStats> => {
     const session = await requireAuth(event);
-    if (!session.user.role?.split(",").includes("admin")) {
-      throw createError({ statusCode: 403, statusMessage: "Forbidden" });
-    }
+    await requireAdmin(session);
     setResponseHeader(event, "Cache-Control", "private, no-store");
 
     const [

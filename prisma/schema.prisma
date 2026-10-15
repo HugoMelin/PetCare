@@ -135,7 +135,7 @@ model Feature {
   id          Int       @id @default(autoincrement())
   key         String    @unique
   name        String
-  description String
+  description String?
   enabledAt   DateTime?
   enabled     Boolean   @default(false)
   createdAt   DateTime  @default(now())
