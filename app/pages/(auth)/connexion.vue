@@ -13,6 +13,8 @@ definePageMeta({
   layout: "auth",
 });
 
+const { data: oAuth_feature } = await isFeatureEnabled("oAuth");
+
 const error = ref(null);
 
 const formSignIn = reactive({
@@ -47,7 +49,7 @@ const handleSignIn = async () => {
       <template #title> Se connecter </template>
       <template #content>
         <!-- Social Buttons -->
-        <div class="space-y-3 mb-6">
+        <div v-if="oAuth_feature?.enabled" class="space-y-3 mb-6">
           <Button
             variant="socialAuth"
             size="lg"
@@ -83,7 +85,7 @@ const handleSignIn = async () => {
         </div>
 
         <!-- Divider -->
-        <div class="relative mb-6">
+        <div v-if="oAuth_feature?.enabled" class="relative mb-6">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300" />
           </div>
