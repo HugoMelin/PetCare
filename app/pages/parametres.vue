@@ -82,13 +82,12 @@ const handleEditPet = (pet) => {
       </template>
     </Card>
 
-    <Card class="mb-6">
+    <Card v-if="isAdmin" class="mb-6">
       <template #title-section>
         <h3 class="font-bold">Administration</h3>
       </template>
       <template #content>
         <Button
-          v-if="isAdmin"
           class="w-full lg:w-fit"
           @click="navigateTo('/pet-adm')"
         >
