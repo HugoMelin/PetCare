@@ -138,6 +138,7 @@ export const addPetOwners = async (petId, newOwnerEmail) => {
   return user;
 };
 
+/** @param {DbClient} db */
 export const removePetOwner = async (petId, ownerUserId, db = prisma) => {
   return await db.pet.update({
     where: { id: parseInt(petId) },
@@ -149,6 +150,7 @@ export const removePetOwner = async (petId, ownerUserId, db = prisma) => {
   });
 };
 
+/** @param {DbClient} db */
 export const switchPetCreator = async (
   petId,
   newCreatorUserId,

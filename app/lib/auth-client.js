@@ -1,7 +1,10 @@
 import { createAuthClient } from "better-auth/vue";
 import { usePetStore } from "~/stores/petStore";
+import { adminClient } from "better-auth/client/plugins";
 
-export const authClient = createAuthClient({});
+export const authClient = createAuthClient({
+  plugins: [adminClient()],
+});
 
 export async function signUp(email, password, name) {
   const petStore = usePetStore();

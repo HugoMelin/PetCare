@@ -20,6 +20,7 @@ onMounted(() => {
 const petStore = usePetStore();
 const { pets } = storeToRefs(petStore);
 const editingPetId = ref(null);
+const isAdmin = computed(() => session.value?.data?.user?.role === "admin");
 
 const {
   public: { appVersion: version },
@@ -78,6 +79,21 @@ const handleEditPet = (pet) => {
           v-if="!pets.length"
           class="h-24 w-full bg-gray-300 rounded-lg animate-pulse self-end"
         />
+      </template>
+    </Card>
+
+    <Card class="mb-6">
+      <template #title-section>
+        <h3 class="font-bold">Administration</h3>
+      </template>
+      <template #content>
+        <Button
+          v-if="isAdmin"
+          class="w-full lg:w-fit"
+          @click="navigateTo('/pet-adm')"
+        >
+          Accéder à l'administration
+        </Button>
       </template>
     </Card>
 
