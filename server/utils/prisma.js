@@ -2,7 +2,8 @@ import "dotenv/config";
 import { PrismaClient } from "../../generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
-const globalForPrisma = globalThis;
+const globalForPrisma =
+  /** @type {typeof globalThis & { prisma?: PrismaClient }} */ (globalThis);
 
 const adapter = new PrismaMariaDb({
   host: process.env.DB_HOST,

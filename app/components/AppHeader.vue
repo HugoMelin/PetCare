@@ -2,10 +2,15 @@
 import SettingsIcon from "./icons/SettingsIcon.vue";
 const route = useRoute();
 
-const dontShowPetSelectorOn = ["/ajouter-animal", "/parametres", "/feedback"];
+const dontShowPetSelectorOn = [
+  "/ajouter-animal",
+  "/parametres",
+  "/feedback",
+  "/pet-adm",
+];
 
 const isHighlightedRoute = (path) =>
-  ["/ajouter-animal", "/parametres", "/feedback"].includes(path);
+  ["/ajouter-animal", "/parametres", "/feedback", "/pet-adm"].includes(path);
 
 const showPetSelector = computed(
   () => !dontShowPetSelectorOn.includes(route.path),

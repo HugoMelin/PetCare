@@ -1,7 +1,7 @@
 {
   "name": "petCare-nuxt",
   "type": "module",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -19,7 +19,7 @@
     "fix": "npm run lint:fix && npm run format:fix"
   },
   "dependencies": {
-    "@lucide/vue": "^1.52.0",
+    "@lucide/vue": "^1.57.0",
     "@nuxt/eslint": "^1.11.0",
     "@nuxt/image": "^2.0.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
