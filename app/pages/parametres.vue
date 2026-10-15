@@ -87,10 +87,7 @@ const handleEditPet = (pet) => {
         <h3 class="font-bold">Administration</h3>
       </template>
       <template #content>
-        <Button
-          class="w-full lg:w-fit"
-          @click="navigateTo('/pet-adm')"
-        >
+        <Button class="w-full lg:w-fit" @click="navigateTo('/pet-adm')">
           Accéder à l'administration
         </Button>
       </template>
