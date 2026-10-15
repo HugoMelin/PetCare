@@ -219,7 +219,9 @@ export const requireAuth = async (event: {
   });
 };
 
-export const requireAdmin = async (session: Awaited<ReturnType<typeof requireAuth>>) => {
+export const requireAdmin = async (
+  session: Awaited<ReturnType<typeof requireAuth>>,
+) => {
   if (!session.user.role?.split(",").includes("admin")) {
     throw createError({ statusCode: 403, statusMessage: "Forbidden" });
   }

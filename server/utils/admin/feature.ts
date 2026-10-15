@@ -37,4 +37,4 @@ export const deleteFeature = async (id: number) => {
   return await prisma.feature.delete({
     where: { id },
   });
-}
+};
