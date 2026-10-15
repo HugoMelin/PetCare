@@ -1,7 +1,9 @@
-export const isFeatureEnabled = async (key: string): Promise<{key: string; enabled: boolean}> => {
+export const isFeatureEnabled = async (
+  key: string,
+): Promise<{ key: string; enabled: boolean }> => {
   const feature = await prisma.feature.findUnique({
     where: { key },
-    select: { 
+    select: {
       enabled: true,
       enabledAt: true,
     },
@@ -12,10 +14,9 @@ export const isFeatureEnabled = async (key: string): Promise<{key: string; enabl
 
   // return new Date(enabledAt) <= new Date();
 
-  return { 
-    "key" : key,
-    "enabled" : feature?.enabled && enabledAt
-      ? new Date(enabledAt) <= new Date() 
-      : false
+  return {
+    key: key,
+    enabled:
+      feature?.enabled && enabledAt ? new Date(enabledAt) <= new Date() : false,
   };
-}
+};
